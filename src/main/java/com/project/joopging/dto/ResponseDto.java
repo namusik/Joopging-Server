@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ResponseDto {
-    private String result;
+    private Long statusCode;
 
     private String msg;
 
-    private Object object;
+    private Object data;
 
-    public ResponseDto(String result, String msg, Object object) {
-        this.result = result;
+    public ResponseDto(Long statusCode, String msg, Object data) {
+        this.statusCode = statusCode;
         this.msg = msg;
-        this.object = object;
+        this.data = data;
     }
 }
