@@ -1,8 +1,5 @@
 package com.project.joopging.dto.user;
 
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +17,9 @@ public class SignupRequestDto {
 
     private String password;
 
-    private Location location;
+    private String location;
 
-    private Type type;
+    private String type;
 
-    private Distance distance;
+    private Integer distance;
 }

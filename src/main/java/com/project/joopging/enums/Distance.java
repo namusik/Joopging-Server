@@ -1,4 +1,4 @@
 package com.project.joopging.enums;
 
-public class Distance {
+public enum Distance {
 }

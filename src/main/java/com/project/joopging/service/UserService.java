@@ -15,10 +15,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final signupValidator signupValidator;
 
     public boolean registerUser(SignupRequestDto requestDto) {
-//        //User user = signupValidator.validate(requestDto);
-//        userRepository.save(user);
+        User user = signupValidator.validate(requestDto);
+        userRepository.save(user);
         return true;
     }
 }

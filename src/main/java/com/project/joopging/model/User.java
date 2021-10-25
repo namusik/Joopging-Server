@@ -1,6 +1,9 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.enums.Distance;
+import com.project.joopging.enums.Location;
+import com.project.joopging.enums.Type;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
@@ -29,16 +32,16 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private Integer location;
+    @Column
+    private Location location;
 
-    @Column(nullable = false)
-    private Integer type;
+    @Column
+    private Type type;
 
-    @Column(nullable = false)
-    private Integer distance;
+    @Column
+    private Distance distance;
 
-    @Column(nullable = false)
+    @Column
     private String userImg;
 
     @Enumerated(value = EnumType.STRING)
@@ -56,4 +59,14 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "userComment")
     private List<Comment> comment;
 
+    public User(String username, String password, String email, UserRoleEnum role, Location enumLocation, Type enumType, Distance enumDistance) {
+        this.nickname = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.type = enumType;
+        this.distance = enumDistance;
+        this.location = enumLocation;
+        this.userImg = null;
+    }
 }
