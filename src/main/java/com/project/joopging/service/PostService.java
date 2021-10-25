@@ -1,12 +1,15 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,5 +61,7 @@ public class PostService {
     }
 
 
-
+    public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetails userDetails) {
+        return post.toBuildDetailPost(post,userDetails);
+    }
 }

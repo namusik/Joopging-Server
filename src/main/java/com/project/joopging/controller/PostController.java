@@ -2,6 +2,7 @@ package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
@@ -58,17 +59,18 @@ public class PostController {
         return new ResponseDto(200L, "모임 삭제에 성공하였습니다.", null);
     }
 
-//    @ApiOperation(value = "게시글 상세페이지")
-//    @GetMapping("/posts/{post_id}")
-//    public ResponseDto getDetailPost(
-//            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
-//            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId
-//    ) {
-//        Post post = postService.getDetailPostById(postId);
-//        ResponseDto data =
-//
-//
-//
-//    }
+    @ApiOperation(value = "게시글 상세페이지")
+    @GetMapping("/posts/{post_id}")
+    public ResponseDto getDetailPost(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
+            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId
+    ) {
+        Post post = postService.getDetailPostById(postId);
+        PostDetailResponseDto data = postService.toSetPostDetailResponseDto(post,userDetails);
+        return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다", data);
+
+
+
+    }
 
 }
