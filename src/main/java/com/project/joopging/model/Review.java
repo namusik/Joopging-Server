@@ -1,5 +1,6 @@
 package com.project.joopging.model;
 
+import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,12 @@ public class Review extends Timestamped {
         this.reviewImg = reviewImg;
         this.postReview = postReview;
         this.userReview = userReview;
+    }
+
+    public Review(ReviewRequestDto requestDto, Post post, User user) {
+        this.content = requestDto.getContent();
+        this.reviewImg = requestDto.getReviewImg();
+        this.postReview = post;
+        this.userReview = user;
     }
 }
