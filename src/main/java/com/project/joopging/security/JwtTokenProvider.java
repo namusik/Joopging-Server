@@ -1,4 +1,4 @@
 package com.project.joopging.security;
 
-public class JwtProvider {
+public class JwtTokenProvider {
 }
