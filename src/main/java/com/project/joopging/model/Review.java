@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Timestamped {
+public class Review extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
@@ -19,18 +20,21 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     String content;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    User userComment;
-
+    @Column(nullable = false)
+    String reviewImg;
 
     @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
-    Post postComment;
+    Post postReview;
 
-    public Comment(String content, User userComment, Post postComment) {
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    User userReview;
+
+    public Review(String content, String reviewImg, Post postReview, User userReview) {
         this.content = content;
-        this.userComment = userComment;
-        this.postComment = postComment;
+        this.reviewImg = reviewImg;
+        this.postReview = postReview;
+        this.userReview = userReview;
     }
 }

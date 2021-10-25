@@ -1,5 +1,6 @@
 package com.project.joopging.model;
 
+import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Join {
+public class Join extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
