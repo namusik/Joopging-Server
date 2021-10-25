@@ -32,13 +32,13 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private Location location;
 
-    @Column
+    @Column(nullable = false)
     private Type type;
 
-    @Column
+    @Column(nullable = false)
     private Distance distance;
 
     @Column

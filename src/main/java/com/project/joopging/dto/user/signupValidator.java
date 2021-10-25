@@ -48,7 +48,7 @@ public class signupValidator {
 
         Location enumLocation = Location.valueOf(location);
         Type enumType = Type.valueOf(type);
-        Distance enumDistance = Distance.valueOf(distance.toString());
+        Distance enumDistance = Distance.getDistanceById(distance);
 
         User user = new User(username, password, email, role, enumLocation, enumType, enumDistance);
         return user;
