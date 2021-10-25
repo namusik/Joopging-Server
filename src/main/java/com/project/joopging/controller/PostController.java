@@ -70,7 +70,6 @@ public class PostController {
         return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다", data);
 
 
-
     }
 
 }

@@ -147,7 +147,9 @@ public class Post extends Timestamped {
         this.postImg = requestDto.getPostImg();
     }
         //댓글 추가하기
-    public PostDetailResponseDto toBuildDetailPost(Post post, UserDetails userDetails) {
+
+    public PostDetailResponseDto toBuildDetailPost(UserDetails userDetails) {
+
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
                     .postId(this.id)
@@ -156,13 +158,14 @@ public class Post extends Timestamped {
                     .runningDate(this.runningDate)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .location(location.getNum())
-                    .type(type.getNum())
-                    .distance(distance.getNum())
+                    .location(location.getName())
+                    .type(type.getName())
+                    .distance(distance.getName())
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
+                    .commentList(this.comments)
                     .build();
         } else {
             return PostDetailResponseDto.builder()
@@ -172,13 +175,14 @@ public class Post extends Timestamped {
                     .runningDate(this.runningDate)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .location(location.getNum())
-                    .type(type.getNum())
-                    .distance(distance.getNum())
+                    .location(location.getName())
+                    .type(type.getName())
+                    .distance(distance.getName())
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
+                    .commentList(this.comments)
                     .build();
         }
     }
