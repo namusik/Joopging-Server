@@ -5,6 +5,7 @@ import com.project.joopging.model.Join;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.JoinRepository;
+import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,9 @@ public class JoinService {
 
         user.getJoin().remove(join);
         post.getJoins().remove(join);
+
+        //post nowPeople 1 감소 시키기
+        post.minusNowPeople();
 
     }
 }
