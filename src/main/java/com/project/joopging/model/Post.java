@@ -3,6 +3,7 @@ package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -53,14 +54,17 @@ public class Post extends Timestamped {
     private LocalDate endDate;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "게시글 지역")
     private Location location;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "게시글 지형")
     private Type type;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "게시글 거리")
     private Distance distance;
 
@@ -75,6 +79,9 @@ public class Post extends Timestamped {
     @Column
     @ApiModelProperty(value = "게시글 이미지")
     private String postImg;
+
+    @Column
+    private Integer viewCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -101,7 +108,30 @@ public class Post extends Timestamped {
     private List<Comment> comments = new ArrayList<>();
 
 
-    public Post(PostCreateRequestDto requestDto) {
+    public Post(PostCreateRequestDto requestDto,User user) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.runningDate = requestDto.getRunningDate();
+        this.startDate = requestDto.getStartDate();
+        this.endDate = requestDto.getEndDate();
+        this.location = Location.getLocationById(requestDto.getLocation());
+        this.type= Type.getTypeById(requestDto.getType());
+        this.distance = Distance.getDistanceById(requestDto.getDistance());
+        this.limitPeople = requestDto.getLimitPeople();
+        this.nowPeople = requestDto.getNowPeople();
+        this.postImg = requestDto.getPostImg();
+        this.writer = user;
+    }
+
+    public static Post of(PostCreateRequestDto requestDto, User user) {
+        return new Post(requestDto,user);
+    }
+
+    public boolean isWrittenBy(User user) {
+        return this.writer.getId().equals(user.getId());
+    }
+
+    public void update(PostUpdateRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.runningDate = requestDto.getRunningDate();
@@ -114,4 +144,6 @@ public class Post extends Timestamped {
         this.nowPeople = requestDto.getNowPeople();
         this.postImg = requestDto.getPostImg();
     }
+
+
 }
