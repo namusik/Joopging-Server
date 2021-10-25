@@ -3,6 +3,9 @@ package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.enums.Distance;
+import com.project.joopging.enums.Location;
+import com.project.joopging.enums.Type;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +24,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@ApiModel(value = "게시글 정보")
 public class Post extends Timestamped {
 
     @Id
@@ -51,15 +54,15 @@ public class Post extends Timestamped {
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 지역")
-    private Integer location;
+    private Location location;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 지형")
-    private Integer type;
+    private Type type;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 거리")
-    private Integer distance;
+    private Distance distance;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 최대 인원수")
@@ -104,9 +107,9 @@ public class Post extends Timestamped {
         this.runningDate = requestDto.getRunningDate();
         this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
-        this.location = requestDto.getLocation();
-        this.type= requestDto.getType();
-        this.distance = requestDto.getDistance();
+        this.location = Location.getLocationById(requestDto.getLocation());
+        this.type= Type.getTypeById(requestDto.getType());
+        this.distance = Distance.getDistanceById(requestDto.getDistance());
         this.limitPeople = requestDto.getLimitPeople();
         this.nowPeople = requestDto.getNowPeople();
         this.postImg = requestDto.getPostImg();
