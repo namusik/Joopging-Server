@@ -3,6 +3,7 @@ package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
@@ -14,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -143,6 +145,42 @@ public class Post extends Timestamped {
         this.limitPeople = requestDto.getLimitPeople();
         this.nowPeople = requestDto.getNowPeople();
         this.postImg = requestDto.getPostImg();
+    }
+        //댓글 추가하기
+    public PostDetailResponseDto toBuildDetailPost(Post post, UserDetails userDetails) {
+        if(userDetails == null) {
+            return PostDetailResponseDto.builder()
+                    .postId(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .runningDate(this.runningDate)
+                    .startDate(this.startDate)
+                    .endDate(this.endDate)
+                    .location(location.getNum())
+                    .type(type.getNum())
+                    .distance(distance.getNum())
+                    .limitPeople(this.limitPeople)
+                    .nowPeople(this.nowPeople)
+                    .postImg(this.postImg)
+                    .viewCount(this.viewCount)
+                    .build();
+        } else {
+            return PostDetailResponseDto.builder()
+                    .postId(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .runningDate(this.runningDate)
+                    .startDate(this.startDate)
+                    .endDate(this.endDate)
+                    .location(location.getNum())
+                    .type(type.getNum())
+                    .distance(distance.getNum())
+                    .limitPeople(this.limitPeople)
+                    .nowPeople(this.nowPeople)
+                    .postImg(this.postImg)
+                    .viewCount(this.viewCount)
+                    .build();
+        }
     }
 
 
