@@ -1,13 +1,13 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -40,6 +40,9 @@ public class User extends Timestamped {
 
     @Column(nullable = false)
     private String userImg;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
 
     @OneToMany(mappedBy = "userJoin")
     private List<Join> join;
