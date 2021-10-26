@@ -1,15 +1,16 @@
 package com.project.joopging.dto.post;
 
 
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
+
+import com.project.joopging.model.Comment;
+
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Builder
@@ -22,15 +23,23 @@ public class PostDetailResponseDto {
     private final LocalDate runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final Integer location;
-    private final Integer type;
-    private final Integer distance;
+
+    //String 으로 돌려줄지 Integer 로 돌려줄지 물어보기
+    private final String location;
+    private final String type;
+    private final String distance;
+
+
+
     private final int limitPeople;
     private final int nowPeople;
     private final String postImg;
     private final Integer viewCount;
 
     //코멘트 넣기
+
+    private List<Comment> commentList;
+
 }
 
 
