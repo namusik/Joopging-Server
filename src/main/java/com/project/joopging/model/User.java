@@ -1,6 +1,7 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.user.EditUserInfoDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -9,12 +10,14 @@ import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends Timestamped {
@@ -22,24 +25,24 @@ public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
+    @Column
     @JsonIgnore
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String location;
 
-    @Column(nullable = false)
+    @Column
     private String type;
 
-    @Column(nullable = false)
+    @Column
     private String distance;
 
     @Column
@@ -73,5 +76,13 @@ public class User extends Timestamped {
         this.distance = enumDistance;
         this.location = enumLocation;
         this.userImg = null;
+    }
+
+    public void editUserInfo(String userImg, String password, String distanceName, String locationName, String typeName) {
+        this.userImg = userImg;
+        this.location = locationName;
+        this.password = password;
+        this.distance = distanceName;
+        this.type = typeName;
     }
 }

@@ -1,15 +1,13 @@
 package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
-import com.project.joopging.dto.user.DeleteUserDto;
-import com.project.joopging.dto.user.LoginResponseDto;
-import com.project.joopging.dto.user.LoginUserDto;
-import com.project.joopging.dto.user.SignupRequestDto;
+import com.project.joopging.dto.user.*;
 import com.project.joopging.model.User;
 import com.project.joopging.security.JwtTokenProvider;
+import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -63,11 +61,20 @@ public class UserController {
     @ResponseBody
     public ResponseDto deleteUser(@RequestBody DeleteUserDto deleteUserDto) {
         String email = deleteUserDto.getEmail();
-        if(userService.deleteUser(email)) {
+        if (userService.deleteUser(email)) {
             return new ResponseDto(200L, "회원을 삭제했습니다", "");
         }
         return new ResponseDto(500L, "회원삭제 실패", "");
     }
 
 
+    @PutMapping("/users")
+    @ResponseBody
+    public ResponseDto editUserInfo(@RequestBody EditUserInfoDto editUserInfoDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (userService.editUserInfo(editUserInfoDto, userDetails)) {
+            return new ResponseDto(200L, "회원 정보를 수정했습니다", "");
+        }
+        return new ResponseDto(500L, "회원 정보 수정 실패했습니다", "");
+    }
 }
