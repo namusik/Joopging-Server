@@ -1,15 +1,15 @@
 package com.project.joopging.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.joopging.dto.ResponseDto;
-import com.project.joopging.dto.user.DeleteUserDto;
-import com.project.joopging.dto.user.LoginResponseDto;
-import com.project.joopging.dto.user.LoginUserDto;
-import com.project.joopging.dto.user.SignupRequestDto;
+import com.project.joopging.dto.user.*;
 import com.project.joopging.model.User;
 import com.project.joopging.security.JwtTokenProvider;
+import com.project.joopging.security.UserDetailsImpl;
+import com.project.joopging.service.KakaoUserService;
 import com.project.joopging.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -20,10 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final KakaoUserService kakaoUserService;
 
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoUserService kakaoUserService) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.kakaoUserService = kakaoUserService;
     }
 
     @PostMapping("/users")
@@ -61,13 +63,30 @@ public class UserController {
 
     @DeleteMapping("/users")
     @ResponseBody
-    public ResponseDto deleteUser(@RequestBody DeleteUserDto deleteUserDto) {
-        String email = deleteUserDto.getEmail();
-        if(userService.deleteUser(email)) {
+    public ResponseDto deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String email1 = userDetails.getUser().getEmail();
+        if (userService.deleteUser(email1)) {
             return new ResponseDto(200L, "회원을 삭제했습니다", "");
         }
         return new ResponseDto(500L, "회원삭제 실패", "");
     }
 
 
+    @PutMapping("/users")
+    @ResponseBody
+    public ResponseDto editUserInfo(@RequestBody EditUserInfoDto editUserInfoDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if (userService.editUserInfo(editUserInfoDto, userDetails)) {
+            return new ResponseDto(200L, "회원 정보를 수정했습니다", "");
+        }
+        return new ResponseDto(500L, "회원 정보 수정 실패했습니다", "");
+    }
+
+    @PostMapping("/kakao")
+    public ResponseDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        if (kakaoUserService.kakaoLogin(code)) {
+            return new ResponseDto(200L, "카카오 로그인 성공 !", "");
+        }
+        return new ResponseDto(500L, "카카오 로그인 실패 !", "");
+    }
 }

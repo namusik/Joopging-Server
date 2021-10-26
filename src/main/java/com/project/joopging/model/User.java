@@ -1,6 +1,7 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.user.EditUserInfoDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -9,12 +10,14 @@ import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends Timestamped {
@@ -22,24 +25,26 @@ public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
+    @Column
     @JsonIgnore
     private String email;
 
-    @Column(nullable = false)
+    private Long socialId;
+
+    @Column
     private String location;
 
-    @Column(nullable = false)
+    @Column
     private String type;
 
-    @Column(nullable = false)
+    @Column
     private String distance;
 
     @Column
@@ -72,6 +77,19 @@ public class User extends Timestamped {
         this.type = enumType;
         this.distance = enumDistance;
         this.location = enumLocation;
+        this.userImg = null;
+    }
+
+    //소셜로그인용 유저
+    public User( String email, String password, String nickname,  UserRoleEnum role, Long socialId) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.socialId = socialId;
+        this.role = role;
+        this.type = null;
+        this.distance = null;
+        this.location = null;
         this.userImg = null;
     }
 }

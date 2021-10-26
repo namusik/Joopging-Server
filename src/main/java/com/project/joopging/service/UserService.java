@@ -1,9 +1,13 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.user.EditUserInfoDto;
 import com.project.joopging.dto.user.LoginUserDto;
 import com.project.joopging.dto.user.SignupRequestDto;
 
 import com.project.joopging.dto.user.signupValidator;
+import com.project.joopging.enums.Distance;
+import com.project.joopging.enums.Location;
+import com.project.joopging.enums.Type;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.UserRepository;
@@ -56,6 +60,31 @@ public class UserService {
                 () -> new CustomErrorException("이메일을 찾을 수 없습니다")
         );
         userRepository.delete(user);
+        return true;
+    }
+
+    public boolean editUserInfo(EditUserInfoDto editUserInfoDto, UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        String userImg = editUserInfoDto.getUserImg();
+
+        String password = editUserInfoDto.getPassword();
+
+        Integer distance = editUserInfoDto.getDistance();
+        String distanceName = Distance.getDistanceById(distance).getName();
+
+        Integer location = editUserInfoDto.getLocation();
+        String locationName = Location.getLocationById(location).getName();
+
+        Integer type = editUserInfoDto.getType();
+        String typeName = Type.getTypeById(type).getName();
+
+        user.setUserImg(userImg);
+        user.setDistance(distanceName);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setLocation(locationName);
+        user.setType(typeName);
+
+        userRepository.save(user);
         return true;
     }
 }
