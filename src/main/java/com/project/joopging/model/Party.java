@@ -11,21 +11,24 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Join extends Timestamped {
+public class Party extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
-    @ManyToOne
+    @Column
+    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID",  nullable = false)
-    User userJoin;
+    private User userJoin;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID", nullable = false)
-    Post postJoin;
+    private Post postJoin;
 
-    public Join(User userJoin, Post postJoin) {
+    public Party(User userJoin, Post postJoin) {
         this.userJoin = userJoin;
         this.postJoin = postJoin;
     }

@@ -16,21 +16,21 @@ public class Review extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    String content;
+    private String content;
 
     @Column(nullable = false)
-    String reviewImg;
+    private String reviewImg;
 
     @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
-    Post postReview;
+    private Post postReview;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
-    User userReview;
+    private User userReview;
 
     public Review(String content, String reviewImg, Post postReview, User userReview) {
         this.content = content;
