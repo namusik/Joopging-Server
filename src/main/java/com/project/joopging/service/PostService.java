@@ -4,6 +4,7 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.exception.CustomErrorException;
+import com.project.joopging.model.Comment;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.PostRepository;
@@ -11,19 +12,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
 
 
     //게시글 만들기
+    @Transactional
     public void createPost(PostCreateRequestDto requestDto, User user) {
         Post post = Post.of(requestDto,user);
+        List<Post> postList = user.getPost();
+        postList.add(post);
         postRepository.save(post);
     }
 
     //게시글 업데이트
+    @Transactional
     public void updatePost(Long postId, PostUpdateRequestDto requestDto, User user) {
         Post post = getPostById(postId);
         if (post.isWrittenBy(user)) {
@@ -43,14 +52,15 @@ public class PostService {
         }
     }
 
+
+
     public Post getDetailPostById(Long postId) {
         Post post = getPostById(postId);
+//        List<Comment> commentList = post.getComments();
         post.setViewCount(post.getViewCount() + 1);
         postRepository.save(post);
         return post;
     }
-
-
 
 
     private Post getPostById(Long postId) {

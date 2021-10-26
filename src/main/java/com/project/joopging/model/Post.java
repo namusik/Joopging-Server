@@ -142,7 +142,6 @@ public class Post extends Timestamped {
         this.type= Type.getTypeById(requestDto.getType());
         this.distance = Distance.getDistanceById(requestDto.getDistance());
         this.limitPeople = requestDto.getLimitPeople();
-        this.nowPeople = requestDto.getNowPeople();
         this.postImg = requestDto.getPostImg();
     }
         //댓글 추가하기
