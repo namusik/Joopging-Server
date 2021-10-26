@@ -10,16 +10,13 @@ import com.project.joopging.security.JwtTokenProvider;
 import com.project.joopging.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
-@Controller
+@RestController
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -37,10 +34,10 @@ public class UserController {
             log.info(username + "님 환영합니다 !");
             return new ResponseDto(200L, "회원가입에 성공하였습니다 !", "");
         }
-        return new ResponseDto(500L, "회원가입에 실패하였습니다 ...", null);
+        return new ResponseDto(500L, "회원가입에 실패하였습니다 ...", "");
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     @ResponseBody
     public ResponseDto login(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
         User user = userService.login(loginUserDto);
@@ -71,4 +68,6 @@ public class UserController {
         }
         return new ResponseDto(500L, "회원삭제 실패", "");
     }
+
+
 }
