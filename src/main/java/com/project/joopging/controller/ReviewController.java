@@ -2,6 +2,7 @@ package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.review.ReviewRequestDto;
+import com.project.joopging.dto.review.ReviewResponseDto;
 import com.project.joopging.model.Review;
 import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
@@ -53,7 +54,7 @@ public class ReviewController {
     //전체 후기 보여주기
     @GetMapping("/reviews")
     public ResponseDto showAllReview(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Review> reviewList = reviewService.showAllReview();
+        List<ReviewResponseDto> reviewList = reviewService.showAllReview();
         return new ResponseDto(200L, "전체 후기를 불러왔습니다", reviewList);
     }
 

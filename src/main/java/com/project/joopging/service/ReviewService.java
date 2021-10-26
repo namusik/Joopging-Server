@@ -1,6 +1,7 @@
 package com.project.joopging.service;
 
 import com.project.joopging.dto.review.ReviewRequestDto;
+import com.project.joopging.dto.review.ReviewResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.Review;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,7 +80,17 @@ public class ReviewService {
     
     //전체 후기 불러오기
     //추후 페이징 처리 관련 정하고 수정 필요
-    public List<Review> showAllReview() {
-        return reviewRepository.findAll();
+    public List<ReviewResponseDto> showAllReview() {
+        List<Review> reviewList = reviewRepository.findAll();
+        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+        for (Review review : reviewList) {
+            String content = review.getContent();
+            String reviewImg = review.getReviewImg();
+            User userReview = review.getUserReview();
+            Post postReview = review.getPostReview();
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(content, reviewImg, postReview, userReview);
+            reviewResponseDtoList.add(reviewResponseDto);
+        }
+        return reviewResponseDtoList;
     }
 }
