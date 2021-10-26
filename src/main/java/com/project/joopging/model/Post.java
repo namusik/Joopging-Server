@@ -183,5 +183,11 @@ public class Post extends Timestamped {
         }
     }
 
+    public void plusNowPeople() {
+        this.nowPeople += 1;
+    }
 
+    public void minusNowPeople() {
+        this.nowPeople -= 1;
+    }
 }

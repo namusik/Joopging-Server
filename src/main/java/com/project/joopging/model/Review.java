@@ -45,4 +45,9 @@ public class Review extends Timestamped {
         this.postReview = post;
         this.userReview = user;
     }
+
+    public void update(ReviewRequestDto requestDto) {
+        this.content = requestDto.getContent();
+        this.reviewImg = requestDto.getReviewImg();
+    }
 }
