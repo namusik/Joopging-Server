@@ -1,8 +1,9 @@
 package com.project.joopging.service;
 
-import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.dto.user.LoginUserDto;
 import com.project.joopging.dto.user.SignupRequestDto;
 
+import com.project.joopging.dto.user.signupValidator;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.UserRepository;
@@ -11,7 +12,10 @@ import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final signupValidator signupValidator;
+    private final PasswordEncoder passwordEncoder;
 
     public User userFromUserDetails(UserDetails userDetails) {
         if ( userDetails instanceof UserDetailsImpl) {
@@ -30,9 +36,26 @@ public class UserService {
     }
 
     public boolean registerUser(SignupRequestDto requestDto) {
-//        //User user = signupValidator.validate(requestDto);
-//        userRepository.save(user);
+        User user = signupValidator.validate(requestDto);
+        userRepository.save(user);
         return true;
     }
 
+    public User login(LoginUserDto loginUserDto) {
+        User user = userRepository.findByEmail(loginUserDto.getEmail()).orElseThrow(
+                () -> new CustomErrorException("이메일을 찾을 수 없습니다")
+        );
+        if (!passwordEncoder.matches(loginUserDto.getPassword(), user.getPassword())) {
+            throw new CustomErrorException("비밀번호가 일치하지 않습니다");
+        }
+        return user;
+    }
+
+    public boolean deleteUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new CustomErrorException("이메일을 찾을 수 없습니다")
+        );
+        userRepository.delete(user);
+        return true;
+    }
 }
