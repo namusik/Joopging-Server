@@ -1,6 +1,8 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.comment.CommentCreateRequestDto;
+import com.project.joopging.dto.comment.CommentUpdateRequestDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -42,5 +45,22 @@ public class Comment extends Timestamped {
         this.content = content;
         this.userComment = userComment;
         this.postComment = postComment;
+    }
+
+    public Comment(CommentCreateRequestDto requestDto, User user, Post post){
+        this.content = requestDto.getContent();
+        this.userComment = user;
+        this.postComment = post;
+    }
+
+    public static Comment of(CommentCreateRequestDto requestDto, User user, Post post) {
+        return new Comment(requestDto, user, post);
+    }
+    public boolean isWrittenBy(User user) {
+        return this.userComment.getId().equals(user.getId());
+    }
+
+    public void update(CommentUpdateRequestDto requestDto) {
+        this.content = requestDto.getContent();
     }
 }

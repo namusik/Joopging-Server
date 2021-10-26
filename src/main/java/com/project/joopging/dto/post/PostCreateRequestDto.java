@@ -18,7 +18,6 @@ public class PostCreateRequestDto {
     private final Integer type;
     private final Integer distance;
     private final int limitPeople;
-    private final int nowPeople;
     private final String postImg;
 
 }

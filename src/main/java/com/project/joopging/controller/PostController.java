@@ -33,7 +33,7 @@ public class PostController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         postService.createPost(requestDto,user);
-        return new ResponseDto(200L,"모임을 만들었습니다.", null);
+        return new ResponseDto(200L,"모임을 만들었습니다.", "");
     }
 
     @ApiOperation(value = "게시글 수정")
@@ -45,7 +45,7 @@ public class PostController {
     ) {
        User user = userService.userFromUserDetails(userDetails);
        postService.updatePost(postId,requestDto,user);
-       return new ResponseDto(200L, "모임 수정에 성공하였습니다", null);
+       return new ResponseDto(200L, "모임 수정에 성공하였습니다", "");
     }
 
     @ApiOperation(value = "게시글 삭제")
@@ -56,7 +56,7 @@ public class PostController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         postService.deletePost(postId,user);
-        return new ResponseDto(200L, "모임 삭제에 성공하였습니다.", null);
+        return new ResponseDto(200L, "모임 삭제에 성공하였습니다.", "");
     }
 
     @ApiOperation(value = "게시글 상세페이지")
