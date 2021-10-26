@@ -76,7 +76,7 @@ public class Post extends Timestamped {
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 현재 인원수")
-    private int nowPeople;
+    private int nowPeople = 1;
 
     @Column
     @ApiModelProperty(value = "게시글 이미지")
@@ -120,7 +120,6 @@ public class Post extends Timestamped {
         this.type= Type.getTypeById(requestDto.getType());
         this.distance = Distance.getDistanceById(requestDto.getDistance());
         this.limitPeople = requestDto.getLimitPeople();
-        this.nowPeople = requestDto.getNowPeople();
         this.postImg = requestDto.getPostImg();
         this.writer = user;
     }
