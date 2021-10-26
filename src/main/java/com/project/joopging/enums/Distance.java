@@ -1,5 +1,6 @@
 package com.project.joopging.enums;
 
+
 import com.project.joopging.exception.CustomErrorException;
 
 public enum Distance {

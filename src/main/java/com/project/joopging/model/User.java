@@ -1,6 +1,9 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.enums.Distance;
+import com.project.joopging.enums.Location;
+import com.project.joopging.enums.Type;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
 import lombok.AllArgsConstructor;
@@ -27,33 +30,48 @@ public class User extends Timestamped {
     private String password;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String email;
 
     @Column(nullable = false)
-    private Integer location;
+    private String location;
 
     @Column(nullable = false)
-    private Integer type;
+    private String type;
 
     @Column(nullable = false)
-    private Integer distance;
+    private String distance;
 
-    @Column(nullable = false)
+    @Column
     private String userImg;
 
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
     @OneToMany(mappedBy = "userJoin")
+    @JsonIgnore
     private List<Join> join;
 
     @OneToMany(mappedBy = "writer")
+    @JsonIgnore
     private List<Post> post;
 
     @OneToMany(mappedBy = "userReview")
+    @JsonIgnore
     private List<Review> review;
 
     @OneToMany(mappedBy = "userComment")
+    @JsonIgnore
     private List<Comment> comment;
 
+    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
+        this.nickname = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.type = enumType;
+        this.distance = enumDistance;
+        this.location = enumLocation;
+        this.userImg = null;
+    }
 }
