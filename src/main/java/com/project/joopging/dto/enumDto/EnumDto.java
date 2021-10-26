@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnumDto {
-    List<EnumRequsetDto> data;
+    List<EnumRequsetDto> enumData;
 }
