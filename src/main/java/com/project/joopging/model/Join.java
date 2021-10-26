@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Join extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
