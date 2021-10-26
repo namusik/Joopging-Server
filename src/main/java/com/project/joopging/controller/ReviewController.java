@@ -10,8 +10,12 @@ import com.project.joopging.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class ReviewController {
 
     private final UserService userService;
     private final ReviewService reviewService;
+
     
     //후기 작성
     @PostMapping("/reviews/{post_id}")
@@ -27,6 +32,7 @@ public class ReviewController {
 
         return new ResponseDto(200L, "후기를 저장했습니다.", "");
     }
+
 
     //후기 수정
     @PutMapping("/reviews/{review_id}")

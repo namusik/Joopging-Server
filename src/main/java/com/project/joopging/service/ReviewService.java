@@ -22,6 +22,7 @@ public class ReviewService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+
     
     //후기 작성
     @Transactional
