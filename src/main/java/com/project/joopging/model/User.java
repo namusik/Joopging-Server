@@ -30,16 +30,17 @@ public class User extends Timestamped {
     private String password;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String email;
 
     @Column(nullable = false)
-    private Location location;
+    private String location;
 
     @Column(nullable = false)
-    private Type type;
+    private String type;
 
     @Column(nullable = false)
-    private Distance distance;
+    private String distance;
 
     @Column
     private String userImg;
@@ -48,18 +49,22 @@ public class User extends Timestamped {
     private UserRoleEnum role;
 
     @OneToMany(mappedBy = "userJoin")
+    @JsonIgnore
     private List<Join> join;
 
     @OneToMany(mappedBy = "writer")
+    @JsonIgnore
     private List<Post> post;
 
     @OneToMany(mappedBy = "userReview")
+    @JsonIgnore
     private List<Review> review;
 
     @OneToMany(mappedBy = "userComment")
+    @JsonIgnore
     private List<Comment> comment;
 
-    public User(String username, String password, String email, UserRoleEnum role, Location enumLocation, Type enumType, Distance enumDistance) {
+    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
         this.nickname = username;
         this.password = password;
         this.email = email;

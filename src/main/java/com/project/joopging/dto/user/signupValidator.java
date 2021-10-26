@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class signupValidator {
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder  passwordEncoder;
 
     public User validate(SignupRequestDto requestDto) {
         String email = requestDto.getEmail();
@@ -28,8 +28,8 @@ public class signupValidator {
         UserRoleEnum role = UserRoleEnum.USER;
         Optional<User> found = repository.findByEmail(email);
         Integer distance = requestDto.getDistance();
-        String location = requestDto.getLocation();
-        String type = requestDto.getType();
+        Integer location = requestDto.getLocation();
+        Integer type = requestDto.getType();
 
 
         if (found.isPresent()) {
@@ -46,12 +46,17 @@ public class signupValidator {
         password = passwordEncoder.encode(password);
         requestDto.setPassword(password);
 
-        Location enumLocation = Location.valueOf(location);
-        Type enumType = Type.valueOf(type);
-        Distance enumDistance = Distance.getDistanceById(distance);
+        //location enum으로 바꾸기
+        Location enumLocation = Location.getLocationById(location);
 
-        User user = new User(username, password, email, role, enumLocation, enumType, enumDistance);
-        return user;
+        //type enum 으로 바꾸기
+        Type enumType = Type.getTypeById(type);
+
+        //distance enum 으로 바꾸기
+        Integer stringToDistance = Distance.getDistanceById(distance).getNum();
+        Distance enumDistance = Distance.getDistanceById(stringToDistance);
+
+        return new User(username, password, email, role, enumLocation.getName(), enumType.getName(), enumDistance.getName());
     }
 
     public static boolean isValidEmail(String email) {
