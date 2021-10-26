@@ -51,9 +51,9 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    @OneToMany(mappedBy = "userJoin")
+    @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
-    private List<Join> join;
+    private List<Party> join;
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore

@@ -91,11 +91,11 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "유저 정보")
     private User writer;
 
-    @OneToMany(mappedBy = "postJoin")
+    @OneToMany(mappedBy = "postJoin", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "참가자 정보")
-    private List<Join> joins = new ArrayList<>();
+    private List<Party> joins = new ArrayList<>();
 
     @OneToMany(mappedBy = "postReview")
     @JsonIgnore
