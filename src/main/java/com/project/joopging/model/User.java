@@ -36,6 +36,8 @@ public class User extends Timestamped {
     @JsonIgnore
     private String email;
 
+    private Long socialId;
+
     @Column
     private String location;
 
@@ -78,11 +80,16 @@ public class User extends Timestamped {
         this.userImg = null;
     }
 
-    public void editUserInfo(String userImg, String password, String distanceName, String locationName, String typeName) {
-        this.userImg = userImg;
-        this.location = locationName;
+    //소셜로그인용 유저
+    public User( String email, String password, String nickname,  UserRoleEnum role, Long socialId) {
+        this.email = email;
         this.password = password;
-        this.distance = distanceName;
-        this.type = typeName;
+        this.nickname = nickname;
+        this.socialId = socialId;
+        this.role = role;
+        this.type = null;
+        this.distance = null;
+        this.location = null;
+        this.userImg = null;
     }
 }
