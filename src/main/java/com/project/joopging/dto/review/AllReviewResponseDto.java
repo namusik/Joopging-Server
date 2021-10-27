@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewResponseDto {
+public class AllReviewResponseDto {
     private String content;
-
     private String reviewImg;
-
-    private Post post;
-
-    private User user;
+    private int star;
+    private String nickname;
+    private String userImg;
 }
