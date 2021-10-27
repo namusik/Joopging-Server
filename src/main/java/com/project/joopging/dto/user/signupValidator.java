@@ -56,7 +56,7 @@ public class signupValidator {
         Integer stringToDistance = Distance.getDistanceById(distance).getNum();
         Distance enumDistance = Distance.getDistanceById(stringToDistance);
 
-        return new User(username, password, email, role, enumLocation.getName(), enumType.getName(), enumDistance.getName());
+        return new User(username, password, email, role, enumLocation, enumType, enumDistance);
     }
 
     public static boolean isValidEmail(String email) {

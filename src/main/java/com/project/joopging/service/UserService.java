@@ -1,10 +1,7 @@
 package com.project.joopging.service;
 
-import com.project.joopging.dto.user.EditUserInfoDto;
-import com.project.joopging.dto.user.LoginUserDto;
-import com.project.joopging.dto.user.SignupRequestDto;
+import com.project.joopging.dto.user.*;
 
-import com.project.joopging.dto.user.signupValidator;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -19,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,13 +66,13 @@ public class UserService {
         String password = editUserInfoDto.getPassword();
 
         Integer distance = editUserInfoDto.getDistance();
-        String distanceName = Distance.getDistanceById(distance).getName();
+        Distance distanceName = Distance.getDistanceById(distance);
 
         Integer location = editUserInfoDto.getLocation();
-        String locationName = Location.getLocationById(location).getName();
+        Location locationName = Location.getLocationById(location);
 
         Integer type = editUserInfoDto.getType();
-        String typeName = Type.getTypeById(type).getName();
+        Type typeName = Type.getTypeById(type);
 
         user.setUserImg(userImg);
         user.setDistance(distanceName);
@@ -86,5 +82,9 @@ public class UserService {
 
         userRepository.save(user);
         return true;
+    }
+
+    public LoginDetailReponseDto toSetLoginDetailResponse(User user) {
+        return user.toBuildDetailUser();
     }
 }
