@@ -34,6 +34,7 @@ public class PostService {
     public void createPost(PostCreateRequestDto requestDto, User user) {
         Post post = Post.of(requestDto,user);
 
+
         // fetch Lazy 유저를 진짜 유저로 변환
         Long userId = user.getId();
         User writer = userRepository.findById(userId).orElseThrow(
@@ -41,6 +42,11 @@ public class PostService {
         );
         //유저에도 포스트 추가
         List<Post> postList = writer.getPost();
+
+        User users = userRepository.findById(user.getId()).orElseThrow(
+                () -> new CustomErrorException("없는 회원입니다")
+        );
+        List<Post> postList = users.getPost();
         postList.add(post);
         postRepository.save(post);
     }
