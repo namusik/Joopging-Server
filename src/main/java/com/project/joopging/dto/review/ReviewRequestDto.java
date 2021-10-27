@@ -12,4 +12,5 @@ import javax.persistence.Column;
 public class ReviewRequestDto {
     String content;
     String reviewImg;
+    int star;
 }

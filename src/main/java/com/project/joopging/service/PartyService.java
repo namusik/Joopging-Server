@@ -24,13 +24,16 @@ public class PartyService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("찾을 수 없는 사용자 입니다.")
         );
-        System.out.println("user = " + user);
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomErrorException("찾을 수 없는 모임 입니다.")
         );
-        System.out.println("post = " + post);
-        Party party = new Party(user, post);
 
+        //혹시 이미 참여한 사람이 또 참여신청을 눌렀는지 이중확인
+        partyRepository.findByUserJoinAndPostJoin(user,post).ifPresent(
+                m -> {
+                    throw new CustomErrorException("이미 참여되어있습니다");}
+        );
+        Party party = new Party(user, post);
         post.getJoins().add(party);
         //post nowpeople 1증가 시키기
         post.plusNowPeople();
