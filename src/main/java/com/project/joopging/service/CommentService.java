@@ -8,12 +8,12 @@ import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.CommentRepository;
 import com.project.joopging.repository.PostRepository;
+import com.project.joopging.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +21,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void createComment(User user, CommentCreateRequestDto requestDto) {
@@ -28,8 +29,21 @@ public class CommentService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomErrorException("게시글을 찾을 수 없습니다")
         );
+
         Comment comment = Comment.of(requestDto, user, post);
-        List<Comment> commentList = user.getComment();
+
+                // fetch Lazy 유저를 진짜 유저로 변환
+        Long userId = user.getId();
+        User writer = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("유저 정보를 찾을 수 없습니다")
+        );
+
+        //Post 테이블에도 Comment 추가 (양방향)
+        List<Comment> comments = post.getComments();
+        comments.add(comment);
+
+        //User 테이블에도 Comment 추가 (양방향)
+        List<Comment> commentList = writer.getComment();
         commentList.add(comment);
         commentRepository.save(comment);
     }
