@@ -3,6 +3,7 @@ package com.project.joopging.service;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
+import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Party;
 import com.project.joopging.model.Post;
@@ -12,10 +13,10 @@ import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,4 +98,17 @@ public class PostService {
 
     }
 
+    public MyApplicationPostListResponseDto getMyApplicationPostListByUser(User user) {
+
+        List<Post> applicationPostList = new ArrayList<>();
+        Long userId = user.getId();
+        Optional<User> myUser =  userRepository.findById(userId);
+        List<Party> partyList = partyRepository.findAllByUserJoin(myUser);
+        for (Party party : partyList) {
+            Post applicationPost = party.getPostJoin();
+            applicationPostList.add(applicationPost);
+        }
+        return user.toBuildApplicationPostList(applicationPostList);
+
+    }
 }

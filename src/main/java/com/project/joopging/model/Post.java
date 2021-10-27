@@ -106,7 +106,7 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "후기 정보")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postComment")
+    @OneToMany(mappedBy = "postComment", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "댓글 정보")

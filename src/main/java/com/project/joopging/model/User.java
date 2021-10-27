@@ -3,6 +3,7 @@ package com.project.joopging.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.user.EditUserResponseDto;
 import com.project.joopging.dto.user.LoginDetailReponseDto;
+import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -120,4 +121,9 @@ public class User extends Timestamped {
     }
 
 
+    public MyApplicationPostListResponseDto toBuildApplicationPostList(List<Post> applicationPostList) {
+        return MyApplicationPostListResponseDto.builder()
+                .myApplicationPostList(applicationPostList)
+                .build();
+    }
 }
