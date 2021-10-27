@@ -1,12 +1,13 @@
 package com.project.joopging.service;
 
-import com.project.joopging.dto.post.PostCreateRequestDto;
+import com.project.joopging.enums.Distance;
+import com.project.joopging.enums.Location;
+import com.project.joopging.enums.Type;
 import com.project.joopging.model.Post;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.security.UserDetailsImpl;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 
 @Service
 public class SerchService {
@@ -17,19 +18,11 @@ public class SerchService {
     }
 
     public Post findUseByFilter(Integer distance, Integer type, Integer[] location, UserDetailsImpl userDetails) {
-        return postRepository.findByDistanceAndTypeAndLocation(distance, type, location[0]);
+        Location location1 = Location.getLocationById(location[1]);
+        Type type1 = Type.getTypeById(type);
+        Distance distance1 = Distance.getDistanceById(distance);
+
+        return postRepository.findByDistanceAndTypeAndLocation(distance1, type1, location1);
 
     }
-
-//    public static void main(String[] args) {
-//        Post post = new Post();
-//        LocalDate date = LocalDate.now();
-//        //더미데이터 생성  부분
-//        PostCreateRequestDto requestDto = new PostCreateRequestDto(
-//                "test1", "테스트입니다", date, date, date, 1, 2, 3, 5, ""
-//        );
-//
-//        System.out.println("requestDto = " + requestDto);
-//
-//    }
 }
