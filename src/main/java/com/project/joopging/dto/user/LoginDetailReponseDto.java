@@ -9,9 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class LoginDetailReponseDto {
-    private String nickname;
+    private Long id;
 
-    private String password;
+    private String nickname;
 
     private String email;
 
@@ -24,4 +24,6 @@ public class LoginDetailReponseDto {
     private String userImg;
 
     private UserRoleEnum role;
+
+    private String intro;
 }

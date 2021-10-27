@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EditUserInfoDto {
+public class EditUserRequestDto {
     private String userImg;
 
     private String password;
@@ -19,4 +19,6 @@ public class EditUserInfoDto {
     private Integer type;
 
     private Integer distance;
+
+    private String intro;
 }

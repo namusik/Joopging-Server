@@ -59,11 +59,17 @@ public class UserService {
         return true;
     }
 
-    public boolean editUserInfo(EditUserInfoDto editUserInfoDto, UserDetailsImpl userDetails) {
+    public EditUserResponseDto editUserInfo(EditUserRequestDto editUserInfoDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         String userImg = editUserInfoDto.getUserImg();
+        String intro = editUserInfoDto.getIntro();
 
-        String password = editUserInfoDto.getPassword();
+        String password;
+        if (user.getPassword().equals(editUserInfoDto.getPassword())) {
+            password = user.getPassword();
+        } else {
+            password = editUserInfoDto.getPassword();
+        }
 
         Integer distance = editUserInfoDto.getDistance();
         Distance distanceName = Distance.getDistanceById(distance);
@@ -79,9 +85,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setLocation(locationName);
         user.setType(typeName);
+        user.setIntro(intro);
 
         userRepository.save(user);
-        return true;
+
+        return new EditUserResponseDto(user);
     }
 
     public LoginDetailReponseDto toSetLoginDetailResponse(User user) {
