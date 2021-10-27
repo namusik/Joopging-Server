@@ -34,7 +34,7 @@ public class PostService {
         User writer = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("유저 정보를 찾을 수 없습니다")
         );
-
+        //유저에도 포스트 추가
         List<Post> postList = writer.getPost();
         postList.add(post);
         postRepository.save(post);
