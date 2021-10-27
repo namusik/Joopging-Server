@@ -4,17 +4,20 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.exception.CustomErrorException;
-import com.project.joopging.model.Comment;
+import com.project.joopging.model.Party;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
+import com.project.joopging.repository.PartyRepository;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
+import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,8 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PartyRepository partyRepository;
+
 
 
     //게시글 만들기
@@ -79,8 +84,12 @@ public class PostService {
     }
 
 
-    public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetails userDetails) {
-        return post.toBuildDetailPost(userDetails);
+    public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        boolean joinCheck;
+        joinCheck = partyRepository.findByUserJoinAndPostJoin(user, post).isPresent();
+
+        return post.toBuildDetailPost(userDetails, joinCheck);
 
     }
 

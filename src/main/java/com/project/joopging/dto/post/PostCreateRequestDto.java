@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @RequiredArgsConstructor
@@ -11,7 +12,7 @@ public class PostCreateRequestDto {
 
     private final String title;
     private final String content;
-    private final LocalDate runningDate;
+    private final LocalDateTime runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Integer location;

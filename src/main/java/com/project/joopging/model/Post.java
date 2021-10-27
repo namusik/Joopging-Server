@@ -8,6 +8,7 @@ import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
+import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,12 +16,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity
@@ -45,7 +47,7 @@ public class Post extends Timestamped {
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 러닝 시작일")
-    private LocalDate runningDate;
+    private LocalDateTime runningDate;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 모집 시작일")
@@ -84,6 +86,7 @@ public class Post extends Timestamped {
 
     @Column
     private Integer viewCount = 0;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -146,7 +149,7 @@ public class Post extends Timestamped {
     }
         //댓글 추가하기
 
-    public PostDetailResponseDto toBuildDetailPost(UserDetails userDetails) {
+    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails, boolean joinCheck) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
@@ -163,6 +166,8 @@ public class Post extends Timestamped {
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
+                    .writerName(this.writer.getNickname())
+                    .userImg(this.writer.getUserImg())
                     .commentList(this.comments)
                     .build();
         } else {
@@ -180,7 +185,11 @@ public class Post extends Timestamped {
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
+                    .writerName(this.writer.getNickname())
+                    .userImg(this.writer.getUserImg())
+                    .joinCheck(joinCheck)
                     .commentList(this.comments)
+
                     .build();
         }
     }

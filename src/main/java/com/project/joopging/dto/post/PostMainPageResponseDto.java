@@ -5,6 +5,7 @@ import com.project.joopging.model.User;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -12,7 +13,7 @@ public class PostMainPageResponseDto {
     private Long postId;
     private String title;
     private String content;
-    private LocalDate runningDate;
+    private LocalDateTime runningDate;
     private LocalDate startDate;
     private LocalDate endDate;
     private String location;
