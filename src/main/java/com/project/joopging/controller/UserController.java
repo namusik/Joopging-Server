@@ -55,7 +55,8 @@ public class UserController {
         response.addCookie(cookie);
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
-        loginResponseDto.setUser(user);
+        LoginDetailReponseDto loginDetailReponseDto = userService.toSetLoginDetailResponse(user);
+        loginResponseDto.setLoginDetailReponseDto(loginDetailReponseDto);
         loginResponseDto.setJwtToken(token);
 
         return new ResponseDto(200L, "로그인에 성공했습니다", loginResponseDto);

@@ -2,6 +2,7 @@ package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.user.EditUserInfoDto;
+import com.project.joopging.dto.user.LoginDetailReponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.List;
@@ -39,13 +41,16 @@ public class User extends Timestamped {
     private Long socialId;
 
     @Column
-    private String location;
+    @Enumerated(EnumType.STRING)
+    private Location location;
 
     @Column
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     @Column
-    private String distance;
+    @Enumerated(EnumType.STRING)
+    private Distance distance;
 
     @Column
     private String userImg;
@@ -69,7 +74,7 @@ public class User extends Timestamped {
     @JsonIgnore
     private List<Comment> comment;
 
-    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
+    public User(String username, String password, String email, UserRoleEnum role, Location enumLocation, Type enumType, Distance enumDistance) {
         this.nickname = username;
         this.password = password;
         this.email = email;
@@ -91,5 +96,18 @@ public class User extends Timestamped {
         this.distance = null;
         this.location = null;
         this.userImg = null;
+    }
+
+    public LoginDetailReponseDto toBuildDetailUser() {
+        return LoginDetailReponseDto.builder()
+                .email(this.email)
+                .nickname(this.nickname)
+                .password(this.password)
+                .location(this.location.getName())
+                .type(this.type.getName())
+                .distance(this.distance.getName())
+                .userImg(this.userImg)
+                .role(this.role)
+                .build();
     }
 }

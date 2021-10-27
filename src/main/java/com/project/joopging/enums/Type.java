@@ -8,7 +8,8 @@ public enum Type {
     CITY_WORK(2,"도심 산책하면서"),
     WATERFRONT(3,"해안가에서"),
     TRAVEL(4,"여행하면서"),
-    PARK(5,"공원에서");
+    PARK(5,"공원에서"),
+    ANYWHERE(6,"장소전체");
 
     public String getName() {
         return name;
@@ -31,6 +32,8 @@ public enum Type {
             return TRAVEL;
         } else if (id.equals(5)) {
             return PARK;
+        } else if (id.equals(6)) {
+            return ANYWHERE;
         } else {
             throw new CustomErrorException("선호 환경을 설정해주세요.");
         }
