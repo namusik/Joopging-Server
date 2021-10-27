@@ -85,9 +85,13 @@ public class PostService {
 
 
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
-        User user = userDetails.getUser();
         boolean joinCheck;
-        joinCheck = partyRepository.findByUserJoinAndPostJoin(user, post).isPresent();
+        if (userDetails == null) {
+            return post.toBuildDetailPost(null, false);
+        } else {
+            User user = userDetails.getUser();
+            joinCheck = partyRepository.findByUserJoinAndPostJoin(user, post).isPresent();
+        }
 
         return post.toBuildDetailPost(userDetails, joinCheck);
 

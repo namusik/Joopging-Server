@@ -168,6 +168,8 @@ public class Post extends Timestamped {
                     .viewCount(this.viewCount)
                     .writerName(this.writer.getNickname())
                     .userImg(this.writer.getUserImg())
+                    .intro(this.writer.getIntro())
+                    .joinCheck(joinCheck)
                     .commentList(this.comments)
                     .build();
         } else {
@@ -187,6 +189,7 @@ public class Post extends Timestamped {
                     .viewCount(this.viewCount)
                     .writerName(this.writer.getNickname())
                     .userImg(this.writer.getUserImg())
+                    .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
 
