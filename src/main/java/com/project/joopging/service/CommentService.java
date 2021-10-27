@@ -37,8 +37,12 @@ public class CommentService {
         User writer = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("유저 정보를 찾을 수 없습니다")
         );
+
+        //Post 테이블에도 Comment 추가 (양방향)
         List<Comment> comments = post.getComments();
         comments.add(comment);
+
+        //User 테이블에도 Comment 추가 (양방향)
         List<Comment> commentList = writer.getComment();
         commentList.add(comment);
         commentRepository.save(comment);

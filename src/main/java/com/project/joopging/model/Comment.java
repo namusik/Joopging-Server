@@ -37,6 +37,7 @@ public class Comment extends Timestamped {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "POST_ID", nullable = false)
     @ApiModelProperty(value = "게시글 정보")
     Post postComment;
