@@ -2,7 +2,6 @@ package com.project.joopging.model;
 
 import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.util.Timestamped;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Review extends Timestamped {
 
     @Id
@@ -24,6 +22,9 @@ public class Review extends Timestamped {
     @Column(nullable = false)
     private String reviewImg;
 
+    @Column(nullable = false)
+    private int star;
+
     @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
     private Post postReview;
@@ -32,16 +33,10 @@ public class Review extends Timestamped {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User userReview;
 
-    public Review(String content, String reviewImg, Post postReview, User userReview) {
-        this.content = content;
-        this.reviewImg = reviewImg;
-        this.postReview = postReview;
-        this.userReview = userReview;
-    }
-
     public Review(ReviewRequestDto requestDto, Post post, User user) {
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
+        this.star = requestDto.getStar();
         this.postReview = post;
         this.userReview = user;
     }
@@ -49,5 +44,6 @@ public class Review extends Timestamped {
     public void update(ReviewRequestDto requestDto) {
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
+        this.star = requestDto.getStar();
     }
 }
