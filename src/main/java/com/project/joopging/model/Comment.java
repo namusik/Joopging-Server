@@ -29,14 +29,14 @@ public class Comment extends Timestamped {
     @ApiModelProperty(value = "댓글 내용")
     String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "USER_ID", nullable = false)
     @ApiModelProperty(value = "유저 정보")
     User userComment;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID", nullable = false)
     @ApiModelProperty(value = "게시글 정보")
     Post postComment;

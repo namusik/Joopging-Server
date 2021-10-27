@@ -8,6 +8,7 @@ import com.project.joopging.model.Comment;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.PostRepository;
+import com.project.joopging.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,21 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
 
     //게시글 만들기
     @Transactional
     public void createPost(PostCreateRequestDto requestDto, User user) {
         Post post = Post.of(requestDto,user);
-        List<Post> postList = user.getPost();
+
+        // fetch Lazy 유저를 진짜 유저로 변환
+        Long userId = user.getId();
+        User writer = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("유저 정보를 찾을 수 없습니다")
+        );
+
+        List<Post> postList = writer.getPost();
         postList.add(post);
         postRepository.save(post);
     }
@@ -74,4 +83,5 @@ public class PostService {
         return post.toBuildDetailPost(userDetails);
 
     }
+
 }
