@@ -6,7 +6,9 @@ import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
+import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.PostService;
+import com.project.joopging.service.UserDetailsServiceImpl;
 import com.project.joopging.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,11 +64,11 @@ public class PostController {
     @ApiOperation(value = "게시글 상세페이지")
     @GetMapping("/posts/{post_id}")
     public ResponseDto getDetailPost(
-            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId
     ) {
         Post post = postService.getDetailPostById(postId);
-        PostDetailResponseDto data = postService.toSetPostDetailResponseDto(post,userDetails);
+        PostDetailResponseDto data = postService.toSetPostDetailResponseDto(post, userDetails);
         return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다", data);
 
 

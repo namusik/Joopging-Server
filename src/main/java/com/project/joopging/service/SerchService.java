@@ -21,15 +21,15 @@ public class SerchService {
 
     }
 
-    public static void main(String[] args) {
-        Post post = new Post();
-        LocalDate date = LocalDate.now();
-        //더미데이터 생성  부분
-        PostCreateRequestDto requestDto = new PostCreateRequestDto(
-                "test1", "테스트입니다", date, date, date, 1, 2, 3, 5, ""
-        );
-
-        System.out.println("requestDto = " + requestDto);
-
-    }
+//    public static void main(String[] args) {
+//        Post post = new Post();
+//        LocalDate date = LocalDate.now();
+//        //더미데이터 생성  부분
+//        PostCreateRequestDto requestDto = new PostCreateRequestDto(
+//                "test1", "테스트입니다", date, date, date, 1, 2, 3, 5, ""
+//        );
+//
+//        System.out.println("requestDto = " + requestDto);
+//
+//    }
 }
