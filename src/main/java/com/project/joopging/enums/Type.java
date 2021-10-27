@@ -3,13 +3,10 @@ package com.project.joopging.enums;
 import com.project.joopging.exception.CustomErrorException;
 
 public enum Type {
-    MOUNTAIN(0,"등산하면서"),
-    OFF_WORK(1,"퇴근하면서"),
-    CITY_WORK(2,"도심 산책하면서"),
-    WATERFRONT(3,"해안가에서"),
-    TRAVEL(4,"여행하면서"),
-    PARK(5,"공원에서"),
-    ANYWHERE(6,"장소전체");
+    MOUNTAIN(0,"산에서"),
+    HAN_RIVER(1,"한강에서"),
+    CITY_WORK(2,"도심에서"),
+    PARK(3,"공원에서");
 
     public String getName() {
         return name;
@@ -23,17 +20,11 @@ public enum Type {
         if (id.equals(0)) {
             return MOUNTAIN;
         } else if (id.equals(1)) {
-            return OFF_WORK;
+            return HAN_RIVER;
         } else if (id.equals(2)) {
             return CITY_WORK;
         } else if (id.equals(3)) {
-            return WATERFRONT;
-        } else if (id.equals(4)) {
-            return TRAVEL;
-        } else if (id.equals(5)) {
             return PARK;
-        } else if (id.equals(6)) {
-            return ANYWHERE;
         } else {
             throw new CustomErrorException("선호 환경을 설정해주세요.");
         }

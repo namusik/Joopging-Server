@@ -56,7 +56,7 @@ public class UserController {
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         LoginDetailReponseDto loginDetailReponseDto = userService.toSetLoginDetailResponse(user);
-        loginResponseDto.setLoginDetailReponseDto(loginDetailReponseDto);
+        loginResponseDto.setUser(loginDetailReponseDto);
         loginResponseDto.setJwtToken(token);
 
         return new ResponseDto(200L, "로그인에 성공했습니다", loginResponseDto);
@@ -75,12 +75,12 @@ public class UserController {
 
     @PutMapping("/users")
     @ResponseBody
-    public ResponseDto editUserInfo(@RequestBody EditUserInfoDto editUserInfoDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto editUserInfo(@RequestBody EditUserRequestDto editUserInfoDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        if (userService.editUserInfo(editUserInfoDto, userDetails)) {
-            return new ResponseDto(200L, "회원 정보를 수정했습니다", "");
-        }
-        return new ResponseDto(500L, "회원 정보 수정 실패했습니다", "");
+        EditUserResponseDto editUserResponseDto = userService.editUserInfo(editUserInfoDto, userDetails);
+
+        return new ResponseDto(200L, "회원 정보를 수정했습니다", editUserResponseDto);
+
     }
 
     @PostMapping("/kakao")

@@ -1,7 +1,7 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.joopging.dto.user.EditUserInfoDto;
+import com.project.joopging.dto.user.EditUserResponseDto;
 import com.project.joopging.dto.user.LoginDetailReponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,25 +29,25 @@ public class User extends Timestamped {
     @Column(unique = true)
     private String nickname;
 
-    @Column
+    @Column(nullable = false)
     @JsonIgnore
     private String password;
 
-    @Column
+    @Column(nullable = false)
     @JsonIgnore
     private String email;
 
     private Long socialId;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Location location;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Distance distance;
 
@@ -57,6 +56,11 @@ public class User extends Timestamped {
 
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
+
+    @Column
+    @JsonIgnore
+    private String intro;
+
 
     @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
@@ -82,6 +86,7 @@ public class User extends Timestamped {
         this.type = enumType;
         this.distance = enumDistance;
         this.location = enumLocation;
+        this.intro = null;
         this.userImg = null;
     }
 
@@ -95,19 +100,24 @@ public class User extends Timestamped {
         this.type = null;
         this.distance = null;
         this.location = null;
+        this.intro = null;
         this.userImg = null;
     }
 
     public LoginDetailReponseDto toBuildDetailUser() {
         return LoginDetailReponseDto.builder()
+                .id(this.id)
                 .email(this.email)
                 .nickname(this.nickname)
-                .password(this.password)
+//                .password(this.password)
                 .location(this.location.getName())
                 .type(this.type.getName())
                 .distance(this.distance.getName())
                 .userImg(this.userImg)
                 .role(this.role)
+                .intro(this.intro)
                 .build();
     }
+
+
 }
