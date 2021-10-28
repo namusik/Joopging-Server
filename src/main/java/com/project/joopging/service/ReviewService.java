@@ -1,6 +1,7 @@
 package com.project.joopging.service;
 
 import com.project.joopging.dto.review.AllReviewResponseDto;
+import com.project.joopging.dto.review.DetailReviewResponseDto;
 import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Post;
@@ -14,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -83,16 +86,20 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.findAll();
         List<AllReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
         for (Review review : reviewList) {
-            String content = review.getContent();
-            String reviewImg = review.getReviewImg();
-            int star = review.getStar();
             User user = review.getUserReview();
-            String nickname = user.getNickname();
-            String userImg = user.getUserImg();
-            AllReviewResponseDto reviewResponseDto = new AllReviewResponseDto(content, reviewImg, star, nickname, userImg );
+            AllReviewResponseDto reviewResponseDto = new AllReviewResponseDto(review, user);
             reviewResponseDtoList.add(reviewResponseDto);
         }
         return reviewResponseDtoList;
+    }
+
+    public DetailReviewResponseDto showOneReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 리뷰입니다")
+        );
+        User user = review.getUserReview();
+        Post post = review.getPostReview();
+        return new DetailReviewResponseDto(review, user, post);
     }
 
     //

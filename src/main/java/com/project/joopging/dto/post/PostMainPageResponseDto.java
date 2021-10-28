@@ -15,8 +15,6 @@ public class PostMainPageResponseDto {
     private String title;
     private String content;
     private LocalDateTime runningDate;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private Long dDay;
     private String location;
     private String type;
@@ -25,7 +23,9 @@ public class PostMainPageResponseDto {
     private int nowPeople;
     private String postImg;
     private Integer viewCount;
-    private User writer;
+    private Long userId;
+    private String nickname;
+    private String userImg;
 
     public PostMainPageResponseDto(Post post, User writer) {
         this.postId = post.getId();
@@ -40,6 +40,8 @@ public class PostMainPageResponseDto {
         this.nowPeople = post.getNowPeople();
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
-        this.writer = writer;
+        this.userId = writer.getId();
+        this.nickname = writer.getNickname();
+        this.userImg = writer.getUserImg();
     }
 }
