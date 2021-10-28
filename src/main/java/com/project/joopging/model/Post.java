@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
+import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
@@ -12,24 +14,25 @@ import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "게시글 정보")
+@Builder
 public class Post extends Timestamped {
 
     @Id
@@ -59,16 +62,19 @@ public class Post extends Timestamped {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     @ApiModelProperty(value = "게시글 지역")
     private Location location;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     @ApiModelProperty(value = "게시글 지형")
     private Type type;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     @ApiModelProperty(value = "게시글 거리")
     private Distance distance;
 
@@ -86,7 +92,6 @@ public class Post extends Timestamped {
 
     @Column
     private Integer viewCount = 0;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -112,7 +117,7 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comments = new ArrayList<>();
 
-
+    //게시글 작성
     public Post(PostCreateRequestDto requestDto,User user) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
@@ -126,6 +131,7 @@ public class Post extends Timestamped {
         this.postImg = requestDto.getPostImg();
         this.writer = user;
     }
+
 
     public static Post of(PostCreateRequestDto requestDto, User user) {
         return new Post(requestDto,user);
@@ -147,7 +153,7 @@ public class Post extends Timestamped {
         this.limitPeople = requestDto.getLimitPeople();
         this.postImg = requestDto.getPostImg();
     }
-        //댓글 추가하기
+
 
     public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails, boolean joinCheck) {
 
@@ -159,6 +165,7 @@ public class Post extends Timestamped {
                     .runningDate(this.runningDate)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
+                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
                     .location(location.getName())
                     .type(type.getName())
                     .distance(distance.getName())
@@ -183,6 +190,7 @@ public class Post extends Timestamped {
                     .location(location.getName())
                     .type(type.getName())
                     .distance(distance.getName())
+                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
@@ -197,11 +205,61 @@ public class Post extends Timestamped {
         }
     }
 
+
+
+
+
+
     public void plusNowPeople() {
         this.nowPeople += 1;
     }
 
     public void minusNowPeople() {
         this.nowPeople -= 1;
+    }
+
+
+    public MyApplicationPostListResponseDto toBuildMyApplicationPost() {
+        return MyApplicationPostListResponseDto.builder()
+                .postId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .runningDate(this.runningDate)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .location(location.getName())
+                .type(type.getName())
+                .distance(distance.getName())
+                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .limitPeople(this.limitPeople)
+                .nowPeople(this.nowPeople)
+                .postImg(this.postImg)
+                .viewCount(this.viewCount)
+                .writerName(this.writer.getNickname())
+                .userImg(this.writer.getUserImg())
+                .intro(this.writer.getIntro())
+                .build();
+    }
+
+    public MyPostPageListResponseDto toBuildMyCreatePost() {
+        return MyPostPageListResponseDto.builder()
+                .postId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .runningDate(this.runningDate)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .location(location.getName())
+                .type(type.getName())
+                .distance(distance.getName())
+                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .limitPeople(this.limitPeople)
+                .nowPeople(this.nowPeople)
+                .postImg(this.postImg)
+                .viewCount(this.viewCount)
+                .writerName(this.writer.getNickname())
+                .userImg(this.writer.getUserImg())
+                .intro(this.writer.getIntro())
+                .build();
     }
 }

@@ -3,7 +3,6 @@ package com.project.joopging.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.user.*;
-import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.security.JwtTokenProvider;
 import com.project.joopging.security.UserDetailsImpl;
@@ -106,7 +105,17 @@ public class UserController {
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
     ) {
         User user = userService.userFromUserDetails(userDetails);
-        MyApplicationPostListResponseDto data = postService.getMyApplicationPostListByUser(user);
+        List<MyApplicationPostListResponseDto> data = postService.getMyApplicationPostListByUser(user);
         return new ResponseDto(200L,"신청내역 페이지 불러오기 성공",data);
+    }
+
+    @ApiOperation(value = "마이페이지 모임관리")
+    @GetMapping("/users/mypost")
+    public ResponseDto myPost(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        User user = userService.userFromUserDetails(userDetails);
+        List<MyPostPageListResponseDto> data = postService.getMyPostListByUser(user);
+        return new ResponseDto(200L,"모임관리 페이지 불러오기 성공",data);
     }
 }

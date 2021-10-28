@@ -4,6 +4,7 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Party;
 import com.project.joopging.model.Post;
@@ -85,7 +86,7 @@ public class PostService {
         );
     }
 
-
+    //디테일 페이지
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
         if (userDetails == null) {
@@ -99,17 +100,39 @@ public class PostService {
 
     }
 
-    public MyApplicationPostListResponseDto getMyApplicationPostListByUser(User user) {
+    //내 신청내역
+    public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
 
-        List<Post> applicationPostList = new ArrayList<>();
+        List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
         Long userId = user.getId();
-        Optional<User> myUser =  userRepository.findById(userId);
+        //Optional 유저를 쓰거나 .orElseThrow 를 쓰거나
+        Optional<User> myUser = userRepository.findById(userId);
         List<Party> partyList = partyRepository.findAllByUserJoin(myUser);
         for (Party party : partyList) {
             Post applicationPost = party.getPostJoin();
-            applicationPostList.add(applicationPost);
+            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost();
+            applicationPostList.add(responseDto);
         }
-        return user.toBuildApplicationPostList(applicationPostList);
+
+
+
+        return applicationPostList;
+
+    }
+
+    // 내 모집관리
+    public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
+        Long userId = user.getId();
+        User myUser = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("유저 정보가 없습니다.")
+        );
+        List<Post> myPostList = myUser.getPost();
+        List<MyPostPageListResponseDto> myPostListRes = new ArrayList<>();
+        for (Post post : myPostList) {
+            MyPostPageListResponseDto responseDto = post.toBuildMyCreatePost();
+            myPostListRes.add(responseDto);
+        }
+        return myPostListRes;
 
     }
 }
