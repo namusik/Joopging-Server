@@ -38,6 +38,7 @@ public class PostDetailResponseDto {
     private final String userImg;
     private final String intro;
     private final boolean joinCheck;
+    private final boolean bookMarkInfo;
 
 
 

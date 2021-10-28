@@ -14,5 +14,5 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
 
     Optional<Party> findByUserJoinAndPostJoin(User user, Post post);
 
-    List<Party> findAllByUserJoin(Optional<User> user);
+    List<Party> findAllByUserJoin(User user);
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.comment.CommentCreateRequestDto;
 import com.project.joopging.dto.comment.CommentUpdateRequestDto;
 import com.project.joopging.util.Timestamped;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value = "댓글 정보")
 public class Comment extends Timestamped {
 
     @Id
