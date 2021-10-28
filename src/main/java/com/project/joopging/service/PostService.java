@@ -6,9 +6,11 @@ import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
+import com.project.joopging.model.BookMark;
 import com.project.joopging.model.Party;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
+import com.project.joopging.repository.BookMarkRepository;
 import com.project.joopging.repository.PartyRepository;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
@@ -28,6 +30,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PartyRepository partyRepository;
+    private final BookMarkRepository bookMarkRepository;
 
 
 
@@ -85,31 +88,45 @@ public class PostService {
         );
     }
 
-    //디테일 페이지
+    //디테일 페이지 (북마크 추가)
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
+        boolean bookMarkInfo;
         if (userDetails == null) {
-            return post.toBuildDetailPost(null, false);
+            return post.toBuildDetailPost(null, false, false);
         } else {
             User user = userDetails.getUser();
             joinCheck = partyRepository.findByUserJoinAndPostJoin(user, post).isPresent();
-        }
+            Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
+            if (BookMark.isPresent()) {
 
-        return post.toBuildDetailPost(userDetails, joinCheck);
+                return post.toBuildDetailPost(userDetails, joinCheck, true);
+            }
+        }
+        return post.toBuildDetailPost(userDetails, joinCheck, false);
 
     }
 
-    //내 신청내역
+    //내 신청내역 (북마크 추가)
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
 
         List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
         Long userId = user.getId();
         //Optional 유저를 쓰거나 .orElseThrow 를 쓰거나
-        Optional<User> myUser = userRepository.findById(userId);
+        User myUser = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 유저입니다")
+        );
         List<Party> partyList = partyRepository.findAllByUserJoin(myUser);
+        boolean bookMarkInfo;
         for (Party party : partyList) {
             Post applicationPost = party.getPostJoin();
-            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost();
+            Optional<BookMark> bookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost);
+            MyApplicationPostListResponseDto responseDto;
+            if (bookMark.isPresent()) {
+                responseDto = applicationPost.toBuildMyApplicationPost(true);
+            } else {
+                responseDto = applicationPost.toBuildMyApplicationPost(false);
+            }
             applicationPostList.add(responseDto);
         }
 
@@ -132,6 +149,34 @@ public class PostService {
             myPostListRes.add(responseDto);
         }
         return myPostListRes;
+
+    }
+
+    //북마크
+    @Transactional
+    public boolean getBookMarkInfo(User user, Long postId) {
+        Long userId = user.getId();
+        User myUser = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 유저입니다")
+        );
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 게시글입니다")
+        );
+        Optional<BookMark> bookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, post);
+        if (bookMark.isPresent()) {
+            bookMarkRepository.delete(bookMark.get());
+            return false;
+        } else {
+            BookMark myBookMark = BookMark.of(myUser, post);
+            bookMarkRepository.save(myBookMark);
+            List<BookMark> userBookMark = myUser.getBookMarks();
+            userBookMark.add(myBookMark);
+            List<BookMark> postBookMark = post.getBookMarks();
+            postBookMark.add(myBookMark);
+            return true;
+        }
+
+
 
     }
 }

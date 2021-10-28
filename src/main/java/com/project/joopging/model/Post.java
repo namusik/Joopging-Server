@@ -32,7 +32,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "게시글 정보")
-@Builder
 public class Post extends Timestamped {
 
     @Id
@@ -117,6 +116,12 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "postBookMark", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "북마크 정보")
+    private List<BookMark> bookMarks = new ArrayList<>();
+
     //게시글 작성
     public Post(PostCreateRequestDto requestDto,User user) {
         this.title = requestDto.getTitle();
@@ -155,7 +160,7 @@ public class Post extends Timestamped {
     }
 
 
-    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails, boolean joinCheck) {
+    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails, boolean joinCheck, boolean bookMarkInfo) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
@@ -178,6 +183,7 @@ public class Post extends Timestamped {
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
+                    .bookMarkInfo(bookMarkInfo)
                     .build();
         } else {
             return PostDetailResponseDto.builder()
@@ -200,7 +206,7 @@ public class Post extends Timestamped {
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
-
+                    .bookMarkInfo(bookMarkInfo)
                     .build();
         }
     }
@@ -219,7 +225,7 @@ public class Post extends Timestamped {
     }
 
 
-    public MyApplicationPostListResponseDto toBuildMyApplicationPost() {
+    public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo) {
         return MyApplicationPostListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
@@ -238,6 +244,7 @@ public class Post extends Timestamped {
                 .writerName(this.writer.getNickname())
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
+                .bookMarkInfo(bookMarkInfo)
                 .build();
     }
 
