@@ -3,6 +3,7 @@ package com.project.joopging.model;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class test {
@@ -14,6 +15,10 @@ public class test {
         System.out.println("yesterday = " + yesterday);
         long between = ChronoUnit.DAYS.between(yesterday, now);
         System.out.println("between = " + between);
+        LocalDateTime nowTime = LocalDateTime.now();
+        System.out.println("nowTime = " + nowTime);
+        LocalDate localDate = nowTime.toLocalDate();
+        System.out.println("localDate = " + localDate);
 
     }
 }
