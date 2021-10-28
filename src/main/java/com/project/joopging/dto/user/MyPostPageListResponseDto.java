@@ -1,21 +1,21 @@
-package com.project.joopging.dto.post;
+package com.project.joopging.dto.user;
 
 
 
-import com.project.joopging.model.Comment;
-
-import io.swagger.annotations.ApiModel;
+import com.project.joopging.model.Post;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Getter
+@Setter
 @Builder
-@ApiModel(value = "게시글 상세 정보 응답", description = "게시글 상세 정보 응답 DTO")
-public class PostDetailResponseDto {
+public class MyPostPageListResponseDto {
+
     //Post 정보
     private final Long postId;
     private final String title;
@@ -32,19 +32,10 @@ public class PostDetailResponseDto {
     private final String postImg;
     private final Integer viewCount;
 
-
     //작성자 정보
     private final String writerName;
     private final String userImg;
     private final String intro;
-    private final boolean joinCheck;
-    private final boolean bookMarkInfo;
 
-
-
-    private List<Comment> commentList;
 
 }
-
-
-

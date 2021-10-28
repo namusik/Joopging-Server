@@ -1,19 +1,23 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.joopging.dto.user.EditUserResponseDto;
 import com.project.joopging.dto.user.LoginDetailReponseDto;
+import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -77,6 +81,12 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "userComment")
     @JsonIgnore
     private List<Comment> comment;
+
+    @OneToMany(mappedBy = "userBookMark", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "북마크 정보")
+    private List<BookMark> bookMarks = new ArrayList<>();
 
     public User(String username, String password, String email, UserRoleEnum role, Location enumLocation, Type enumType, Distance enumDistance) {
         this.nickname = username;

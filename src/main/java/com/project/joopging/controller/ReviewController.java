@@ -2,6 +2,7 @@ package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
+import com.project.joopging.dto.review.DetailReviewResponseDto;
 import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Review;
@@ -63,9 +64,9 @@ public class ReviewController {
 
     //후기 상세보기
     @GetMapping("/reviews/{review_id}")
-    public ResponseDto showOneReview(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        return new ResponseDto(200L, "후기 상세정보를 불러왔습니다.", "");
+    public ResponseDto showOneReview(@PathVariable("review_id") Long reviewId,  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        DetailReviewResponseDto reviewResponseDto = reviewService.showOneReview(reviewId);
+        return new ResponseDto(200L, "후기 상세정보를 불러왔습니다.", reviewResponseDto);
     }
 
     //로그인 상태 확인
@@ -74,5 +75,4 @@ public class ReviewController {
             throw new CustomErrorException("로그인 사용자만 사용가능한 기능입니다.");
         }
     }
-
 }

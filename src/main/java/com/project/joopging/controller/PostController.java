@@ -1,6 +1,7 @@
 package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
+import com.project.joopging.dto.post.BookMarkOnOffResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
@@ -8,7 +9,6 @@ import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.PostService;
-import com.project.joopging.service.UserDetailsServiceImpl;
 import com.project.joopging.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,6 +71,18 @@ public class PostController {
         PostDetailResponseDto data = postService.toSetPostDetailResponseDto(post, userDetails);
         return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다", data);
 
+
+    }
+
+    @ApiOperation(value = "북마크 추가 제거")
+    @PostMapping("/posts/bookmark/{post_id}")
+    public ResponseDto onOffBookMark(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
+            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId
+    ) {
+        User user = userService.userFromUserDetails(userDetails);
+        BookMarkOnOffResponseDto data = BookMarkOnOffResponseDto.OnOff(postService.getBookMarkInfo(user, postId));
+        return new ResponseDto(200L,"북마크 설정이 완료되었습니다", data);
 
     }
 
