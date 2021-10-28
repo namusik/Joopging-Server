@@ -1,8 +1,9 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.joopging.dto.user.EditUserResponseDto;
 import com.project.joopging.dto.user.LoginDetailReponseDto;
+import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;

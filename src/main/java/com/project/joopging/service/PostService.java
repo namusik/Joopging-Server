@@ -3,6 +3,8 @@ package com.project.joopging.service;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
+import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Party;
 import com.project.joopging.model.Post;
@@ -12,10 +14,10 @@ import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +73,6 @@ public class PostService {
 
     public Post getDetailPostById(Long postId) {
         Post post = getPostById(postId);
-//        List<Comment> commentList = post.getComments();
         post.setViewCount(post.getViewCount() + 1);
         postRepository.save(post);
         return post;
@@ -84,7 +85,7 @@ public class PostService {
         );
     }
 
-
+    //디테일 페이지
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
         if (userDetails == null) {
@@ -98,4 +99,39 @@ public class PostService {
 
     }
 
+    //내 신청내역
+    public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
+
+        List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
+        Long userId = user.getId();
+        //Optional 유저를 쓰거나 .orElseThrow 를 쓰거나
+        Optional<User> myUser = userRepository.findById(userId);
+        List<Party> partyList = partyRepository.findAllByUserJoin(myUser);
+        for (Party party : partyList) {
+            Post applicationPost = party.getPostJoin();
+            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost();
+            applicationPostList.add(responseDto);
+        }
+
+
+
+        return applicationPostList;
+
+    }
+
+    // 내 모집관리
+    public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
+        Long userId = user.getId();
+        User myUser = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("유저 정보가 없습니다.")
+        );
+        List<Post> myPostList = myUser.getPost();
+        List<MyPostPageListResponseDto> myPostListRes = new ArrayList<>();
+        for (Post post : myPostList) {
+            MyPostPageListResponseDto responseDto = post.toBuildMyCreatePost();
+            myPostListRes.add(responseDto);
+        }
+        return myPostListRes;
+
+    }
 }
