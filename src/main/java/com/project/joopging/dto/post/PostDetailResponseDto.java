@@ -4,16 +4,12 @@ package com.project.joopging.dto.post;
 
 import com.project.joopging.model.Comment;
 
-import com.project.joopging.model.User;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 
 @Getter

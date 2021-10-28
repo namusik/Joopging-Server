@@ -73,7 +73,6 @@ public class PostService {
 
     public Post getDetailPostById(Long postId) {
         Post post = getPostById(postId);
-//        List<Comment> commentList = post.getComments();
         post.setViewCount(post.getViewCount() + 1);
         postRepository.save(post);
         return post;

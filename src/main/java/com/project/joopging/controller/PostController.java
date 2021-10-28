@@ -8,7 +8,6 @@ import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.PostService;
-import com.project.joopging.service.UserDetailsServiceImpl;
 import com.project.joopging.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
