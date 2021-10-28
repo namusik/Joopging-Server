@@ -2,6 +2,7 @@ package com.project.joopging.dto.post;
 
 
 import com.project.joopging.model.Post;
+import com.project.joopging.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,8 +27,12 @@ public class PostSearchesDto {
     private  String postImg;
     private  Integer viewCount;
 
+    //user 정보
+    private Long userId;
+    private String nickname;
+    private String userImg;
 
-    public PostSearchesDto(Post post) {
+    public PostSearchesDto(Post post, User writer) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
@@ -41,5 +46,9 @@ public class PostSearchesDto {
         this.nowPeople = post.getNowPeople();
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
+
+        this.userId = writer.getId();
+        this.nickname = writer.getNickname();
+        this.userImg = writer.getUserImg();
     }
 }

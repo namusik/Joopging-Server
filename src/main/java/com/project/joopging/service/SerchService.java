@@ -23,15 +23,14 @@ public class SerchService {
         this.postRepository = postRepository;
     }
 
-    public List<PostSearchesDto> findUseByFilter(Integer distance, Integer type, Integer[] location, UserDetailsImpl userDetails) {
+    public List<PostSearchesDto> findUseByFilter(Integer distance, Integer type, Integer[] location) {
         List<Post> post = new ArrayList<>();
-        User user = userDetails.getUser();
 
         
         for (int i = 0; i < location.length; i ++) {
-            Location location1 = Location.getLocationById(location[i]);
-            Type type1 = Type.getTypeById(type);
-            Distance distance1 = Distance.getDistanceById(distance);
+            Location enumLocation = Location.getLocationById(location[i]);
+            Type enumType = Type.getTypeById(type);
+            Distance enumDistane = Distance.getDistanceById(distance);
 
 
             if (distance == 0) {
@@ -39,49 +38,47 @@ public class SerchService {
                     if (location[i] == 0) {
                         return returnToPostSearchesDto(postRepository.findAll());
                     }
-//                    post = postRepository.findByLocation(location1);
-                    post.addAll(postRepository.findByLocation(location1));
+//                    post = postRepository.findByLocation(enumLocation);
+                    post.addAll(postRepository.findByLocation(enumLocation));
                 }
                 if (type != 0) {
                     if (location[i] == 0) {
-                        post = postRepository.findByType(type1);
+                        post = postRepository.findByType(enumType);
                         return returnToPostSearchesDto(post);
                     } else {
-//                        post = postRepository.findByTypeAndLocation(type1, location1);
-                        post.addAll(postRepository.findByTypeAndLocation(type1, location1));
+//                        post = postRepository.findByTypeAndLocation(type1, enumLocation);
+                        post.addAll(postRepository.findByTypeAndLocation(enumType, enumLocation));
                     }
                 }
             } else if (type == 0) {
                 if (location[i] == 0) {
-                    post = postRepository.findByDistance(distance1);
+                    post = postRepository.findByDistance(enumDistane);
                     return returnToPostSearchesDto(post);
                 }
                 if (location[i] != 0) {
-//                    post = postRepository.findByDistanceAndLocation(distance1, location1);
-                    post.addAll(postRepository.findByDistanceAndLocation(distance1, location1));
+//                    post = postRepository.findByDistanceAndLocation(distance1, enumLocation);
+                    post.addAll(postRepository.findByDistanceAndLocation(enumDistane, enumLocation));
                 }
             } else {
                 if (location[i] == 0) {
-                    post = postRepository.findByDistanceAndType(distance1, type1);
+                    post = postRepository.findByDistanceAndType(enumDistane, enumType);
                     return returnToPostSearchesDto(post);
                 }
                 if (location[i] != 0) {
-//                    post = postRepository.findAllByDistanceAndTypeAndLocation(distance1, type1, location1);
-                    post.addAll(postRepository.findAllByDistanceAndTypeAndLocation(distance1, type1, location1));
+//                    post = postRepository.findAllByDistanceAndTypeAndLocation(distance1, type1, enumLocation);
+                    post.addAll(postRepository.findAllByDistanceAndTypeAndLocation(enumDistane, enumType, enumLocation));
                 }
             }
         }
         return returnToPostSearchesDto(post);
-
-
-
     }
 
     private List<PostSearchesDto> returnToPostSearchesDto (List<Post> post) {
         List<PostSearchesDto> postSearchesDtos = new ArrayList<>();
 
         for (Post result : post) {
-            PostSearchesDto postSearchesDto = new PostSearchesDto(result);
+            User writer = result.getWriter();
+            PostSearchesDto postSearchesDto = new PostSearchesDto(result, writer);
             postSearchesDtos.add(postSearchesDto);
         }
 

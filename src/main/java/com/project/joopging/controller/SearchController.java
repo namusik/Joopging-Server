@@ -27,7 +27,7 @@ public class SearchController {
             @RequestParam Integer[] location,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        List<PostSearchesDto> post = serchService.findUseByFilter(distance, type, location,userDetails);
+        List<PostSearchesDto> post = serchService.findUseByFilter(distance, type, location);
 
         return new ResponseDto(200L, "성공", post);
     }
