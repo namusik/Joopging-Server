@@ -1,7 +1,7 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.review.AllReviewResponseDto;
 import com.project.joopging.dto.review.ReviewRequestDto;
-import com.project.joopging.dto.review.ReviewResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.Review;
@@ -33,7 +33,7 @@ public class ReviewService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 모임입니다")
         );
-        
+
         //로그인 유저 정보 가져오기
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
                 () -> new CustomErrorException("로그인 후 사용가능합니다")
@@ -70,7 +70,6 @@ public class ReviewService {
         );
 
         User user = review.getUserReview();
-
         Post post = review.getPostReview();
 
         reviewRepository.deleteById(reviewId);
@@ -80,17 +79,21 @@ public class ReviewService {
     
     //전체 후기 불러오기
     //추후 페이징 처리 관련 정하고 수정 필요
-    public List<ReviewResponseDto> showAllReview() {
+    public List<AllReviewResponseDto> showAllReview() {
         List<Review> reviewList = reviewRepository.findAll();
-        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+        List<AllReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
         for (Review review : reviewList) {
             String content = review.getContent();
             String reviewImg = review.getReviewImg();
-            User userReview = review.getUserReview();
-            Post postReview = review.getPostReview();
-            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(content, reviewImg, postReview, userReview);
+            int star = review.getStar();
+            User user = review.getUserReview();
+            String nickname = user.getNickname();
+            String userImg = user.getUserImg();
+            AllReviewResponseDto reviewResponseDto = new AllReviewResponseDto(content, reviewImg, star, nickname, userImg );
             reviewResponseDtoList.add(reviewResponseDto);
         }
         return reviewResponseDtoList;
     }
+
+    //
 }

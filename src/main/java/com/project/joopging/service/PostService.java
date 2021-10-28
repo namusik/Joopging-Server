@@ -35,6 +35,7 @@ public class PostService {
     public void createPost(PostCreateRequestDto requestDto, User user) {
         Post post = Post.of(requestDto,user);
 
+
         // fetch Lazy 유저를 진짜 유저로 변환
         Long userId = user.getId();
         User writer = userRepository.findById(userId).orElseThrow(
