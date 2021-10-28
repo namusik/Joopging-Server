@@ -89,7 +89,7 @@ public class MainPageService {
         }
         return postList;
     }
-
+    //유저 거리 기반 5개
     public List<PostMainPageResponseDto> getByUserDistance(Distance distance) {
         Pageable pageable = PageRequest.of(0, 5);
         List<Post> content  = postRepository.findAllByDistanceOrderByRunningDateAsc(pageable,distance).getContent();
@@ -101,7 +101,7 @@ public class MainPageService {
         }
         return postList;
     }
-
+    //유저 타입기반 5개
     public List<PostMainPageResponseDto> getByUserType(Type type) {
         Pageable pageable = PageRequest.of(0, 5);
         List<Post> content  = postRepository.findAllByTypeOrderByRunningDateAsc(pageable,type).getContent();
