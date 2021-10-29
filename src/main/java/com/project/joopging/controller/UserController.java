@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Post Controller Api V1")
+@Api(tags = "User Controller Api V1")
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -92,7 +92,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/kakao")
+    @PostMapping("/users/kakao")
     public ResponseDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         if (kakaoUserService.kakaoLogin(code)) {
             return new ResponseDto(200L, "카카오 로그인 성공 !", "");

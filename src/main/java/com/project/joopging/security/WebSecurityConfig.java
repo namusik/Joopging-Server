@@ -36,7 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     //h2-console 사용에 대한 허용 (CSRF, FrameOption 무시)
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/h2-console/**");
+        web.ignoring().antMatchers("/h2-console/**","/v2/api-docs",
+                "/v3/api-docs",
+                "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui/index.html#/",
+                "/webjars/**", "/swagger/**", "/configuration/**");
     }
 
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,6 +60,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .antMatchers("/main").permitAll()
                 .antMatchers("/reviews").permitAll()
+                .antMatchers(
+                        "/v2/api-docs", "/swagger-resources/**",
+                        "/swagger-ui/index.html#/","/swagger-ui.html",
+                        "/webjars/**", "/swagger/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
