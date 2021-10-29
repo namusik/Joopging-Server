@@ -62,11 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/reviews").permitAll()
                 .antMatchers("/posts/**").permitAll()
                 .antMatchers("/posts").permitAll()
-                .antMatchers(
-                        "/v2/api-docs", "/swagger-resources/**",
-                        "/swagger-ui/index.html#/","/swagger-ui.html",
-                        "/webjars/**", "/swagger/**")
-                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
