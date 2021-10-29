@@ -3,12 +3,14 @@ package com.project.joopging.controller;
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.enumDto.EnumDto;
 import com.project.joopging.service.EnumService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Enum Controller Api V1")
 public class EnumController {
     private final EnumService enumService;
 

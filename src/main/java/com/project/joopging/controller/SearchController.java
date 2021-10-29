@@ -6,6 +6,7 @@ import com.project.joopging.dto.post.PostSearchesDto;
 import com.project.joopging.model.Post;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.SerchService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Search Controller Api V1")
 public class SearchController {
     private final SerchService serchService;
 

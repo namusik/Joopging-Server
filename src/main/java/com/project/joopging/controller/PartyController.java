@@ -5,6 +5,7 @@ import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Party;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.PartyService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Party Controller Api V1")
 public class PartyController {
 
     private final PartyService partyService;
