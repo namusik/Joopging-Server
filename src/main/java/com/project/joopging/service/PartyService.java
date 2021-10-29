@@ -54,15 +54,12 @@ public class PartyService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomErrorException("찾을 수 없는 모임 입니다.")
         );
-
+        //이중 체크
         Party party = partyRepository.findByUserJoinAndPostJoin(user, post).orElseThrow(
                 () -> new CustomErrorException("참여신청 내역이 없습니다")
         );
 
         partyRepository.deleteByUserJoinAndPostJoin(user, post);
-
-        user.getJoin().remove(party);
-        post.getJoins().remove(party);
 
         //post nowPeople 1 감소 시키기
         post.minusNowPeople();
