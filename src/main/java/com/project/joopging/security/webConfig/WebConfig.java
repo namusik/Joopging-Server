@@ -1,6 +1,6 @@
 package com.project.joopging.security.webConfig;
 
-import com.project.joopging.util.AuthInterceptor;
+
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
 import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,29 +37,5 @@ public class WebConfig implements WebMvcConfigurer {
         };
     }
 
-    //swagger
-    @Autowired
-    private AuthInterceptor authInterceptor;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns(EXCLUDE_PATHS);
-    }
-
-    private static final String[] EXCLUDE_PATHS = {
-            "/users",
-            "/users/login",
-            "/users/kakao",
-            "/main",
-            "/search",
-            "/posts/{post_id}",
-            "/reviews",
-            "/reviews/{reviews_id}",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/swagger-ui/index.html#/"
-    };
 }
 
