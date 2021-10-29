@@ -35,7 +35,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAllByOrderByRunningDateAsc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM post ORDER BY (LIMIT_PEOPLE - NOW_PEOPLE) ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM POST ORDER BY (LIMIT_PEOPLE - NOW_PEOPLE) ASC", nativeQuery = true)
     Page<Post> findByCloseSoon(Pageable pageable);
 
     Page<Post> findAllByLocationOrderByRunningDateAsc(Pageable pageable, Location location);
