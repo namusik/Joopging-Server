@@ -3,6 +3,7 @@ package com.project.joopging.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.user.*;
+import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.User;
 import com.project.joopging.security.JwtTokenProvider;
 import com.project.joopging.security.UserDetailsImpl;
@@ -13,7 +14,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -74,6 +74,7 @@ public class UserController {
     @DeleteMapping("/users")
     @ResponseBody
     public ResponseDto deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        checkLogin(userDetails);
         String email1 = userDetails.getUser().getEmail();
         if (userService.deleteUser(email1)) {
             return new ResponseDto(200L, "회원을 삭제했습니다", "");
@@ -85,7 +86,7 @@ public class UserController {
     @PutMapping("/users")
     @ResponseBody
     public ResponseDto editUserInfo(@RequestBody EditUserRequestDto editUserInfoDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
+        checkLogin(userDetails);
         EditUserResponseDto editUserResponseDto = userService.editUserInfo(editUserInfoDto, userDetails);
 
         return new ResponseDto(200L, "회원 정보를 수정했습니다", editUserResponseDto);
@@ -102,8 +103,8 @@ public class UserController {
     @ApiOperation(value = "마이페이지 신청내역")
     @GetMapping("/users/party")
     public ResponseDto myApplicationHistory(
-            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
-    ) {
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         List<MyApplicationPostListResponseDto> data = postService.getMyApplicationPostListByUser(user);
         return new ResponseDto(200L,"신청내역 페이지 불러오기 성공",data);
@@ -112,10 +113,18 @@ public class UserController {
     @ApiOperation(value = "마이페이지 모임관리")
     @GetMapping("/users/mypost")
     public ResponseDto myPost(
-            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
+        checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         List<MyPostPageListResponseDto> data = postService.getMyPostListByUser(user);
         return new ResponseDto(200L,"모임관리 페이지 불러오기 성공",data);
+    }
+
+    //로그인 상태 확인
+    private void checkLogin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails == null) {
+            throw new CustomErrorException("로그인 사용자만 사용가능한 기능입니다.");
+        }
     }
 }
