@@ -2,6 +2,8 @@ package com.project.joopging.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.joopging.dto.ResponseDto;
+import com.project.joopging.dto.review.AllReviewResponseDto;
+import com.project.joopging.dto.review.DetailReviewResponseDto;
 import com.project.joopging.dto.user.*;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.User;
@@ -9,9 +11,11 @@ import com.project.joopging.security.JwtTokenProvider;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.KakaoUserService;
 import com.project.joopging.service.PostService;
+import com.project.joopging.service.ReviewService;
 import com.project.joopging.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +27,14 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @Api(tags = "Post Controller Api V1")
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoUserService kakaoUserService;
     private final PostService postService;
-
-    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, KakaoUserService kakaoUserService, PostService postService) {
-        this.userService = userService;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.kakaoUserService = kakaoUserService;
-        this.postService = postService;
-    }
+    private final ReviewService reviewService;
 
     @PostMapping("/users")
     @ResponseBody
@@ -77,7 +76,7 @@ public class UserController {
         checkLogin(userDetails);
         String email1 = userDetails.getUser().getEmail();
         if (userService.deleteUser(email1)) {
-            return new ResponseDto(200L, "회원을 삭제했습니다", "");
+            return new ResponseDto(200L, "회원탈퇴하였습니다", "");
         }
         return new ResponseDto(500L, "회원삭제 실패", "");
     }
@@ -120,11 +119,19 @@ public class UserController {
         List<MyPostPageListResponseDto> data = postService.getMyPostListByUser(user);
         return new ResponseDto(200L,"모임관리 페이지 불러오기 성공",data);
     }
+    
+    //내가 쓴 후기 불러오기
+    @GetMapping("/users/myreviews")
+    public ResponseDto myReviews(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        checkLogin(userDetails);
+        List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
+        return new ResponseDto(200L,"모임관리 페이지 불러오기 성공", reviewList);
+    }
 
     //로그인 상태 확인
     private void checkLogin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
-            throw new CustomErrorException("로그인 사용자만 사용가능한 기능입니다.");
+            throw new CustomErrorException("로그인이 필요합니다.");
         }
     }
 }

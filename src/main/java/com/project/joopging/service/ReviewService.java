@@ -14,11 +14,8 @@ import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,17 +64,7 @@ public class ReviewService {
     @Transactional
     public void deleteReview(Long reviewId, UserDetailsImpl userDetails) {
 
-        //리뷰정보 가져오기
-        Review review = reviewRepository.findById(reviewId).orElseThrow(
-                () -> new CustomErrorException("존재하지 않는 후기입니다")
-        );
-
-        User user = review.getUserReview();
-        Post post = review.getPostReview();
-
         reviewRepository.deleteById(reviewId);
-        user.getReview().remove(review);
-        post.getReviews().remove(review);
     }
     
     //전체 후기 불러오기
@@ -100,6 +87,19 @@ public class ReviewService {
         User user = review.getUserReview();
         Post post = review.getPostReview();
         return new DetailReviewResponseDto(review, user, post);
+    }
+
+    public List<AllReviewResponseDto> getMyReviews(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 사용자입니다.")
+        );
+        List<Review> result = user.getReview();
+        List<AllReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+        for (Review review : result) {
+            AllReviewResponseDto reviewResponseDto = new AllReviewResponseDto(review, user);
+            reviewResponseDtoList.add(reviewResponseDto);
+        }
+        return reviewResponseDtoList;
     }
 
     //

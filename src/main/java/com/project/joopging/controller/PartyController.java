@@ -41,7 +41,7 @@ public class PartyController {
     //로그인 상태 확인
     private void checkLogin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
-            throw new CustomErrorException("로그인 사용자만 사용가능한 기능입니다.");
+            throw new CustomErrorException("로그인이 필요합니다.");
         }
     }
 }
