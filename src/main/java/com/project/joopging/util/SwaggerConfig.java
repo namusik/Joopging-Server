@@ -23,7 +23,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.project.joopging"))
@@ -39,7 +39,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .description("줍깅의 APIs")
                 .version("1.0.0")
                 .termsOfServiceUrl("")
-                .contact(new Contact("reference", "https://github.com/kancho06/Joopging-Server", "wotjd5792@gmail.com"))
+                .contact(new Contact("Backend GitHub", "https://github.com/kancho06/Joopging-Server", "wotjd5792@gmail.com"))
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
                 .build();

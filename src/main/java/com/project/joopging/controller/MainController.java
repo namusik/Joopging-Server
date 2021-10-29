@@ -6,6 +6,7 @@ import com.project.joopging.dto.review.AllReviewResponseDto;
 import com.project.joopging.model.Post;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.MainPageService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Main Controller Api V1")
 public class MainController {
 
     private final MainPageService mainPageService;

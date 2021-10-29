@@ -10,6 +10,7 @@ import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.ReviewService;
 import com.project.joopging.service.UserService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Review Controller Api V1")
 public class ReviewController {
 
     private final UserService userService;
