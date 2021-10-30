@@ -31,10 +31,10 @@ public class ReviewController {
 
     
     //후기 작성
-    @PostMapping("/reviews/{post_id}")
-    public ResponseDto createReview(@PathVariable("post_id") Long postId, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("/reviews")
+    public ResponseDto createReview(@RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
-        Review review = reviewService.createReview(postId, requestDto, userDetails);
+        Review review = reviewService.createReview( requestDto, userDetails);
         return new ResponseDto(201L, "후기를 저장했습니다.", "");
     }
 
