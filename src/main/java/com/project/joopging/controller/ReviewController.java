@@ -35,7 +35,7 @@ public class ReviewController {
     public ResponseDto createReview(@PathVariable("post_id") Long postId, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
         Review review = reviewService.createReview(postId, requestDto, userDetails);
-        return new ResponseDto(200L, "후기를 저장했습니다.", "");
+        return new ResponseDto(201L, "후기를 저장했습니다.", "");
     }
 
 
@@ -54,7 +54,7 @@ public class ReviewController {
         checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         reviewService.deleteReview(reviewId, userDetails);
-        return new ResponseDto(200L, "후기를 삭제했습니다.", "");
+        return new ResponseDto(204L, "후기를 삭제했습니다.", "");
     }
 
     //전체 후기 보여주기

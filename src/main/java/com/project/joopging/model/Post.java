@@ -102,7 +102,7 @@ public class Post extends Timestamped {
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "참가자 정보")
-    private List<Party> joins = new ArrayList<>();
+    private List<Crew> Crew = new ArrayList<>();
 
     @OneToMany(mappedBy = "postReview")
     @JsonIgnore

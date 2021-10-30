@@ -7,11 +7,11 @@ import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.BookMark;
-import com.project.joopging.model.Party;
+import com.project.joopging.model.Crew;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.BookMarkRepository;
-import com.project.joopging.repository.PartyRepository;
+import com.project.joopging.repository.CrewRepository;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.security.UserDetailsImpl;
@@ -29,7 +29,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final PartyRepository partyRepository;
+    private final CrewRepository crewRepository;
     private final BookMarkRepository bookMarkRepository;
 
 
@@ -96,7 +96,7 @@ public class PostService {
             return post.toBuildDetailPost(null, false, false);
         } else {
             User user = userDetails.getUser();
-            joinCheck = partyRepository.findByUserJoinAndPostJoin(user, post).isPresent();
+            joinCheck = crewRepository.findByUserJoinAndPostJoin(user, post).isPresent();
             Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
             if (BookMark.isPresent()) {
 
@@ -116,10 +116,10 @@ public class PostService {
         User myUser = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 유저입니다")
         );
-        List<Party> partyList = partyRepository.findAllByUserJoin(myUser);
+        List<Crew> crewList = crewRepository.findAllByUserJoin(myUser);
         boolean bookMarkInfo;
-        for (Party party : partyList) {
-            Post applicationPost = party.getPostJoin();
+        for (Crew crew : crewList) {
+            Post applicationPost = crew.getPostJoin();
             Optional<BookMark> bookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost);
             MyApplicationPostListResponseDto responseDto;
             if (bookMark.isPresent()) {

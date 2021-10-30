@@ -2,6 +2,7 @@ package com.project.joopging.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "북마크 정보")
-public class BookMark {
+public class BookMark extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
