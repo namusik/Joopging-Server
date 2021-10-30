@@ -31,6 +31,7 @@ public class PostDetailResponseDto {
     private final int nowPeople;
     private final String postImg;
     private final Integer viewCount;
+    private final Integer totalBookMarkCount;
 
 
     //작성자 정보

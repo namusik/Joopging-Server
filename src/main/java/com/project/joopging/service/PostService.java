@@ -89,9 +89,11 @@ public class PostService {
     }
 
     //디테일 페이지 (북마크 추가)
+    //북마크 카운트 추가
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
         boolean bookMarkInfo;
+
         if (userDetails == null) {
             return post.toBuildDetailPost(null, false, false);
         } else {
