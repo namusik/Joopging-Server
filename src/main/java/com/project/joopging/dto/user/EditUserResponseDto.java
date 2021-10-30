@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "유저 업데이트 응답", description = "유저 업데이트 응답 DTO")
 public class EditUserResponseDto {
     private Long id;
 

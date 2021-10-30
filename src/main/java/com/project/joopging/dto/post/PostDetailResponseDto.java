@@ -14,7 +14,6 @@ import java.util.List;
 
 @Getter
 @Builder
-@ApiModel(value = "게시글 상세 정보 응답", description = "게시글 상세 정보 응답 DTO")
 public class PostDetailResponseDto {
     //Post 정보
     private final Long postId;

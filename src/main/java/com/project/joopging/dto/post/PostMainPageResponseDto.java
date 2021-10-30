@@ -11,7 +11,6 @@ import java.time.temporal.ChronoUnit;
 
 @Getter
 @NoArgsConstructor
-@ApiModel(value = "메인페이지 정보 응답", description = "메인페이지 정보 응답 DTO")
 public class PostMainPageResponseDto {
     private Long postId;
     private String title;

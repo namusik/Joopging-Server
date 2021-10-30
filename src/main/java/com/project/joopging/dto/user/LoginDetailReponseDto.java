@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "유저 상세 정보 응답", description = "유저 상세 정보 응답 DTO")
 public class LoginDetailReponseDto {
     private Long id;
 

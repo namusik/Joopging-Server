@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@ApiModel(value = "전체 리뷰페이지 응답", description = "전체 리뷰페이지 응답 DTO")
 public class AllReviewResponseDto {
     private Long reviewId;
     private String content;

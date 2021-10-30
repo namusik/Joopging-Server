@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ApiModel(value = "마이페이지 신청내역 정보", description = "마이페이지 신청내역 응답 DTO")
 public class MyApplicationPostListResponseDto {
 
     //Post 정보

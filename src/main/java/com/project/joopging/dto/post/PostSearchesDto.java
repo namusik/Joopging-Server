@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@ApiModel(value = "검색 정보 응답", description = "검색 정보 응답 DTO")
 public class PostSearchesDto {
     //Post 정보
     private  Long postId;

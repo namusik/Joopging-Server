@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@ApiModel(value = "로그인 유저 정보 응답", description = "로그인 유저 정보 응답 DTO")
 public class LoginResponseDto {
     private LoginDetailReponseDto user;
     private String jwtToken;

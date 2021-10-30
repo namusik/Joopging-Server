@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-@ApiModel(value = "리뷰 상세 페이지 응답", description = "리뷰 상세 페이지 응답 DTO")
 public class DetailReviewResponseDto {
     private Long reviewId;
     private String content;
