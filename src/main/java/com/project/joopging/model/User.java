@@ -29,7 +29,7 @@ import java.util.List;
 @ApiModel(value = "유저 정보")
 public class User extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "유저 PK")
     private Long id;
 
@@ -80,18 +80,22 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
+    @ApiModelProperty(value = "참가자 정보")
     private List<Crew> crews;
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore
+    @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
     @OneToMany(mappedBy = "userReview")
     @JsonIgnore
+    @ApiModelProperty(value = "후기 정보")
     private List<Review> review;
 
     @OneToMany(mappedBy = "userComment")
     @JsonIgnore
+    @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comment;
 
     @OneToMany(mappedBy = "userBookMark", orphanRemoval = true)

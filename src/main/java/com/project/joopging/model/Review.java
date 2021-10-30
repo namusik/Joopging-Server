@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Review extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "후기 아이디")
     private Long id;
 
@@ -34,10 +34,12 @@ public class Review extends Timestamped {
 
     @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
+    @ApiModelProperty(value = "게시글 정보")
     private Post postReview;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
+    @ApiModelProperty(value = "유저 정보")
     private User userReview;
 
     public Review(ReviewRequestDto requestDto, Post post, User user) {
