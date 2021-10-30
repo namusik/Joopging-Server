@@ -42,7 +42,7 @@ public class UserController {
         if (userService.registerUser(signupRequestDto)) {
             String username = signupRequestDto.getNickname();
             log.info(username + "님 환영합니다 !");
-            return new ResponseDto(200L, "회원가입에 성공하였습니다 !", "");
+            return new ResponseDto(201L, "회원가입에 성공하였습니다 !", "");
         }
         return new ResponseDto(500L, "회원가입에 실패하였습니다 ...", "");
     }
@@ -76,7 +76,7 @@ public class UserController {
         checkLogin(userDetails);
         String email1 = userDetails.getUser().getEmail();
         if (userService.deleteUser(email1)) {
-            return new ResponseDto(200L, "회원탈퇴하였습니다", "");
+            return new ResponseDto(204L, "회원탈퇴하였습니다", "");
         }
         return new ResponseDto(500L, "회원삭제 실패", "");
     }

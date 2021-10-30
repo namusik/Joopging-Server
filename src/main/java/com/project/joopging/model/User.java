@@ -68,7 +68,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
-    private List<Party> join;
+    private List<Crew> crews;
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore
