@@ -3,6 +3,7 @@ package com.project.joopging.dto.review;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.Review;
 import com.project.joopging.model.User;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@ApiModel(value = "리뷰 상세 페이지 응답", description = "리뷰 상세 페이지 응답 DTO")
 public class DetailReviewResponseDto {
     private Long reviewId;
     private String content;

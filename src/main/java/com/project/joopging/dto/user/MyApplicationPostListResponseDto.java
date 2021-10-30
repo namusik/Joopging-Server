@@ -2,6 +2,7 @@ package com.project.joopging.dto.user;
 
 
 import com.project.joopging.model.Post;
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ApiModel(value = "마이페이지 신청내역 정보", description = "마이페이지 신청내역 응답 DTO")
 public class MyApplicationPostListResponseDto {
 
     //Post 정보

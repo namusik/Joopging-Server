@@ -3,6 +3,7 @@ package com.project.joopging.model;
 import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,15 +17,19 @@ public class Review extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(value = "후기 아이디")
     private Long id;
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "후기 내용")
     private String content;
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "후기 이미지")
     private String reviewImg;
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "후기 총 별점")
     private int star;
 
     @ManyToOne

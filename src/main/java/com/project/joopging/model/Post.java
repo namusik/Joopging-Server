@@ -91,6 +91,7 @@ public class Post extends Timestamped {
     private String postImg;
 
     @Column
+    @ApiModelProperty(value = "게시글 조회수")
     private Integer viewCount = 0;
 
     @Basic(fetch = FetchType.LAZY)

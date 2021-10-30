@@ -1,10 +1,12 @@
 package com.project.joopging.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@ApiModel(value = "Default 응답", description = "Default 응답 DTO")
 public class ResponseDto {
     private Long statusCode;
 

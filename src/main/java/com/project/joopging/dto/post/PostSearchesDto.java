@@ -3,6 +3,7 @@ package com.project.joopging.dto.post;
 
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@ApiModel(value = "검색 정보 응답", description = "검색 정보 응답 DTO")
 public class PostSearchesDto {
     //Post 정보
     private  Long postId;

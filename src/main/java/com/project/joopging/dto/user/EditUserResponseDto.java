@@ -2,6 +2,7 @@ package com.project.joopging.dto.user;
 
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.model.User;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 @Getter
@@ -9,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ApiModel(value = "유저 업데이트 응답", description = "유저 업데이트 응답 DTO")
 public class EditUserResponseDto {
     private Long id;
 

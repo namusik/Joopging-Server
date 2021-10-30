@@ -2,6 +2,7 @@ package com.project.joopging.model;
 
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Crew extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(value = "크루 아이디")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
