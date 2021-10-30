@@ -2,6 +2,7 @@ package com.project.joopging.model;
 
 import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.util.Timestamped;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@ApiModel(value = "후기 정보")
 public class Review extends Timestamped {
 
     @Id

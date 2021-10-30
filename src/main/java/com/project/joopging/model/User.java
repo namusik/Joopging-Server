@@ -9,6 +9,7 @@ import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value = "유저 정보")
 public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

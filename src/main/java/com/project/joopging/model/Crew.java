@@ -1,6 +1,7 @@
 package com.project.joopging.model;
 
 import com.project.joopging.util.Timestamped;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value = "참여자 정보")
 public class Crew extends Timestamped {
 
     @Id
