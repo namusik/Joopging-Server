@@ -67,15 +67,15 @@ public class UserController {
         loginResponseDto.setUser(loginDetailReponseDto);
         loginResponseDto.setJwtToken(token);
 
-        return new ResponseDto(200L, "로그인에 성공했습니다", loginResponseDto);
+        return new ResponseDto(201L, "로그인에 성공했습니다", loginResponseDto);
     }
 
     @DeleteMapping("/users")
     @ResponseBody
     public ResponseDto deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
-        String email1 = userDetails.getUser().getEmail();
-        if (userService.deleteUser(email1)) {
+        String getEmail = userDetails.getUser().getEmail();
+        if (userService.deleteUser(getEmail)) {
             return new ResponseDto(204L, "회원탈퇴하였습니다", "");
         }
         return new ResponseDto(500L, "회원삭제 실패", "");
@@ -95,7 +95,7 @@ public class UserController {
     @PostMapping("/users/kakao")
     public ResponseDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         if (kakaoUserService.kakaoLogin(code)) {
-            return new ResponseDto(200L, "카카오 로그인 성공 !", "");
+            return new ResponseDto(201L, "카카오 로그인 성공 !", "");
         }
         return new ResponseDto(500L, "카카오 로그인 실패 !", "");    }
 
