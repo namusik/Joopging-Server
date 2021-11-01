@@ -1,15 +1,10 @@
 package com.project.joopging.dto.user;
 
 
-
-import com.project.joopging.model.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +15,7 @@ public class MyPostPageListResponseDto {
     private final Long postId;
     private final String title;
     private final String content;
-    private final LocalDateTime runningDate;
+    private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Long dDay;

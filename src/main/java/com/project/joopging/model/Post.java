@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -90,7 +91,12 @@ public class Post extends Timestamped {
     private String postImg;
 
     @Column
+    @ApiModelProperty(value = "게시글 조회수")
     private Integer viewCount = 0;
+
+    @Basic(fetch = FetchType.LAZY)
+    @Formula("(select count(1) from book_mark bm where bm.post_id = id)")
+    private Integer totalBookMarkCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -160,14 +166,17 @@ public class Post extends Timestamped {
     }
 
 
-    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails, boolean joinCheck, boolean bookMarkInfo) {
+    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails,
+                                                   boolean joinCheck,
+                                                   boolean bookMarkInfo,
+                                                   String runningDateToString) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
                     .postId(this.id)
                     .title(this.title)
                     .content(this.content)
-                    .runningDate(this.runningDate)
+                    .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
                     .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
@@ -178,6 +187,7 @@ public class Post extends Timestamped {
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
+                    .totalBookMarkCount(this.totalBookMarkCount)
                     .writerName(this.writer.getNickname())
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
@@ -190,7 +200,7 @@ public class Post extends Timestamped {
                     .postId(this.id)
                     .title(this.title)
                     .content(this.content)
-                    .runningDate(this.runningDate)
+                    .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
                     .location(location.getName())
@@ -201,6 +211,7 @@ public class Post extends Timestamped {
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
+                    .totalBookMarkCount(this.totalBookMarkCount)
                     .writerName(this.writer.getNickname())
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
@@ -225,12 +236,13 @@ public class Post extends Timestamped {
     }
 
 
-    public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo) {
+    public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo,
+                                                                     String runningDateToString) {
         return MyApplicationPostListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
                 .content(this.content)
-                .runningDate(this.runningDate)
+                .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .location(location.getName())
@@ -248,12 +260,12 @@ public class Post extends Timestamped {
                 .build();
     }
 
-    public MyPostPageListResponseDto toBuildMyCreatePost() {
+    public MyPostPageListResponseDto toBuildMyCreatePost(String runningDateToString) {
         return MyPostPageListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
                 .content(this.content)
-                .runningDate(this.runningDate)
+                .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .location(location.getName())

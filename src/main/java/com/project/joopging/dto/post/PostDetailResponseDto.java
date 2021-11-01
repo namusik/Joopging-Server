@@ -9,18 +9,19 @@ import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 
 @Getter
 @Builder
-@ApiModel(value = "게시글 상세 정보 응답", description = "게시글 상세 정보 응답 DTO")
 public class PostDetailResponseDto {
     //Post 정보
     private final Long postId;
     private final String title;
     private final String content;
-    private final LocalDateTime runningDate;
+    private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Long dDay;
@@ -31,6 +32,7 @@ public class PostDetailResponseDto {
     private final int nowPeople;
     private final String postImg;
     private final Integer viewCount;
+    private final Integer totalBookMarkCount;
 
 
     //작성자 정보

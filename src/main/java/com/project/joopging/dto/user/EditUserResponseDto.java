@@ -2,6 +2,7 @@ package com.project.joopging.dto.user;
 
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.model.User;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 @Getter
