@@ -166,14 +166,17 @@ public class Post extends Timestamped {
     }
 
 
-    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails, boolean joinCheck, boolean bookMarkInfo) {
+    public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails,
+                                                   boolean joinCheck,
+                                                   boolean bookMarkInfo,
+                                                   String runningDateToString) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
                     .postId(this.id)
                     .title(this.title)
                     .content(this.content)
-                    .runningDate(this.runningDate)
+                    .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
                     .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
@@ -197,7 +200,7 @@ public class Post extends Timestamped {
                     .postId(this.id)
                     .title(this.title)
                     .content(this.content)
-                    .runningDate(this.runningDate)
+                    .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
                     .location(location.getName())
@@ -233,12 +236,13 @@ public class Post extends Timestamped {
     }
 
 
-    public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo) {
+    public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo,
+                                                                     String runningDateToString) {
         return MyApplicationPostListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
                 .content(this.content)
-                .runningDate(this.runningDate)
+                .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .location(location.getName())
@@ -256,12 +260,12 @@ public class Post extends Timestamped {
                 .build();
     }
 
-    public MyPostPageListResponseDto toBuildMyCreatePost() {
+    public MyPostPageListResponseDto toBuildMyCreatePost(String runningDateToString) {
         return MyPostPageListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
                 .content(this.content)
-                .runningDate(this.runningDate)
+                .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .location(location.getName())

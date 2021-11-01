@@ -21,7 +21,7 @@ public class MyApplicationPostListResponseDto {
     private final Long postId;
     private final String title;
     private final String content;
-    private final LocalDateTime runningDate;
+    private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Long dDay;

@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 
 @Getter
@@ -19,7 +21,7 @@ public class PostDetailResponseDto {
     private final Long postId;
     private final String title;
     private final String content;
-    private final LocalDateTime runningDate;
+    private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Long dDay;
