@@ -25,9 +25,9 @@ public class CrewController {
 
     //모임 참여하기 api
     @ApiOperation(value = "모임 참여하기")
-    @PostMapping("/posts/join/{post_id}")
+    @PostMapping("/posts/{post_id}/crews")
     public ResponseDto join(
-            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId,
+            @ApiParam(value = "게시글 ID") @PathVariable("post_id") Long postId,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
         Long userId = userDetails.getUser().getId();
@@ -39,9 +39,9 @@ public class CrewController {
 
     //모임 참여 취소하기 api
     @ApiOperation(value = "모임 참여 취소하기")
-    @DeleteMapping("/posts/join/{post_id}")
+    @DeleteMapping("/posts/{post_id}/crews")
     public ResponseDto cancelJoin(
-            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId,
+            @ApiParam(value = "게시글 ID") @PathVariable("post_id") Long postId,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
         Long userId = userDetails.getUser().getId();

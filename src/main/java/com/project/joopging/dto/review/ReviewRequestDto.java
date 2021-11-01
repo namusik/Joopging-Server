@@ -10,6 +10,7 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @Getter
 public class ReviewRequestDto {
+    Long postId;
     String content;
     String reviewImg;
     int star;

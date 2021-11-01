@@ -35,13 +35,12 @@ public class ReviewController {
     
     //후기 작성
     @ApiOperation(value = "후기 작성")
-    @PostMapping("/reviews/{post_id}")
+    @PostMapping("/reviews")
     public ResponseDto createReview(
-            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId,
-            @ApiParam(value = "리뷰 생성 정보", required = true) @RequestBody ReviewRequestDto requestDto,
+            @ApiParam(value = "후기 생성 정보") @RequestBody ReviewRequestDto requestDto,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
-        Review review = reviewService.createReview(postId, requestDto, userDetails);
+        Review review = reviewService.createReview( requestDto, userDetails);
         return new ResponseDto(201L, "후기를 저장했습니다.", "");
     }
 

@@ -111,7 +111,7 @@ public class UserController {
         return new ResponseDto(500L, "카카오 로그인 실패 !", "");    }
 
     @ApiOperation(value = "마이페이지 신청내역")
-    @GetMapping("/users/party")
+    @GetMapping("/crews/my")
     public ResponseDto myApplicationHistory(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
@@ -121,7 +121,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "마이페이지 모임관리")
-    @GetMapping("/users/mypost")
+    @GetMapping("/posts/my")
     public ResponseDto myPost(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -133,9 +133,9 @@ public class UserController {
     
     //내가 쓴 후기 불러오기
     @ApiOperation(value = "마이페이지 후기")
-    @GetMapping("/users/myreviews")
+    @GetMapping("/reviews/my")
     public ResponseDto myReviews(
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         checkLogin(userDetails);
         List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
         return new ResponseDto(200L,"모임관리 페이지 불러오기 성공", reviewList);

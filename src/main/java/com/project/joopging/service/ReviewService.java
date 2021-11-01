@@ -28,7 +28,8 @@ public class ReviewService {
     
     //후기 작성
     @Transactional
-    public Review createReview(Long postId, ReviewRequestDto requestDto, UserDetailsImpl userDetails) {
+    public Review createReview(ReviewRequestDto requestDto, UserDetailsImpl userDetails) {
+        Long postId = requestDto.getPostId();
         //해당 모임정보 가져오기
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 모임입니다")
