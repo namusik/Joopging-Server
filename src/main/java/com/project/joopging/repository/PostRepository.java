@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.net.URLConnection;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -25,23 +26,24 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     public List<Post> findByLocation(Location location);
 
     public List<Post> findByType(Type type);
-
+    
+    //조회수 순
     Page<Post> findAllByOrderByViewCountDesc(Pageable pageable);
+    
+    //마감일 기준
+    Page<Post> findAllByOrderByEndDateAsc(Pageable pageable);
 
-    Page<Post> findAllByLocationOrderByRunningDateDesc(Pageable pageable, String location);
+//    @Query(value = "SELECT * FROM post ORDER BY (LIMIT_PEOPLE - NOW_PEOPLE) ASC", nativeQuery = true)
+//    List<Post> findByCloseSoon();
 
-    Post findByDistanceAndTypeAndLocation(Integer distance, Integer type, Integer location);
+    //작성일 기준
+    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-
-    Page<Post> findAllByOrderByRunningDateAsc(Pageable pageable);
-
-    @Query(value = "SELECT * FROM post ORDER BY (LIMIT_PEOPLE - NOW_PEOPLE) ASC", nativeQuery = true)
-    Page<Post> findByCloseSoon(Pageable pageable);
-
+    //위치 기준
     Page<Post> findAllByLocationOrderByRunningDateAsc(Pageable pageable, Location location);
-
+    //거리 기준
     Page<Post> findAllByDistanceOrderByRunningDateAsc(Pageable pageable, Distance distance);
-
+    //타입 기준
     Page<Post> findAllByTypeOrderByRunningDateAsc(Pageable pageable, Type type);
 
 }

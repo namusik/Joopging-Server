@@ -114,7 +114,6 @@ public class UserController {
     @GetMapping("/crews/my")
     public ResponseDto myApplicationHistory(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         List<MyApplicationPostListResponseDto> data = postService.getMyApplicationPostListByUser(user);
         return new ResponseDto(200L,"신청내역 페이지 불러오기 성공",data);
@@ -125,7 +124,6 @@ public class UserController {
     public ResponseDto myPost(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         List<MyPostPageListResponseDto> data = postService.getMyPostListByUser(user);
         return new ResponseDto(200L,"모임관리 페이지 불러오기 성공",data);
@@ -136,7 +134,6 @@ public class UserController {
     @GetMapping("/reviews/my")
     public ResponseDto myReviews(
                 @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        checkLogin(userDetails);
         List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
         return new ResponseDto(200L,"모임관리 페이지 불러오기 성공", reviewList);
     }
