@@ -121,6 +121,7 @@ public class PostService {
     }
 
     //내 신청내역 (북마크 추가)
+    //북마크 카운트 추가
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
 
         List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
@@ -148,6 +149,7 @@ public class PostService {
     }
 
     // 내 모집관리
+    // 북마크 수 추가
     public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
         Long userId = user.getId();
         User myUser = userRepository.findById(userId).orElseThrow(

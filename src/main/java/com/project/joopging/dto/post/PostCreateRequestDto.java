@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class PostCreateRequestDto {
 
     private final String title;
+    private final String crewHeadIntro;
     private final String content;
     private final LocalDateTime runningDate;
     private final LocalDate startDate;

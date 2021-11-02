@@ -21,6 +21,7 @@ public class PostDetailResponseDto {
     private final Long postId;
     private final String title;
     private final String content;
+    private final String crewHeadIntro;
     private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
