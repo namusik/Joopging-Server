@@ -47,3 +47,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+//Jenkins bootJar, bootRun 설정
+bootJar {
+    mainClassName = 'com.project.joopging.JoopgingApplication'
+}
+
+bootRun {
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
+}
