@@ -1,9 +1,7 @@
 package com.project.joopging.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.project.joopging.exception.TokenErrorException;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,8 +77,10 @@ public class JwtTokenProvider {
 
             System.out.println("claims = " + claims);  // JWT 토큰(클라이언트에서 보낸)이 잘 들어오는지 검증하는 부분 -> 서버 콘솔에 token 찍힘.
             return !claims.getBody().getExpiration().before(new Date()); // expire시간이 되지 않았다면 True!
+        } catch (ExpiredJwtException e) {
+            throw new TokenErrorException("Token Expired.");
         } catch (Exception e) {
-            return false;
+            throw new TokenErrorException("Invalid Tocken");
         }
     }
 
