@@ -40,7 +40,7 @@ public class PostMainPageResponseDto {
 //        System.out.println("date = " + date);
         String[] ts = date.split("T");
         this.runningDate = ts[0] + " ("+day+") " + ts[1];
-        this.dDay = ChronoUnit.DAYS.between(post.getStartDate(), post.getEndDate());
+        this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
         this.location = post.getLocation().getName();
         this.type = post.getType().getName();
         this.distance = post.getDistance().getName();

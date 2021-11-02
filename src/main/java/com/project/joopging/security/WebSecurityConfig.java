@@ -57,12 +57,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/**").permitAll()
                 .antMatchers("/main").permitAll()
                 .antMatchers("/reviews").permitAll()
-                .antMatchers("/posts/**").permitAll()
+                .antMatchers("/posts/{post_id}").permitAll()
                 .antMatchers("/posts").permitAll()
+                .antMatchers("/exception/**").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);

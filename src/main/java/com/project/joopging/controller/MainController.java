@@ -32,20 +32,20 @@ public class MainController {
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         HashMap<String, Object> resultList = new HashMap<>();
 
-        //비로그인 로그인 공통 : 조회수 top5
+        //비로그인 로그인 공통 : 조회수 top 10
         List<PostMainPageResponseDto> hotPlaceList = mainPageService.getByHotPlace();
         resultList.put("hot", hotPlaceList);
 
-        //비로그인 로그인 공통 : 남은 모집인원 적은 순 5개
+        //비로그인 로그인 공통 : Dday 기준 top 10
         List<PostMainPageResponseDto> closeSoonList = mainPageService.getByCloseSoon();
         resultList.put("close", closeSoonList);
 
-        //비로그인 로그인 공통 : 최신 리뷰 5개
+        //비로그인 로그인 공통 : 최신작성 리뷰 10개
         List<AllReviewResponseDto> reviewList = mainPageService.getReviews();
         resultList.put("reviews", reviewList);
         
         if (userDetails == null) { //비로그인 시
-            //전체 모임 달리는 날짜 최신순 5개
+            //작성일 최신순
             List<PostMainPageResponseDto> recentPost = mainPageService.getByRecentPost();
             resultList.put("recent", recentPost);
             return new ResponseDto(200L, "ok", resultList);

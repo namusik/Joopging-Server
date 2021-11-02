@@ -52,7 +52,7 @@ public class ReviewController {
             @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
             @ApiParam(value = "후기 업데이트 정보", required = true) @RequestBody ReviewRequestDto requestDto,
             @ApiParam @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        checkLogin(userDetails);
+//        checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         Review review = reviewService.editReview(reviewId, requestDto);
         return new ResponseDto(200L, "후기를 수정했습니다.", "");
@@ -64,7 +64,7 @@ public class ReviewController {
     public ResponseDto deleteReivew(
             @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        checkLogin(userDetails);
+//        checkLogin(userDetails);
         User user = userService.userFromUserDetails(userDetails);
         reviewService.deleteReview(reviewId, userDetails);
         return new ResponseDto(204L, "후기를 삭제했습니다.", "");
