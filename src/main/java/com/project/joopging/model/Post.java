@@ -45,6 +45,10 @@ public class Post extends Timestamped {
     private String title;
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "게시글 모임장 소개")
+    private String crewHeadIntro;
+
+    @Column(nullable = false)
     @ApiModelProperty(value = "게시글 내용")
     private String content;
 
@@ -132,6 +136,7 @@ public class Post extends Timestamped {
     public Post(PostCreateRequestDto requestDto,User user) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.crewHeadIntro = requestDto.getCrewHeadIntro();
         this.runningDate = requestDto.getRunningDate();
         this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
@@ -155,6 +160,7 @@ public class Post extends Timestamped {
     public void update(PostUpdateRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.crewHeadIntro = requestDto.getCrewHeadIntro();
         this.runningDate = requestDto.getRunningDate();
         this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
@@ -175,6 +181,7 @@ public class Post extends Timestamped {
             return PostDetailResponseDto.builder()
                     .postId(this.id)
                     .title(this.title)
+                    .crewHeadIntro(this.crewHeadIntro)
                     .content(this.content)
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
@@ -199,6 +206,7 @@ public class Post extends Timestamped {
             return PostDetailResponseDto.builder()
                     .postId(this.id)
                     .title(this.title)
+                    .crewHeadIntro(this.crewHeadIntro)
                     .content(this.content)
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
@@ -253,6 +261,7 @@ public class Post extends Timestamped {
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
                 .viewCount(this.viewCount)
+                .bookMarkCount(this.totalBookMarkCount)
                 .writerName(this.writer.getNickname())
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
@@ -276,6 +285,7 @@ public class Post extends Timestamped {
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
                 .viewCount(this.viewCount)
+                .bookMarkCount(this.totalBookMarkCount)
                 .writerName(this.writer.getNickname())
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())

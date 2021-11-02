@@ -32,6 +32,7 @@ public class MyApplicationPostListResponseDto {
     private final int nowPeople;
     private final String postImg;
     private final Integer viewCount;
+    private final Integer bookMarkCount;
 
 
     //작성자 정보
