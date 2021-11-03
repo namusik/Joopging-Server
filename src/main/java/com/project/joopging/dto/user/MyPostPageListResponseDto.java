@@ -34,4 +34,5 @@ public class MyPostPageListResponseDto {
     private final String intro;
 
 
+
 }
