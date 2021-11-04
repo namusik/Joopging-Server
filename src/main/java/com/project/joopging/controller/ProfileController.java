@@ -22,7 +22,7 @@ public class ProfileController {
     //version 확인용
     @GetMapping("/version")
     public String checkVersion() {
-        return "ver1";
+        return "ver2";
     }
 
 }
