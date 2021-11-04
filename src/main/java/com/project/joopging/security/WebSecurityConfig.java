@@ -62,7 +62,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/posts/{post_id}").permitAll()
                 .antMatchers("/posts").permitAll()
                 .antMatchers("/exception/**").permitAll()
+                //swagger
                 .antMatchers("/swagger-ui/index.html#").permitAll()
+                .antMatchers("/v3/api-docs").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/configuration/**").permitAll()
+                .antMatchers("/swagger/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
