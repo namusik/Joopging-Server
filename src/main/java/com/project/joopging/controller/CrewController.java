@@ -24,6 +24,7 @@ public class CrewController {
     private final CrewService crewService;
 
     //모임 참여하기 api
+
     @ApiOperation(value = "모임 참여하기")
     @PostMapping("/posts/{post_id}/crews")
     public ResponseDto join(
