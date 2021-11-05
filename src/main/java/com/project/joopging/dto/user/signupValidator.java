@@ -23,17 +23,20 @@ public class signupValidator {
 
     public User validate(SignupRequestDto requestDto) {
         String email = requestDto.getEmail();
-        String username = requestDto.getNickname();
+        String nickname = requestDto.getNickname();
         String password = requestDto.getPassword();
         UserRoleEnum role = UserRoleEnum.USER;
-        Optional<User> found = repository.findByEmail(email);
+        Optional<User> emailFound = repository.findByEmail(email);
+        Optional<User> nicknameFound = repository.findByNickname(nickname);
         Integer distance = requestDto.getDistance();
         Integer location = requestDto.getLocation();
         Integer type = requestDto.getType();
 
 
-        if (found.isPresent()) {
+        if (emailFound.isPresent()) {
             throw new CustomErrorException("중복된 이메일 입니다 ");
+        } else if (nicknameFound.isPresent()) {
+            throw new CustomErrorException("중복된 닉네임 입니다 ");
         } else if (!isValidEmail(email)) {
             throw new CustomErrorException("이메일 형식이 올바르지 않습니다");
         } else if (password.length() < 6 || password.length() > 12) {
@@ -56,7 +59,7 @@ public class signupValidator {
         Integer stringToDistance = Distance.getDistanceById(distance).getNum();
         Distance enumDistance = Distance.getDistanceById(stringToDistance);
 
-        return new User(username, password, email, role, enumLocation, enumType, enumDistance);
+        return new User(nickname, password, email, role, enumLocation, enumType, enumDistance);
     }
 
     public static boolean isValidEmail(String email) {
