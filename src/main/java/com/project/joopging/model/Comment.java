@@ -26,7 +26,7 @@ public class Comment extends Timestamped {
     @ApiModelProperty(value = "댓글 아이디")
     Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "댓글 내용")
     String content;
 

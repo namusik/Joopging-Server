@@ -6,6 +6,7 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.enums.Distance;
 import com.project.joopging.enums.Location;
@@ -44,11 +45,11 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "게시글 제목")
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "게시글 모임장 소개")
     private String crewHeadIntro;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "게시글 내용")
     private String content;
 
@@ -271,6 +272,29 @@ public class Post extends Timestamped {
 
     public MyPostPageListResponseDto toBuildMyCreatePost(String runningDateToString) {
         return MyPostPageListResponseDto.builder()
+                .postId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .runningDate(runningDateToString)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .location(location.getName())
+                .type(type.getName())
+                .distance(distance.getName())
+                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .limitPeople(this.limitPeople)
+                .nowPeople(this.nowPeople)
+                .postImg(this.postImg)
+                .viewCount(this.viewCount)
+                .bookMarkCount(this.totalBookMarkCount)
+                .writerName(this.writer.getNickname())
+                .userImg(this.writer.getUserImg())
+                .intro(this.writer.getIntro())
+                .build();
+    }
+
+    public MyBookmarkListResponseDto toBuildMyBookmarkPost(String runningDateToString) {
+        return MyBookmarkListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
                 .content(this.content)

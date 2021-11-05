@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -136,6 +137,17 @@ public class UserController {
                 @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
         return new ResponseDto(200L,"모임관리 페이지 불러오기 성공", reviewList);
+    }
+
+    @ApiOperation(value = "마이페이지 북마크")
+    @GetMapping("/bookmark/my")
+    public ResponseDto myBookmark(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        User user = userService.userFromUserDetails(userDetails);
+        List<MyBookmarkListResponseDto> data = postService.getMyBookmarkListByUser(user);
+        return new ResponseDto(200L,"내 북마크 불러오기 성공", data);
+
     }
 
     //로그인 상태 확인

@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/posts/{post_id}").permitAll()
                 .antMatchers("/posts").permitAll()
                 .antMatchers("/exception/**").permitAll()
+                .antMatchers("/enum/**").permitAll()
                 //swagger
                 .antMatchers("/swagger-ui/index.html#").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
@@ -72,10 +73,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configuration/**").permitAll()
                 .antMatchers("/swagger/**").permitAll()
                 .antMatchers("/swagger-ui/index.html").permitAll()
+                //nginx
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/health").permitAll()
                 .antMatchers("/version").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
