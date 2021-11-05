@@ -40,6 +40,9 @@ dependencies {
     
     //jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    
+    //health check 기능
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 
 }
@@ -47,3 +50,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+//Jenkins bootJar, bootRun 설정
+//bootJar {
+//    mainClassName = 'com.project.joopging.JoopgingApplication'
+//}
+//
+//bootRun {
+//    String activeProfile = System.properties['spring.profiles.active']
+//    systemProperty "spring.profiles.active", activeProfile
+//}

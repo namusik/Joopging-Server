@@ -52,10 +52,10 @@ public class MainPageService {
         return reviewList;
     }
 
-    //달리는 날짜 빠른순
+    //최근 작성 순
     public List<PostMainPageResponseDto> getByRecentPost() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<Post> result  = postRepository.findAllByOrderByRunningDateAsc(pageable).getContent();
+        List<Post> result  = postRepository.findAllByOrderByCreatedAtDesc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
@@ -64,10 +64,10 @@ public class MainPageService {
         }
         return postList;
     }
-    //인원 마감 적은순
+    //Day 기준
     public List<PostMainPageResponseDto> getByCloseSoon() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<Post> result  = postRepository.findByCloseSoon(pageable).getContent();
+        List<Post> result  = postRepository.findAllByOrderByEndDateAsc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();

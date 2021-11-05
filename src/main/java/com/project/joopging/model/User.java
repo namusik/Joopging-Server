@@ -9,6 +9,7 @@ import com.project.joopging.enums.Location;
 import com.project.joopging.enums.Type;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,61 +26,76 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value = "유저 정보")
 public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "유저 PK")
     private Long id;
 
     @Column(unique = true)
+    @ApiModelProperty(value = "유저 닉네임")
     private String nickname;
 
     @Column(nullable = false)
     @JsonIgnore
+    @ApiModelProperty(value = "유저 패스워드")
     private String password;
 
     @Column(nullable = false)
     @JsonIgnore
+    @ApiModelProperty(value = "유저 아이디")
     private String email;
 
     private Long socialId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @ApiModelProperty(value = "유저 선호지역")
     private Location location;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @ApiModelProperty(value = "유저 선호지형")
     private Type type;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @ApiModelProperty(value = "유저 선호거리")
     private Distance distance;
 
     @Column
+    @ApiModelProperty(value = "유저 이미지")
     private String userImg;
 
     @Enumerated(value = EnumType.STRING)
+    @ApiModelProperty(value = "유저 권한")
     private UserRoleEnum role;
 
     @Column
     @JsonIgnore
+    @ApiModelProperty(value = "유저 자기소개")
     private String intro;
 
 
     @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
+    @ApiModelProperty(value = "참가자 정보")
     private List<Crew> crews;
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore
+    @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
     @OneToMany(mappedBy = "userReview")
     @JsonIgnore
+    @ApiModelProperty(value = "후기 정보")
     private List<Review> review;
 
     @OneToMany(mappedBy = "userComment")
     @JsonIgnore
+    @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comment;
 
     @OneToMany(mappedBy = "userBookMark", orphanRemoval = true)
