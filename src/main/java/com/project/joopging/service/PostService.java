@@ -4,6 +4,7 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.BookMark;
@@ -192,5 +193,22 @@ public class PostService {
 
 
 
+    }
+    //내 북마크 리스트
+    public List<MyBookmarkListResponseDto> getMyBookmarkListByUser(User user) {
+        List<MyBookmarkListResponseDto> myBookmarkList = new ArrayList<>();
+
+        Long userId = user.getId();
+        User myUser = userRepository.findById(userId).orElseThrow(
+                () -> new  CustomErrorException("유저를 정보가 없습니다")
+        );
+        List<BookMark> bookMarkList = bookMarkRepository.findAllByUserBookMark(myUser);
+        for (BookMark bookMark : bookMarkList) {
+            Post myBookmarkPost = bookMark.getPostBookMark();
+            String runningDateToString = getRunningDateToString(myBookmarkPost);
+            MyBookmarkListResponseDto responseDto = myBookmarkPost.toBuildMyBookmarkPost(runningDateToString);
+            myBookmarkList.add(responseDto);
+        }
+        return myBookmarkList;
     }
 }

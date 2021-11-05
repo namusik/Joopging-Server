@@ -20,7 +20,7 @@ public class Review extends Timestamped {
     @ApiModelProperty(value = "후기 아이디")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "후기 내용")
     private String content;
 
