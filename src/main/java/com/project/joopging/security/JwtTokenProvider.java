@@ -1,6 +1,5 @@
 package com.project.joopging.security;
 
-import com.project.joopging.exception.CustomErrorException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,10 +76,8 @@ public class JwtTokenProvider {
 
             System.out.println("claims = " + claims);  // JWT 토큰(클라이언트에서 보낸)이 잘 들어오는지 검증하는 부분 -> 서버 콘솔에 token 찍힘.
             return !claims.getBody().getExpiration().before(new Date()); // expire시간이 되지 않았다면 True!
-        } catch (ExpiredJwtException e) {
-            throw new CustomErrorException ("Token Expired.");
         } catch (Exception e) {
-            throw new CustomErrorException("Invalid Tocken");
+            return false;
         }
     }
 

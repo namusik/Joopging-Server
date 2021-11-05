@@ -17,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -146,36 +145,5 @@ public class UserController {
         if (userDetails == null) {
             throw new CustomErrorException("로그인이 필요합니다.");
         }
-    }
-
-    //token info
-    @GetMapping("/info")
-    @ResponseBody
-    public ResponseDto getUserInfoFromToken(@RequestHeader(value="X-AUTH-TOKEN") String token) {
-            System.out.println("==============receieveToken==============");
-            System.out.println(token);
-            System.out.println("==============receieveToken==============");
-            jwtTokenProvider.validateToken(token);
-
-            LoginResponseDto loginResDtoFromToken = getLoginResDtoFromToken(token);
-            return new ResponseDto(200L, "토큰 유효성 체크", loginResDtoFromToken);
-    }
-
-    private LoginResponseDto getLoginResDtoFromToken(String token) {
-        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        Object principal = authentication.getPrincipal();
-        if ( principal instanceof UserDetailsImpl ) {
-            LoginResponseDto loginResDto = getLoginResDtoFromPrincipal((UserDetailsImpl) principal);
-            loginResDto.setJwtToken(token);
-            return loginResDto;
-        } else throw new TokenErrorException("유효하지 않은 토큰입니다.");
-    }
-
-    private LoginResponseDto getLoginResDtoFromPrincipal(UserDetailsImpl principal) {
-        LoginResponseDto loginResDto = new LoginResponseDto();
-        User user = principal.getUser();
-        LoginDetailReponseDto loginDetailReponseDto = userService.toSetLoginDetailResponse(user);
-        loginResDto.setUser(loginDetailReponseDto);
-        return loginResDto;
     }
 }
