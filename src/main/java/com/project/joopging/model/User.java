@@ -85,6 +85,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore
+    @BatchSize(size = 50)
     @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
@@ -95,6 +96,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "userComment")
     @JsonIgnore
+    @BatchSize(size = 50)
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comment;
 
