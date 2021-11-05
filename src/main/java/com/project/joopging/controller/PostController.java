@@ -35,7 +35,7 @@ public class PostController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         postService.createPost(requestDto,user);
-        return new ResponseDto(200L,"모임을 만들었습니다.", "");
+        return new ResponseDto(201L,"모임을 만들었습니다.", "");
     }
 
     @ApiOperation(value = "게시글 수정")
@@ -58,7 +58,7 @@ public class PostController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         postService.deletePost(postId,user);
-        return new ResponseDto(200L, "모임 삭제에 성공하였습니다.", "");
+        return new ResponseDto(204L, "모임 삭제에 성공하였습니다.", "");
     }
 
     @ApiOperation(value = "게시글 상세페이지")
@@ -75,7 +75,7 @@ public class PostController {
     }
 
     @ApiOperation(value = "북마크 추가 제거")
-    @PostMapping("/posts/bookmark/{post_id}")
+    @PostMapping("/posts/{post_id}/bookmark")
     public ResponseDto onOffBookMark(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId

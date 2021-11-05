@@ -3,6 +3,7 @@ package com.project.joopging.dto.post;
 
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

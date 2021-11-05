@@ -31,7 +31,7 @@ public class CommentController {
     ) {
         User user = userService.userFromUserDetails(userDetail);
         commentService.createComment(user,requestDto);
-        return new ResponseDto(200L,"댓글 작성이 완료되었습니다.","");
+        return new ResponseDto(201L,"댓글 작성이 완료되었습니다.","");
     }
 
     @ApiOperation(value = "댓글 수정")
@@ -54,7 +54,7 @@ public class CommentController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         commentService.delete(user,commentId);
-        return new ResponseDto(200L,"댓글 삭제가 완료되었습니다.","");
+        return new ResponseDto(204L,"댓글 삭제가 완료되었습니다.","");
     }
 
 }

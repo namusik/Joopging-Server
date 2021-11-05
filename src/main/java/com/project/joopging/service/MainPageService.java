@@ -28,7 +28,7 @@ public class MainPageService {
     
     //조회수 높은거 5개
     public List<PostMainPageResponseDto> getByHotPlace() {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         List<Post> result  = postRepository.findAllByOrderByViewCountDesc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
@@ -41,7 +41,7 @@ public class MainPageService {
     
     //최신리뷰 5개
     public List<AllReviewResponseDto> getReviews() {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         List<Review> result = reviewRepository.findAllByOrderByModifiedAtDesc(pageable).getContent();
         List<AllReviewResponseDto> reviewList = new ArrayList<>();
         for (Review review : result) {
@@ -52,10 +52,10 @@ public class MainPageService {
         return reviewList;
     }
 
-    //달리는 날짜 빠른순
+    //최근 작성 순
     public List<PostMainPageResponseDto> getByRecentPost() {
-        Pageable pageable = PageRequest.of(0, 5);
-        List<Post> result  = postRepository.findAllByOrderByRunningDateAsc(pageable).getContent();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Post> result  = postRepository.findAllByOrderByCreatedAtDesc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
@@ -64,10 +64,10 @@ public class MainPageService {
         }
         return postList;
     }
-    //인원 마감 적은순
+    //Day 기준
     public List<PostMainPageResponseDto> getByCloseSoon() {
-        Pageable pageable = PageRequest.of(0, 5);
-        List<Post> result  = postRepository.findByCloseSoon(pageable).getContent();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Post> result  = postRepository.findAllByOrderByEndDateAsc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
@@ -79,7 +79,7 @@ public class MainPageService {
 
     //유저 지역 기반 5개
     public List<PostMainPageResponseDto> getByUserLocation(Location location) {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         List<Post> content  = postRepository.findAllByLocationOrderByRunningDateAsc(pageable,location).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
@@ -91,7 +91,7 @@ public class MainPageService {
     }
     //유저 거리 기반 5개
     public List<PostMainPageResponseDto> getByUserDistance(Distance distance) {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         List<Post> content  = postRepository.findAllByDistanceOrderByRunningDateAsc(pageable,distance).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
@@ -103,7 +103,7 @@ public class MainPageService {
     }
     //유저 타입기반 5개
     public List<PostMainPageResponseDto> getByUserType(Type type) {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         List<Post> content  = postRepository.findAllByTypeOrderByRunningDateAsc(pageable,type).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {

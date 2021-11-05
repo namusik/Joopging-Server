@@ -7,11 +7,11 @@ import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.BookMark;
-import com.project.joopging.model.Party;
+import com.project.joopging.model.Crew;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.BookMarkRepository;
-import com.project.joopging.repository.PartyRepository;
+import com.project.joopging.repository.CrewRepository;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.security.UserDetailsImpl;
@@ -19,8 +19,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -29,7 +32,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final PartyRepository partyRepository;
+    private final CrewRepository crewRepository;
     private final BookMarkRepository bookMarkRepository;
 
 
@@ -89,25 +92,36 @@ public class PostService {
     }
 
     //디테일 페이지 (북마크 추가)
+    //북마크 카운트 추가
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
-        boolean bookMarkInfo;
+        String runningDateToString = getRunningDateToString(post);
         if (userDetails == null) {
-            return post.toBuildDetailPost(null, false, false);
+            return post.toBuildDetailPost(null, false, false,runningDateToString);
         } else {
             User user = userDetails.getUser();
-            joinCheck = partyRepository.findByUserJoinAndPostJoin(user, post).isPresent();
+            joinCheck = crewRepository.findByUserJoinAndPostJoin(user, post).isPresent();
             Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
             if (BookMark.isPresent()) {
 
-                return post.toBuildDetailPost(userDetails, joinCheck, true);
+                return post.toBuildDetailPost(userDetails, joinCheck, true,runningDateToString);
             }
         }
-        return post.toBuildDetailPost(userDetails, joinCheck, false);
+        return post.toBuildDetailPost(userDetails, joinCheck, false,runningDateToString);
 
     }
 
+    private String getRunningDateToString(Post post) {
+        LocalDateTime runningDate = post.getRunningDate();
+        String day = runningDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String date = String.valueOf(runningDate);
+//        System.out.println("date = " + date);
+        String[] ts = date.split("T");
+        return ts[0] + " ("+day+") " + ts[1];
+    }
+
     //내 신청내역 (북마크 추가)
+    //북마크 카운트 추가
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
 
         List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
@@ -116,27 +130,26 @@ public class PostService {
         User myUser = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 유저입니다")
         );
-        List<Party> partyList = partyRepository.findAllByUserJoin(myUser);
-        boolean bookMarkInfo;
-        for (Party party : partyList) {
-            Post applicationPost = party.getPostJoin();
+        List<Crew> crewList = crewRepository.findAllByUserJoin(myUser);
+        for (Crew crew : crewList) {
+            Post applicationPost = crew.getPostJoin();
+            String runningDateToString = getRunningDateToString(applicationPost);
             Optional<BookMark> bookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost);
             MyApplicationPostListResponseDto responseDto;
             if (bookMark.isPresent()) {
-                responseDto = applicationPost.toBuildMyApplicationPost(true);
+                responseDto = applicationPost.toBuildMyApplicationPost(true,runningDateToString);
             } else {
-                responseDto = applicationPost.toBuildMyApplicationPost(false);
+                responseDto = applicationPost.toBuildMyApplicationPost(false,runningDateToString);
             }
             applicationPostList.add(responseDto);
         }
-
-
 
         return applicationPostList;
 
     }
 
     // 내 모집관리
+    // 북마크 수 추가
     public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
         Long userId = user.getId();
         User myUser = userRepository.findById(userId).orElseThrow(
@@ -145,7 +158,8 @@ public class PostService {
         List<Post> myPostList = myUser.getPost();
         List<MyPostPageListResponseDto> myPostListRes = new ArrayList<>();
         for (Post post : myPostList) {
-            MyPostPageListResponseDto responseDto = post.toBuildMyCreatePost();
+            String runningDateToString = getRunningDateToString(post);
+            MyPostPageListResponseDto responseDto = post.toBuildMyCreatePost(runningDateToString);
             myPostListRes.add(responseDto);
         }
         return myPostListRes;

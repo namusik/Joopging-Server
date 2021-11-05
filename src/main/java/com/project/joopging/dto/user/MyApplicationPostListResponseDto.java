@@ -2,6 +2,7 @@ package com.project.joopging.dto.user;
 
 
 import com.project.joopging.model.Post;
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class MyApplicationPostListResponseDto {
     private final Long postId;
     private final String title;
     private final String content;
-    private final LocalDateTime runningDate;
+    private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Long dDay;
@@ -31,6 +32,7 @@ public class MyApplicationPostListResponseDto {
     private final int nowPeople;
     private final String postImg;
     private final Integer viewCount;
+    private final Integer bookMarkCount;
 
 
     //작성자 정보

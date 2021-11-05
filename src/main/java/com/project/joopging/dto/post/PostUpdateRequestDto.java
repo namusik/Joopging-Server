@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PostUpdateRequestDto {
     private final String title;
+    private final String crewHeadIntro;
     private final String content;
     private final LocalDateTime runningDate;
     private final LocalDate startDate;
