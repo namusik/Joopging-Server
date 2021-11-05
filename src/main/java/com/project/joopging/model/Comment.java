@@ -10,8 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,6 +45,12 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "POST_ID", nullable = false)
     @ApiModelProperty(value = "게시글 정보")
     Post postComment;
+
+    @OneToMany(mappedBy = "commentReComment", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "대댓글 정보")
+    private List<ReComment> reComments = new ArrayList<>();
 
     public Comment(String content, User userComment, Post postComment) {
         this.content = content;

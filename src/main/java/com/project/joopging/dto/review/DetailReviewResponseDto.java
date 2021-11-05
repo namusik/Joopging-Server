@@ -36,7 +36,7 @@ public class DetailReviewResponseDto {
         this.userImg = user.getUserImg();
         this.postId = post.getId();
         this.postTitle = post.getTitle();
-        this.location = post.getLocation().getName();
+        this.location = post.getLocation();
         this.runningDate = post.getRunningDate().toLocalDate();
         this.limitPeople = post.getLimitPeople();
     }

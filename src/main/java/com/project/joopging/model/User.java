@@ -104,6 +104,12 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userReComment", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "대댓글 정보")
+    private List<ReComment> reComments = new ArrayList<>();
+
     public User(String username, String password, String email, UserRoleEnum role, Location enumLocation, Type enumType, Distance enumDistance) {
         this.nickname = username;
         this.password = password;
