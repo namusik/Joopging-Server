@@ -77,6 +77,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore
+    @BatchSize(size = 50)
     @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
@@ -87,6 +88,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "userComment")
     @JsonIgnore
+    @BatchSize(size = 50)
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comment;
 
@@ -95,6 +97,14 @@ public class User extends Timestamped {
     @BatchSize(size = 50)
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userReComment", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "대댓글 정보")
+    private List<ReComment> reComments = new ArrayList<>();
+
+
 
     public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
         this.nickname = username;

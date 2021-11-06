@@ -128,6 +128,12 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "postReComment", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "대댓글 정보")
+    private List<ReComment> reComments = new ArrayList<>();
+
     //게시글 작성
     public Post(PostCreateRequestDto requestDto,User user) {
         this.title = requestDto.getTitle();
@@ -182,7 +188,7 @@ public class Post extends Timestamped {
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                    .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                     .location(this.location)
                     .type(this.type)
                     .distance(this.distance)
@@ -196,6 +202,7 @@ public class Post extends Timestamped {
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
+                    .reCommentList(this.reComments)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         } else {
@@ -210,7 +217,7 @@ public class Post extends Timestamped {
                     .location(this.location)
                     .type(this.type)
                     .distance(this.distance)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                    .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
@@ -221,6 +228,7 @@ public class Post extends Timestamped {
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
+                    .reCommentList(this.reComments)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         }
@@ -252,7 +260,7 @@ public class Post extends Timestamped {
                 .location(this.location)
                 .type(this.type)
                 .distance(this.distance)
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
@@ -276,7 +284,7 @@ public class Post extends Timestamped {
                 .location(this.location)
                 .type(this.type)
                 .distance(this.distance)
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
@@ -297,9 +305,9 @@ public class Post extends Timestamped {
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .location(this.location)
-                .type(this.getType())
-                .distance(this.getDistance())
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .type(this.type)
+                .distance(this.distance)
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)

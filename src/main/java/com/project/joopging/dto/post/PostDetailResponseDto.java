@@ -4,6 +4,7 @@ package com.project.joopging.dto.post;
 
 import com.project.joopging.model.Comment;
 
+import com.project.joopging.model.ReComment;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +47,7 @@ public class PostDetailResponseDto {
 
 
     private List<Comment> commentList;
+    private List<ReComment> reCommentList;
 
 }
 
