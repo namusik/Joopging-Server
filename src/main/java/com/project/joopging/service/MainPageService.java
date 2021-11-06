@@ -2,18 +2,15 @@ package com.project.joopging.service;
 
 import com.project.joopging.dto.post.PostMainPageResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.Review;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Distance;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -78,7 +75,7 @@ public class MainPageService {
     }
 
     //유저 지역 기반 5개
-    public List<PostMainPageResponseDto> getByUserLocation(Location location) {
+    public List<PostMainPageResponseDto> getByUserLocation(String location) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> content  = postRepository.findAllByLocationOrderByRunningDateAsc(pageable,location).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
@@ -90,7 +87,7 @@ public class MainPageService {
         return postList;
     }
     //유저 거리 기반 5개
-    public List<PostMainPageResponseDto> getByUserDistance(Distance distance) {
+    public List<PostMainPageResponseDto> getByUserDistance(String distance) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> content  = postRepository.findAllByDistanceOrderByRunningDateAsc(pageable,distance).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
@@ -102,7 +99,7 @@ public class MainPageService {
         return postList;
     }
     //유저 타입기반 5개
-    public List<PostMainPageResponseDto> getByUserType(Type type) {
+    public List<PostMainPageResponseDto> getByUserType(String type) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> content  = postRepository.findAllByTypeOrderByRunningDateAsc(pageable,type).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();

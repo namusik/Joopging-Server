@@ -28,9 +28,9 @@ public class SearchController {
     @ApiOperation(value = "검색")
     @GetMapping("/searches")
     public ResponseDto findUseByFilter(
-            @ApiParam(value = "거리 카테고리") @RequestParam Integer distance,
-            @ApiParam(value = "지형 카테고리") @RequestParam Integer type,
-            @ApiParam(value = "지역 카테고리") @RequestParam Integer[] location,
+            @ApiParam(value = "거리 카테고리") @RequestParam String distance,
+            @ApiParam(value = "지형 카테고리") @RequestParam String type,
+            @ApiParam(value = "지역 카테고리") @RequestParam String[] location,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         List<PostSearchesDto> post = serchService.findUseByFilter(distance, type, location);
