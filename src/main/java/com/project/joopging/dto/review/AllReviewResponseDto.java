@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AllReviewResponseDto {
     private Long reviewId;
+    private String title;
     private String content;
     private String reviewImg;
     private int star;
@@ -20,6 +21,7 @@ public class AllReviewResponseDto {
 
     public AllReviewResponseDto(Review review, User user) {
         this.reviewId = review.getId();
+        this.title = review.getTitle();
         this.content = review.getContent();
         this.reviewImg = review.getReviewImg();
         this.star = review.getStar();

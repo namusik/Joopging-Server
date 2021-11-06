@@ -20,6 +20,10 @@ public class Review extends Timestamped {
     @ApiModelProperty(value = "후기 아이디")
     private Long id;
 
+    @Column
+    @ApiModelProperty(value = "후기 제목")
+    private String title;
+    
     @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "후기 내용")
     private String content;
@@ -43,6 +47,7 @@ public class Review extends Timestamped {
     private User userReview;
 
     public Review(ReviewRequestDto requestDto, Post post, User user) {
+        this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
         this.star = requestDto.getStar();
@@ -51,6 +56,7 @@ public class Review extends Timestamped {
     }
 
     public void update(ReviewRequestDto requestDto) {
+        this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
         this.star = requestDto.getStar();
