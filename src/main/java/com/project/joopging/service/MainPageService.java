@@ -42,7 +42,7 @@ public class MainPageService {
     }
     
     //최신리뷰 5개
-    public List<AllReviewResponseDto> getReviews(UserDetailsImpl userDetails) {
+    public List<AllReviewResponseDto> getReviews() {
         Pageable pageable = PageRequest.of(0, 10);
         List<Review> result = reviewRepository.findAllByOrderByModifiedAtDesc(pageable).getContent();
         List<AllReviewResponseDto> reviewList = new ArrayList<>();
@@ -82,37 +82,43 @@ public class MainPageService {
     }
 
     //유저 지역 기반 5개
-    public List<PostMainPageResponseDto> getByUserLocation(String location) {
+    public List<PostMainPageResponseDto> getByUserLocation(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
+        String location = userDetails.getUser().getLocation();
         List<Post> content  = postRepository.findAllByLocationOrderByRunningDateAsc(pageable,location).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
             User writer = post.getWriter();
-            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer);
+            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
         return postList;
     }
     //유저 거리 기반 5개
-    public List<PostMainPageResponseDto> getByUserDistance(String distance) {
+    public List<PostMainPageResponseDto> getByUserDistance(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
+        String distance = userDetails.getUser().getDistance();
         List<Post> content  = postRepository.findAllByDistanceOrderByRunningDateAsc(pageable,distance).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
             User writer = post.getWriter();
-            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer);
+            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
         return postList;
     }
     //유저 타입기반 5개
-    public List<PostMainPageResponseDto> getByUserType(String type) {
+    public List<PostMainPageResponseDto> getByUserType(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
+        String type = userDetails.getUser().getType();
         List<Post> content  = postRepository.findAllByTypeOrderByRunningDateAsc(pageable,type).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
             User writer = post.getWriter();
-            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer);
+            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
         return postList;
@@ -121,7 +127,7 @@ public class MainPageService {
     public boolean checkBookMark(User user, Post post) {
         Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
         if (BookMark.isPresent()) {
-            return true
+            return true;
         } else {
             return false;
         }

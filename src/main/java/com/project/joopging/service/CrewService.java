@@ -1,5 +1,6 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.crew.CrewReponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Crew;
 import com.project.joopging.model.Post;
@@ -11,6 +12,8 @@ import com.project.joopging.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -66,4 +69,8 @@ public class CrewService {
         post.minusNowPeople();
 
     }
+
+//    public List<CrewReponseDto> getCrews(Long postId) {
+//
+//    }
 }

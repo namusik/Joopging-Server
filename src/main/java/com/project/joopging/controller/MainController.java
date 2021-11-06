@@ -3,7 +3,9 @@ package com.project.joopging.controller;
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.post.PostMainPageResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
+import com.project.joopging.dto.user.MainPageResponseUserDto;
 import com.project.joopging.model.Post;
+import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.MainPageService;
 import com.project.joopging.service.UserService;
@@ -35,7 +37,8 @@ public class MainController {
 
         HashMap<String, Object> resultList = new HashMap<>();
 
-//        User user = userService.
+        MainPageResponseUserDto mainPageResponseUserDto = userService.getUserInfo(userDetails);
+        resultList.put("userInfo", mainPageResponseUserDto);
 
         //비로그인 로그인 공통 : 조회수 top 10
         List<PostMainPageResponseDto> hotPlaceList = mainPageService.getByHotPlace(userDetails);
@@ -46,7 +49,7 @@ public class MainController {
         resultList.put("close", closeSoonList);
 
         //비로그인 로그인 공통 : 최신작성 리뷰 10개
-        List<AllReviewResponseDto> reviewList = mainPageService.getReviews(userDetails);
+        List<AllReviewResponseDto> reviewList = mainPageService.getReviews();
         resultList.put("reviews", reviewList);
         
         if (userDetails == null) { //비로그인 시
@@ -56,15 +59,15 @@ public class MainController {
             return new ResponseDto(200L, "ok", resultList);
         } else { //로그인 시
             //유저 지역기준 최신순 5개
-            List<PostMainPageResponseDto> locationList = mainPageService.getByUserLocation(userDetails.getUser().getLocation());
+            List<PostMainPageResponseDto> locationList = mainPageService.getByUserLocation(userDetails);
             resultList.put("location", locationList);
 
             //유저 거리기준 최신순 5개
-            List<PostMainPageResponseDto> distanceList = mainPageService.getByUserDistance(userDetails.getUser().getDistance());
+            List<PostMainPageResponseDto> distanceList = mainPageService.getByUserDistance(userDetails);
             resultList.put("distance", distanceList);
 
             //유저 타입기준 최신순 5개
-            List<PostMainPageResponseDto> typeList = mainPageService.getByUserType(userDetails.getUser().getType());
+            List<PostMainPageResponseDto> typeList = mainPageService.getByUserType(userDetails);
             resultList.put("type", typeList);
 
             return new ResponseDto(200L, "ok", resultList);

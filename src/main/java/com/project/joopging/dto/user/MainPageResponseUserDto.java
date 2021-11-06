@@ -16,5 +16,8 @@ public class MainPageResponseUserDto {
 
     public MainPageResponseUserDto(User user) {
         this.nickname = user.getNickname();
+        this.location = user.getLocation();
+        this.distance = user.getDistance();
+        this.type = user.getType();
     }
 }
