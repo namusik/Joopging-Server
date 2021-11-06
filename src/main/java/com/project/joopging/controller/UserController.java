@@ -150,6 +150,14 @@ public class UserController {
 
     }
 
+    //내가 만든 모임의 참가한 유저들 불러오기
+    @ApiOperation(value = "마이페이지 모임관리 참가자 불러오기")
+    @GetMapping("/post/{post_id}/my")
+    public ResponseDto myPostCrews(@ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId) {
+
+    }
+
+
     //로그인 상태 확인
     @ApiOperation(value = "로그인 체크")
     private void checkLogin(

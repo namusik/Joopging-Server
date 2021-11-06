@@ -2,19 +2,22 @@ package com.project.joopging.service;
 
 import com.project.joopging.dto.post.PostMainPageResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
+import com.project.joopging.model.BookMark;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.Review;
 import com.project.joopging.model.User;
+import com.project.joopging.repository.BookMarkRepository;
 import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.ReviewRepository;
+import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.geo.Distance;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,22 +25,24 @@ public class MainPageService {
 
     private final PostRepository postRepository;
     private final ReviewRepository reviewRepository;
+    private final BookMarkRepository bookMarkRepository;
     
     //조회수 높은거 5개
-    public List<PostMainPageResponseDto> getByHotPlace() {
+    public List<PostMainPageResponseDto> getByHotPlace(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> result  = postRepository.findAllByOrderByViewCountDesc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
-            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer);
+            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
         return postList;
     }
     
     //최신리뷰 5개
-    public List<AllReviewResponseDto> getReviews() {
+    public List<AllReviewResponseDto> getReviews(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Review> result = reviewRepository.findAllByOrderByModifiedAtDesc(pageable).getContent();
         List<AllReviewResponseDto> reviewList = new ArrayList<>();
@@ -50,25 +55,27 @@ public class MainPageService {
     }
 
     //최근 작성 순
-    public List<PostMainPageResponseDto> getByRecentPost() {
+    public List<PostMainPageResponseDto> getByRecentPost(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> result  = postRepository.findAllByOrderByCreatedAtDesc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
-            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer);
+            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
         return postList;
     }
-    //Day 기준
-    public List<PostMainPageResponseDto> getByCloseSoon() {
+    //Dday 기준
+    public List<PostMainPageResponseDto> getByCloseSoon(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> result  = postRepository.findAllByOrderByEndDateAsc(pageable).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
-            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer);
+            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
         return postList;
@@ -109,5 +116,14 @@ public class MainPageService {
             postList.add(postMainPageResponseDto);
         }
         return postList;
+    }
+
+    public boolean checkBookMark(User user, Post post) {
+        Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
+        if (BookMark.isPresent()) {
+            return true
+        } else {
+            return false;
+        }
     }
 }

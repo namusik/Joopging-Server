@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class DetailReviewResponseDto {
     private Long reviewId;
+    private String title;
     private String content;
     private String reviewImg;
     private int star;
@@ -28,6 +29,7 @@ public class DetailReviewResponseDto {
 
     public DetailReviewResponseDto(Review review, User user, Post post) {
         this.reviewId = review.getId();
+        this.title = review.getTitle();
         this.content = review.getContent();
         this.reviewImg = review.getReviewImg();
         this.star = review.getStar();
