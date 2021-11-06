@@ -2,7 +2,6 @@ package com.project.joopging.dto.user;
 
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.model.User;
-import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 @Getter
@@ -28,9 +27,9 @@ public class EditUserResponseDto {
     public EditUserResponseDto(User user) {
         this.id = user.getId();
         this.userImg = user.getUserImg();
-        this.location = user.getLocation().getName();
-        this.type = user.getType().getName();
-        this.distance = user.getDistance().getName();
+        this.location = user.getLocation();
+        this.type = user.getType();
+        this.distance = user.getDistance();
         this.role = user.getRole();
         this.intro = user.getIntro();
     }

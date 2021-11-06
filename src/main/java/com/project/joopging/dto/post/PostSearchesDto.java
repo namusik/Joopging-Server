@@ -40,9 +40,9 @@ public class PostSearchesDto {
         this.runningDate = post.getRunningDate();
         this.startDate = post.getStartDate();
         this.endDate = post.getEndDate();
-        this.location = post.getLocation().getName();
-        this.type = post.getType().getName();
-        this.distance = post.getDistance().getName();
+        this.location = post.getLocation();
+        this.type = post.getType();
+        this.distance = post.getDistance();
         this.limitPeople = post.getLimitPeople();
         this.nowPeople = post.getNowPeople();
         this.postImg = post.getPostImg();

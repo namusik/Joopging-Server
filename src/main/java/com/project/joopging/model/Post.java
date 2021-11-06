@@ -8,9 +8,6 @@ import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
@@ -18,6 +15,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
+import org.springframework.data.geo.Distance;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -66,22 +64,19 @@ public class Post extends Timestamped {
     private LocalDate endDate;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 지역")
-    private Location location;
+    private String location;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 지형")
-    private Type type;
+    private String type;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 거리")
-    private Distance distance;
+    private String distance;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 최대 인원수")
@@ -141,9 +136,9 @@ public class Post extends Timestamped {
         this.runningDate = requestDto.getRunningDate();
         this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
-        this.location = Location.getLocationById(requestDto.getLocation());
-        this.type= Type.getTypeById(requestDto.getType());
-        this.distance = Distance.getDistanceById(requestDto.getDistance());
+        this.location = requestDto.getLocation();
+        this.type= requestDto.getType();
+        this.distance = requestDto.getDistance();
         this.limitPeople = requestDto.getLimitPeople();
         this.postImg = requestDto.getPostImg();
         this.writer = user;
@@ -165,9 +160,9 @@ public class Post extends Timestamped {
         this.runningDate = requestDto.getRunningDate();
         this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
-        this.location = Location.getLocationById(requestDto.getLocation());
-        this.type= Type.getTypeById(requestDto.getType());
-        this.distance = Distance.getDistanceById(requestDto.getDistance());
+        this.location = requestDto.getLocation();
+        this.type= requestDto.getType();
+        this.distance = requestDto.getDistance();
         this.limitPeople = requestDto.getLimitPeople();
         this.postImg = requestDto.getPostImg();
     }
@@ -188,9 +183,9 @@ public class Post extends Timestamped {
                     .startDate(this.startDate)
                     .endDate(this.endDate)
                     .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
-                    .location(location.getName())
-                    .type(type.getName())
-                    .distance(distance.getName())
+                    .location(this.location)
+                    .type(this.type)
+                    .distance(this.distance)
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
@@ -212,9 +207,9 @@ public class Post extends Timestamped {
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .location(location.getName())
-                    .type(type.getName())
-                    .distance(distance.getName())
+                    .location(this.location)
+                    .type(this.type)
+                    .distance(this.distance)
                     .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
@@ -254,9 +249,9 @@ public class Post extends Timestamped {
                 .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
-                .location(location.getName())
-                .type(type.getName())
-                .distance(distance.getName())
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
                 .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
@@ -278,9 +273,9 @@ public class Post extends Timestamped {
                 .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
-                .location(location.getName())
-                .type(type.getName())
-                .distance(distance.getName())
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
                 .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
