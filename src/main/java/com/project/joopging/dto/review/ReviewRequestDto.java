@@ -11,6 +11,7 @@ import javax.persistence.Column;
 @Getter
 public class ReviewRequestDto {
     Long postId;
+    String title;
     String content;
     String reviewImg;
     int star;

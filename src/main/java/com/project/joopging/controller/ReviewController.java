@@ -40,7 +40,7 @@ public class ReviewController {
             @ApiParam(value = "후기 생성 정보") @RequestBody ReviewRequestDto requestDto,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        checkLogin(userDetails);
+//        checkLogin(userDetails);
         Review review = reviewService.createReview( requestDto, userDetails);
         return new ResponseDto(201L, "후기를 저장했습니다.", "");
     }
