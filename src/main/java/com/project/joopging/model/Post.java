@@ -8,9 +8,6 @@ import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
@@ -18,6 +15,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
+import org.springframework.data.geo.Distance;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -66,19 +64,16 @@ public class Post extends Timestamped {
     private LocalDate endDate;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 지역")
     private String location;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 지형")
     private String type;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 거리")
     private String distance;
