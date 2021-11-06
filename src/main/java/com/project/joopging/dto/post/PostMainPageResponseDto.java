@@ -29,8 +29,9 @@ public class PostMainPageResponseDto {
     private Long userId;
     private String nickname;
     private String userImg;
+    private boolean bookMarkInfo;
 
-    public PostMainPageResponseDto(Post post, User writer) {
+    public PostMainPageResponseDto(Post post, User writer, Boolean checkBookMark) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
@@ -41,13 +42,14 @@ public class PostMainPageResponseDto {
         String[] ts = date.split("T");
         this.runningDate = ts[0] + " ("+day+") " + ts[1];
         this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
-        this.location = post.getLocation().getName();
-        this.type = post.getType().getName();
-        this.distance = post.getDistance().getName();
+        this.location = post.getLocation();
+        this.type = post.getType();
+        this.distance = post.getDistance();
         this.limitPeople = post.getLimitPeople();
         this.nowPeople = post.getNowPeople();
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
+        this.bookMarkInfo = checkBookMark;
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();

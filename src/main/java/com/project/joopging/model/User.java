@@ -2,11 +2,6 @@ package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.user.LoginDetailReponseDto;
-import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
-import com.project.joopging.dto.user.MyPostPageListResponseDto;
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
@@ -50,19 +45,16 @@ public class User extends Timestamped {
     private Long socialId;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "유저 선호지역")
-    private Location location;
+    private String location;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "유저 선호지형")
-    private Type type;
+    private String type;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @ApiModelProperty(value = "유저 선호거리")
-    private Distance distance;
+    private String distance;
 
     @Column
     @ApiModelProperty(value = "유저 이미지")
@@ -85,6 +77,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "writer")
     @JsonIgnore
+    @BatchSize(size = 50)
     @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
@@ -95,6 +88,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "userComment")
     @JsonIgnore
+    @BatchSize(size = 50)
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comment;
 
@@ -104,7 +98,15 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
-    public User(String username, String password, String email, UserRoleEnum role, Location enumLocation, Type enumType, Distance enumDistance) {
+    @OneToMany(mappedBy = "userReComment", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "대댓글 정보")
+    private List<ReComment> reComments = new ArrayList<>();
+
+
+
+    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
         this.nickname = username;
         this.password = password;
         this.email = email;
@@ -136,9 +138,9 @@ public class User extends Timestamped {
                 .email(this.email)
                 .nickname(this.nickname)
 //                .password(this.password)
-                .location(this.location.getName())
-                .type(this.type.getName())
-                .distance(this.distance.getName())
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
                 .userImg(this.userImg)
                 .role(this.role)
                 .intro(this.intro)

@@ -16,9 +16,9 @@ public class PostCreateRequestDto {
     private final LocalDateTime runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final Integer location;
-    private final Integer type;
-    private final Integer distance;
+    private final String location;
+    private final String type;
+    private final String distance;
     private final int limitPeople;
     private final String postImg;
 

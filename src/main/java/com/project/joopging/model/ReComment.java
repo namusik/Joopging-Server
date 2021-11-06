@@ -2,6 +2,7 @@ package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.reCommentDto.ReCommentCreateRequestDto;
+import com.project.joopging.dto.reCommentDto.ReCommentUpdateRequestDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,21 +31,21 @@ public class ReComment extends Timestamped {
     String content;
 
 
-    //단방향
+    //양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "USER_ID", nullable = false)
     @ApiModelProperty(value = "유저 정보")
     User userReComment;
 
-    //단방향
+    //양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "POST_ID", nullable = false)
     @ApiModelProperty(value = "게시글 정보")
     Post postReComment;
 
-    //단방향
+    //양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "COMMENT_ID", nullable = false)
@@ -68,5 +69,11 @@ public class ReComment extends Timestamped {
         return new ReComment(requestDto,userReComment,postReComment,commentReComment);
     }
 
+    public void update(ReCommentUpdateRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
 
+    public boolean isWrittenBy(User user) {
+        return this.userReComment.getId().equals(user.getId());
+    }
 }

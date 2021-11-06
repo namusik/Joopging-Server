@@ -2,9 +2,6 @@ package com.project.joopging.service;
 
 import com.project.joopging.dto.user.*;
 
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.UserRepository;
@@ -71,20 +68,20 @@ public class UserService {
             password = editUserInfoDto.getPassword();
         }
 
-        Integer distance = editUserInfoDto.getDistance();
-        Distance distanceName = Distance.getDistanceById(distance);
+        String distance = editUserInfoDto.getDistance();
+//        Distance distanceName = Distance.getDistanceById(distance);
 
-        Integer location = editUserInfoDto.getLocation();
-        Location locationName = Location.getLocationById(location);
+        String location = editUserInfoDto.getLocation();
+//        Location locationName = Location.getLocationById(location);
 
-        Integer type = editUserInfoDto.getType();
-        Type typeName = Type.getTypeById(type);
+        String type = editUserInfoDto.getType();
+//        Type typeName = Type.getTypeById(type);
 
         user.setUserImg(userImg);
-        user.setDistance(distanceName);
+        user.setDistance(distance);
         user.setPassword(passwordEncoder.encode(password));
-        user.setLocation(locationName);
-        user.setType(typeName);
+        user.setLocation(location);
+        user.setType(type);
         user.setIntro(intro);
 
         userRepository.save(user);
@@ -93,6 +90,15 @@ public class UserService {
     }
 
     public LoginDetailReponseDto toSetLoginDetailResponse(User user) {
+
         return user.toBuildDetailUser();
+    }
+
+    public MainPageResponseUserDto getUserInfo(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomErrorException("없는 사용자 입니다")
+        );
+
+        return new MainPageResponseUserDto(user);
     }
 }

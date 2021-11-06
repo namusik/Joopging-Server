@@ -3,6 +3,7 @@ package com.project.joopging.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/main").permitAll()
-                .antMatchers("/reviews").permitAll()
+                .antMatchers(HttpMethod.GET, "/reviews").permitAll()
+                .antMatchers(HttpMethod.GET, "/reviews/{review_id}").permitAll()
                 .antMatchers("/posts/{post_id}").permitAll()
                 .antMatchers("/posts").permitAll()
                 .antMatchers("/exception/**").permitAll()
@@ -79,12 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/health").permitAll()
                 .antMatchers("/version").permitAll()
                 .antMatchers("/**").permitAll()
-                .antMatchers("/v3/api-docs").permitAll()
-                .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/configuration/**").permitAll()
-                .antMatchers("/swagger/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
