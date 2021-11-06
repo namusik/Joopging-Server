@@ -37,9 +37,6 @@ public class MainController {
 
         HashMap<String, Object> resultList = new HashMap<>();
 
-        MainPageResponseUserDto mainPageResponseUserDto = userService.getUserInfo(userDetails);
-        resultList.put("userInfo", mainPageResponseUserDto);
-
         //비로그인 로그인 공통 : 조회수 top 10
         List<PostMainPageResponseDto> hotPlaceList = mainPageService.getByHotPlace(userDetails);
         resultList.put("hot", hotPlaceList);
@@ -58,6 +55,10 @@ public class MainController {
             resultList.put("recent", recentPost);
             return new ResponseDto(200L, "ok", resultList);
         } else { //로그인 시
+
+            MainPageResponseUserDto mainPageResponseUserDto = userService.getUserInfo(userDetails);
+            resultList.put("userInfo", mainPageResponseUserDto);
+
             //유저 지역기준 최신순 5개
             List<PostMainPageResponseDto> locationList = mainPageService.getByUserLocation(userDetails);
             resultList.put("location", locationList);

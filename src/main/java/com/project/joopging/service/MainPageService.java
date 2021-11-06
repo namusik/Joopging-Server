@@ -34,7 +34,10 @@ public class MainPageService {
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
-            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            boolean checkBookMark = false;
+            if(userDetails != null){
+                checkBookMark = checkBookMark(userDetails.getUser(), post);
+            }
             PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
@@ -61,7 +64,10 @@ public class MainPageService {
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
-            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            boolean checkBookMark = false;
+            if(userDetails != null) {
+                checkBookMark = checkBookMark(userDetails.getUser(), post);
+            }
             PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
@@ -74,7 +80,10 @@ public class MainPageService {
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
-            boolean checkBookMark = checkBookMark(userDetails.getUser(), post);
+            boolean checkBookMark = false;
+            if(userDetails != null) {
+                checkBookMark = checkBookMark(userDetails.getUser(), post);
+            }
             PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, writer, checkBookMark);
             postList.add(postMainPageResponseDto);
         }
