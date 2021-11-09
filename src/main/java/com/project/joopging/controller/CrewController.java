@@ -2,7 +2,6 @@ package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.crew.CrewReponseDto;
-import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Crew;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.CrewService;
@@ -13,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
 import java.util.List;
-import java.util.ResourceBundle;
+
 
 @RestController
 @RequiredArgsConstructor
