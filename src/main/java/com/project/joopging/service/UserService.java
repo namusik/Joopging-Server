@@ -97,6 +97,15 @@ public class UserService {
     }
 
     public LoginDetailReponseDto toSetLoginDetailResponse(User user) {
+
         return user.toBuildDetailUser();
+    }
+
+    public MainPageResponseUserDto getUserInfo(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomErrorException("없는 사용자 입니다")
+        );
+
+        return new MainPageResponseUserDto(user);
     }
 }

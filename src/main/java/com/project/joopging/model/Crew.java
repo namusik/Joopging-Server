@@ -20,7 +20,11 @@ public class Crew extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "크루 아이디")
     private Long id;
-
+    
+    @Column
+    @ApiModelProperty(value = "출석 여부")
+    private boolean attendation;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID",  nullable = false)
     @ApiModelProperty(value = "유저 정보")
@@ -39,5 +43,6 @@ public class Crew extends Timestamped {
     public Crew(User userJoin, Post postJoin) {
         this.userJoin = userJoin;
         this.postJoin = postJoin;
+        this.attendation = false;
     }
 }

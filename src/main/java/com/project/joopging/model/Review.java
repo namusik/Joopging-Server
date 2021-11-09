@@ -21,6 +21,10 @@ public class Review extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "후기 제목")
+    private String title;
+    
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "후기 내용")
     private String content;
 
@@ -31,6 +35,18 @@ public class Review extends Timestamped {
     @Column(nullable = false)
     @ApiModelProperty(value = "후기 총 별점")
     private int star;
+
+    @Column(nullable = false)
+    @ApiModelProperty(value = "만족도")
+    private int satiRate;
+
+    @Column(nullable = false)
+    @ApiModelProperty(value = "난이도")
+    private int levelRate;
+
+    @Column(nullable = false)
+    @ApiModelProperty(value = "쓰레기양")
+    private int trashRate;
 
     @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
@@ -43,16 +59,24 @@ public class Review extends Timestamped {
     private User userReview;
 
     public Review(ReviewRequestDto requestDto, Post post, User user) {
+        this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
         this.star = requestDto.getStar();
+        this.satiRate = requestDto.getSatiRate();
+        this.levelRate = requestDto.getLevelRate();
+        this.trashRate = requestDto.getTrashRate();
         this.postReview = post;
         this.userReview = user;
     }
 
     public void update(ReviewRequestDto requestDto) {
+        this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
         this.star = requestDto.getStar();
+        this.satiRate = requestDto.getSatiRate();
+        this.levelRate = requestDto.getLevelRate();
+        this.trashRate = requestDto.getTrashRate();
     }
 }

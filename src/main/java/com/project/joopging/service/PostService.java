@@ -4,6 +4,7 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.BookMark;
@@ -46,7 +47,7 @@ public class PostService {
         // fetch Lazy 유저를 진짜 유저로 변환
         Long userId = user.getId();
         User writer = userRepository.findById(userId).orElseThrow(
-                () -> new CustomErrorException("유저 정보를 찾을 수 없습니다")
+                () -> new CustomErrorException("유저 정보를 찾을 수 없습니다.")
         );
         //유저에도 포스트 추가
         List<Post> postList = writer.getPost();
@@ -61,7 +62,7 @@ public class PostService {
         if (post.isWrittenBy(user)) {
             post.update(requestDto);
         } else {
-            throw new CustomErrorException("모임의 작성자가 아닙니다");
+            throw new CustomErrorException("모임의 작성자가 아닙니다.");
         }
     }
 
@@ -71,7 +72,7 @@ public class PostService {
         if(post.isWrittenBy(user)) {
             postRepository.delete(post);
         } else {
-            throw new CustomErrorException("모임의 작성자가 아닙니다");
+            throw new CustomErrorException("모임의 작성자가 아닙니다.");
         }
     }
 
@@ -128,7 +129,7 @@ public class PostService {
         Long userId = user.getId();
         //Optional 유저를 쓰거나 .orElseThrow 를 쓰거나
         User myUser = userRepository.findById(userId).orElseThrow(
-                () -> new CustomErrorException("존재하지 않는 유저입니다")
+                () -> new CustomErrorException("존재하지 않는 유저입니다.")
         );
         List<Crew> crewList = crewRepository.findAllByUserJoin(myUser);
         for (Crew crew : crewList) {
@@ -171,10 +172,10 @@ public class PostService {
     public boolean getBookMarkInfo(User user, Long postId) {
         Long userId = user.getId();
         User myUser = userRepository.findById(userId).orElseThrow(
-                () -> new CustomErrorException("존재하지 않는 유저입니다")
+                () -> new CustomErrorException("존재하지 않는 유저입니다.")
         );
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new CustomErrorException("존재하지 않는 게시글입니다")
+                () -> new CustomErrorException("존재하지 않는 게시글입니다.")
         );
         Optional<BookMark> bookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, post);
         if (bookMark.isPresent()) {
@@ -192,5 +193,22 @@ public class PostService {
 
 
 
+    }
+    //내 북마크 리스트
+    public List<MyBookmarkListResponseDto> getMyBookmarkListByUser(User user) {
+        List<MyBookmarkListResponseDto> myBookmarkList = new ArrayList<>();
+
+        Long userId = user.getId();
+        User myUser = userRepository.findById(userId).orElseThrow(
+                () -> new  CustomErrorException("유저를 정보가 없습니다.")
+        );
+        List<BookMark> bookMarkList = bookMarkRepository.findAllByUserBookMark(myUser);
+        for (BookMark bookMark : bookMarkList) {
+            Post myBookmarkPost = bookMark.getPostBookMark();
+            String runningDateToString = getRunningDateToString(myBookmarkPost);
+            MyBookmarkListResponseDto responseDto = myBookmarkPost.toBuildMyBookmarkPost(runningDateToString);
+            myBookmarkList.add(responseDto);
+        }
+        return myBookmarkList;
     }
 }

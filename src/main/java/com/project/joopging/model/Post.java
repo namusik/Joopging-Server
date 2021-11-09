@@ -6,6 +6,7 @@ import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
@@ -42,11 +43,11 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "게시글 제목")
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "게시글 모임장 소개")
     private String crewHeadIntro;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "게시글 내용")
     private String content;
 
@@ -127,6 +128,12 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "postReComment", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "대댓글 정보")
+    private List<ReComment> reComments = new ArrayList<>();
+
     //게시글 작성
     public Post(PostCreateRequestDto requestDto,User user) {
         this.title = requestDto.getTitle();
@@ -181,7 +188,7 @@ public class Post extends Timestamped {
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                    .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                     .location(this.location)
                     .type(this.type)
                     .distance(this.distance)
@@ -195,6 +202,7 @@ public class Post extends Timestamped {
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
+                    .reCommentList(this.reComments)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         } else {
@@ -209,7 +217,7 @@ public class Post extends Timestamped {
                     .location(this.location)
                     .type(this.type)
                     .distance(this.distance)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                    .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
@@ -220,6 +228,7 @@ public class Post extends Timestamped {
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
                     .commentList(this.comments)
+                    .reCommentList(this.reComments)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         }
@@ -251,7 +260,7 @@ public class Post extends Timestamped {
                 .location(this.location)
                 .type(this.type)
                 .distance(this.distance)
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
@@ -275,7 +284,30 @@ public class Post extends Timestamped {
                 .location(this.location)
                 .type(this.type)
                 .distance(this.distance)
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
+                .limitPeople(this.limitPeople)
+                .nowPeople(this.nowPeople)
+                .postImg(this.postImg)
+                .viewCount(this.viewCount)
+                .bookMarkCount(this.totalBookMarkCount)
+                .writerName(this.writer.getNickname())
+                .userImg(this.writer.getUserImg())
+                .intro(this.writer.getIntro())
+                .build();
+    }
+
+    public MyBookmarkListResponseDto toBuildMyBookmarkPost(String runningDateToString) {
+        return MyBookmarkListResponseDto.builder()
+                .postId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .runningDate(runningDateToString)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)

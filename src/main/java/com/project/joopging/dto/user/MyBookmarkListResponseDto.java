@@ -1,28 +1,20 @@
-package com.project.joopging.dto.post;
+package com.project.joopging.dto.user;
 
-
-
-import com.project.joopging.model.Comment;
-
-import com.project.joopging.model.ReComment;
-import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.List;
-import java.util.Locale;
+import lombok.Setter;
 
+import java.time.LocalDate;
 
 @Getter
+@Setter
 @Builder
-public class PostDetailResponseDto {
+public class MyBookmarkListResponseDto {
+
     //Post 정보
     private final Long postId;
     private final String title;
     private final String content;
-    private final String crewHeadIntro;
     private final String runningDate;
     private final LocalDate startDate;
     private final LocalDate endDate;
@@ -34,22 +26,11 @@ public class PostDetailResponseDto {
     private final int nowPeople;
     private final String postImg;
     private final Integer viewCount;
-    private final Integer totalBookMarkCount;
+    private final Integer bookMarkCount;
 
 
     //작성자 정보
     private final String writerName;
     private final String userImg;
     private final String intro;
-    private final boolean joinCheck;
-    private final boolean bookMarkInfo;
-
-
-
-    private List<Comment> commentList;
-    private List<ReComment> reCommentList;
-
 }
-
-
-

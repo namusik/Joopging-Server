@@ -29,8 +29,9 @@ public class PostMainPageResponseDto {
     private Long userId;
     private String nickname;
     private String userImg;
+    private boolean bookMarkInfo;
 
-    public PostMainPageResponseDto(Post post, User writer) {
+    public PostMainPageResponseDto(Post post, User writer, Boolean checkBookMark) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
@@ -48,6 +49,7 @@ public class PostMainPageResponseDto {
         this.nowPeople = post.getNowPeople();
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
+        this.bookMarkInfo = checkBookMark;
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();

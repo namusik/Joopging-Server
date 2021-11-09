@@ -10,8 +10,12 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @Getter
 public class ReviewRequestDto {
-    Long postId;
-    String content;
-    String reviewImg;
-    int star;
+    private Long postId;
+    private String title;
+    private String content;
+    private String reviewImg;
+    private int star;
+    private int satiRate;
+    private int levelRate;
+    private int trashRate;
 }
