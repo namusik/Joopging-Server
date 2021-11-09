@@ -27,9 +27,14 @@ public class Crew extends Timestamped {
     private User userJoin;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID", nullable = false)
+    @JoinColumn(name = "POST_ID")
     @ApiModelProperty(value = "게시글 정보")
     private Post postJoin;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CAMPAIGN_ID")
+    @ApiModelProperty(value = "게시글 정보")
+    private Campaign campaignJoin;
 
     public Crew(User userJoin, Post postJoin) {
         this.userJoin = userJoin;

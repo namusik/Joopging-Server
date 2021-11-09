@@ -80,6 +80,11 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
+    @OneToMany(mappedBy = "admin")
+    @JsonIgnore
+    @ApiModelProperty(value = "게시글 정보")
+    private List<Campaign> campaigns;
+
     @OneToMany(mappedBy = "userReview")
     @JsonIgnore
     @ApiModelProperty(value = "후기 정보")
