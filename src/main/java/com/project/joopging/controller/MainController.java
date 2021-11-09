@@ -4,15 +4,12 @@ import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.post.PostMainPageResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
 import com.project.joopging.dto.user.MainPageResponseUserDto;
-import com.project.joopging.model.Post;
-import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.MainPageService;
 import com.project.joopging.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +34,6 @@ public class MainController {
 
         HashMap<String, Object> resultList = new HashMap<>();
 
-        MainPageResponseUserDto mainPageResponseUserDto = userService.getUserInfo(userDetails);
-        resultList.put("userInfo", mainPageResponseUserDto);
-
         //비로그인 로그인 공통 : 조회수 top 10
         List<PostMainPageResponseDto> hotPlaceList = mainPageService.getByHotPlace(userDetails);
         resultList.put("hot", hotPlaceList);
@@ -58,6 +52,10 @@ public class MainController {
             resultList.put("recent", recentPost);
             return new ResponseDto(200L, "ok", resultList);
         } else { //로그인 시
+
+            MainPageResponseUserDto mainPageResponseUserDto = userService.getUserInfo(userDetails);
+            resultList.put("userInfo", mainPageResponseUserDto);
+
             //유저 지역기준 최신순 5개
             List<PostMainPageResponseDto> locationList = mainPageService.getByUserLocation(userDetails);
             resultList.put("location", locationList);

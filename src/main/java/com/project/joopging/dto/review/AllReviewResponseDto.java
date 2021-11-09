@@ -1,12 +1,11 @@
 package com.project.joopging.dto.review;
 
-import com.project.joopging.model.Post;
 import com.project.joopging.model.Review;
 import com.project.joopging.model.User;
-import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @NoArgsConstructor
@@ -15,7 +14,11 @@ public class AllReviewResponseDto {
     private String title;
     private String content;
     private String reviewImg;
+    private Long writeDateBefore;
     private int star;
+    private int satiRate;
+    private int levelRate;
+    private int trashRate;
     private String nickname;
     private String userImg;
 
@@ -24,7 +27,11 @@ public class AllReviewResponseDto {
         this.title = review.getTitle();
         this.content = review.getContent();
         this.reviewImg = review.getReviewImg();
+        this.writeDateBefore = ChronoUnit.DAYS.between(LocalDate.now(), review.getCreatedAt().toLocalDate());
         this.star = review.getStar();
+        this.satiRate = review.getSatiRate();
+        this.levelRate = review.getLevelRate();
+        this.trashRate = review.getTrashRate();
         this.nickname = user.getNickname();
         this.userImg = user.getUserImg();
     }
