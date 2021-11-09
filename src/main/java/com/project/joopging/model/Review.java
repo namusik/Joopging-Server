@@ -20,7 +20,7 @@ public class Review extends Timestamped {
     @ApiModelProperty(value = "후기 아이디")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     @ApiModelProperty(value = "후기 제목")
     private String title;
     
@@ -35,6 +35,18 @@ public class Review extends Timestamped {
     @Column(nullable = false)
     @ApiModelProperty(value = "후기 총 별점")
     private int star;
+
+    @Column(nullable = false)
+    @ApiModelProperty(value = "만족도")
+    private int satiRate;
+
+    @Column(nullable = false)
+    @ApiModelProperty(value = "난이도")
+    private int levelRate;
+
+    @Column(nullable = false)
+    @ApiModelProperty(value = "쓰레기양")
+    private int trashRate;
 
     @ManyToOne
     @JoinColumn(name = "POST_ID", nullable = false)
@@ -51,6 +63,9 @@ public class Review extends Timestamped {
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
         this.star = requestDto.getStar();
+        this.satiRate = requestDto.getSatiRate();
+        this.levelRate = requestDto.getLevelRate();
+        this.trashRate = requestDto.getTrashRate();
         this.postReview = post;
         this.userReview = user;
     }
@@ -60,5 +75,8 @@ public class Review extends Timestamped {
         this.content = requestDto.getContent();
         this.reviewImg = requestDto.getReviewImg();
         this.star = requestDto.getStar();
+        this.satiRate = requestDto.getSatiRate();
+        this.levelRate = requestDto.getLevelRate();
+        this.trashRate = requestDto.getTrashRate();
     }
 }

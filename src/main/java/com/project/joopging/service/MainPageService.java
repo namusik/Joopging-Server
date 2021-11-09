@@ -11,10 +11,13 @@ import com.project.joopging.repository.PostRepository;
 import com.project.joopging.repository.ReviewRepository;
 import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +29,13 @@ public class MainPageService {
     private final PostRepository postRepository;
     private final ReviewRepository reviewRepository;
     private final BookMarkRepository bookMarkRepository;
+    private final LocalDate now = LocalDate.now().minusDays(1);
     
     //조회수 높은거 5개
     public List<PostMainPageResponseDto> getByHotPlace(UserDetailsImpl userDetails) {
+        System.out.println("now = " + now);
         Pageable pageable = PageRequest.of(0, 10);
-        List<Post> result  = postRepository.findAllByOrderByViewCountDesc(pageable).getContent();
+        List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByViewCountDesc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
@@ -60,7 +65,7 @@ public class MainPageService {
     //최근 작성 순
     public List<PostMainPageResponseDto> getByRecentPost(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
-        List<Post> result  = postRepository.findAllByOrderByCreatedAtDesc(pageable).getContent();
+        List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByCreatedAtDesc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
@@ -76,7 +81,7 @@ public class MainPageService {
     //Dday 기준
     public List<PostMainPageResponseDto> getByCloseSoon(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
-        List<Post> result  = postRepository.findAllByOrderByEndDateAsc(pageable).getContent();
+        List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByEndDateAsc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
             User writer = post.getWriter();
@@ -94,7 +99,7 @@ public class MainPageService {
     public List<PostMainPageResponseDto> getByUserLocation(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         String location = userDetails.getUser().getLocation();
-        List<Post> content  = postRepository.findAllByLocationOrderByRunningDateAsc(pageable,location).getContent();
+        List<Post> content  = postRepository.findAllByLocationAndEndDateGreaterThanOrderByRunningDateAsc(pageable,location,now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
             User writer = post.getWriter();
@@ -108,7 +113,7 @@ public class MainPageService {
     public List<PostMainPageResponseDto> getByUserDistance(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         String distance = userDetails.getUser().getDistance();
-        List<Post> content  = postRepository.findAllByDistanceOrderByRunningDateAsc(pageable,distance).getContent();
+        List<Post> content  = postRepository.findAllByDistanceAndEndDateGreaterThanOrderByRunningDateAsc(pageable,distance, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
             User writer = post.getWriter();
@@ -122,7 +127,7 @@ public class MainPageService {
     public List<PostMainPageResponseDto> getByUserType(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         String type = userDetails.getUser().getType();
-        List<Post> content  = postRepository.findAllByTypeOrderByRunningDateAsc(pageable,type).getContent();
+        List<Post> content  = postRepository.findAllByTypeAndEndDateGreaterThanOrderByRunningDateAsc(pageable,type, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
             User writer = post.getWriter();
