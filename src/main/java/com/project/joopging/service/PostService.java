@@ -1,20 +1,16 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
+import com.project.joopging.dto.reCommentDto.AllReCommentResponseDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
 import com.project.joopging.exception.CustomErrorException;
-import com.project.joopging.model.BookMark;
-import com.project.joopging.model.Crew;
-import com.project.joopging.model.Post;
-import com.project.joopging.model.User;
-import com.project.joopging.repository.BookMarkRepository;
-import com.project.joopging.repository.CrewRepository;
-import com.project.joopging.repository.PostRepository;
-import com.project.joopging.repository.UserRepository;
+import com.project.joopging.model.*;
+import com.project.joopging.repository.*;
 import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,20 +35,30 @@ public class PostService {
 
 
     //게시글 만들기
+    //만든사람 크루 참여하게 하기
     @Transactional
     public void createPost(PostCreateRequestDto requestDto, User user) {
         Post post = Post.of(requestDto,user);
-
-
+        Crew crew = Crew.of(user,post);
         // fetch Lazy 유저를 진짜 유저로 변환
         Long userId = user.getId();
         User writer = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("유저 정보를 찾을 수 없습니다.")
         );
-        //유저에도 포스트 추가
+
+
+        //유저에 포스트와 크루 추가 , 포스트에 크루 추가
         List<Post> postList = writer.getPost();
         postList.add(post);
+        List<Crew> crewList = writer.getCrews();
+        crewList.add(crew);
+        List<Crew> crews = post.getCrew();
+        crews.add(crew);
+        //먼저 저장하고 pk 키를 발급받은후 crew 를 세이브시켜야함
         postRepository.save(post);
+        crewRepository.save(crew);
+
+
     }
 
     //게시글 업데이트
@@ -94,21 +100,44 @@ public class PostService {
 
     //디테일 페이지 (북마크 추가)
     //북마크 카운트 추가
+    //댓글 작성자 닉네임 이미지 추가
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
+        boolean bookmarkInfo;
         String runningDateToString = getRunningDateToString(post);
+        //댓글 정보 뽑아내서 추가
+        List<AllCommentResponseDto> allCommentResponseDtos = new ArrayList<>();
+        List<Comment> commentList= post.getComments();
+        for (Comment comment : commentList) {
+            LocalDateTime modifiedAt = comment.getModifiedAt();
+            Long commentId = comment.getId();
+            Long userId = comment.getUserComment().getId();
+            String nickname = comment.getUserComment().getNickname();
+            String userImg = comment.getUserComment().getUserImg();
+            String content = comment.getContent();
+            List<ReComment> reCommentList= comment.getReComments();
+            List<AllReCommentResponseDto> allReCommentResponseDtos = new ArrayList<>();
+            for (ReComment reComment : reCommentList) {
+                LocalDateTime reModifiedAt = reComment.getModifiedAt();
+                Long reCommentId = reComment.getId();
+                Long reUserId = reComment.getUserReComment().getId();
+                String reNickname = reComment.getUserReComment().getNickname();
+                String reUserImg = reComment.getUserReComment().getUserImg();
+                String reContent = reComment.getContent();
+                AllReCommentResponseDto responseDto = reComment.toBuildDetailReComment(reCommentId, reModifiedAt, reUserId, reNickname, reUserImg, reContent);
+                allReCommentResponseDtos.add(responseDto);
+            }
+            AllCommentResponseDto responseDto = comment.toBuildDetailComment(commentId, modifiedAt, userId, nickname, userImg, content, allReCommentResponseDtos);
+            allCommentResponseDtos.add(responseDto);
+        }
         if (userDetails == null) {
-            return post.toBuildDetailPost(null, false, false,runningDateToString);
+            return post.toBuildDetailPost(null, false, false, runningDateToString, allCommentResponseDtos);
         } else {
             User user = userDetails.getUser();
             joinCheck = crewRepository.findByUserJoinAndPostJoin(user, post).isPresent();
-            Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
-            if (BookMark.isPresent()) {
-
-                return post.toBuildDetailPost(userDetails, joinCheck, true,runningDateToString);
-            }
+            bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post).isPresent();
         }
-        return post.toBuildDetailPost(userDetails, joinCheck, false,runningDateToString);
+        return post.toBuildDetailPost(userDetails, joinCheck, bookmarkInfo, runningDateToString, allCommentResponseDtos);
 
     }
 
@@ -124,7 +153,7 @@ public class PostService {
     //내 신청내역 (북마크 추가)
     //북마크 카운트 추가
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
-
+        boolean bookmarkInfo;
         List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
         Long userId = user.getId();
         //Optional 유저를 쓰거나 .orElseThrow 를 쓰거나
@@ -135,13 +164,8 @@ public class PostService {
         for (Crew crew : crewList) {
             Post applicationPost = crew.getPostJoin();
             String runningDateToString = getRunningDateToString(applicationPost);
-            Optional<BookMark> bookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost);
-            MyApplicationPostListResponseDto responseDto;
-            if (bookMark.isPresent()) {
-                responseDto = applicationPost.toBuildMyApplicationPost(true,runningDateToString);
-            } else {
-                responseDto = applicationPost.toBuildMyApplicationPost(false,runningDateToString);
-            }
+            bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost).isPresent();
+            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost(bookmarkInfo,runningDateToString);
             applicationPostList.add(responseDto);
         }
 
@@ -196,8 +220,8 @@ public class PostService {
     }
     //내 북마크 리스트
     public List<MyBookmarkListResponseDto> getMyBookmarkListByUser(User user) {
+        boolean joinCheck;
         List<MyBookmarkListResponseDto> myBookmarkList = new ArrayList<>();
-
         Long userId = user.getId();
         User myUser = userRepository.findById(userId).orElseThrow(
                 () -> new  CustomErrorException("유저를 정보가 없습니다.")
@@ -206,7 +230,8 @@ public class PostService {
         for (BookMark bookMark : bookMarkList) {
             Post myBookmarkPost = bookMark.getPostBookMark();
             String runningDateToString = getRunningDateToString(myBookmarkPost);
-            MyBookmarkListResponseDto responseDto = myBookmarkPost.toBuildMyBookmarkPost(runningDateToString);
+            joinCheck = crewRepository.findByUserJoinAndPostJoin(myUser, myBookmarkPost).isPresent();
+            MyBookmarkListResponseDto responseDto = myBookmarkPost.toBuildMyBookmarkPost(joinCheck, runningDateToString);
             myBookmarkList.add(responseDto);
         }
         return myBookmarkList;

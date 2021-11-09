@@ -101,4 +101,9 @@ public class UserService {
 
         return new MainPageResponseUserDto(user);
     }
+
+    public MyBadgeListResponseDto getMyBadgeListByUser(User user) {
+
+        return MyBadgeListResponseDto.builder().build();
+    }
 }
