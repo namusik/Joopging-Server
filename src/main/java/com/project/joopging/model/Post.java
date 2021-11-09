@@ -2,6 +2,7 @@ package com.project.joopging.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
@@ -15,7 +16,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
-import org.springframework.data.geo.Distance;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -177,7 +177,8 @@ public class Post extends Timestamped {
     public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails,
                                                    boolean joinCheck,
                                                    boolean bookMarkInfo,
-                                                   String runningDateToString) {
+                                                   String runningDateToString,
+                                                   List<AllCommentResponseDto> allCommentResponseDtos) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
@@ -201,8 +202,7 @@ public class Post extends Timestamped {
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
-                    .commentList(this.comments)
-                    .reCommentList(this.reComments)
+                    .commentList(allCommentResponseDtos)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         } else {
@@ -227,8 +227,7 @@ public class Post extends Timestamped {
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
-                    .commentList(this.comments)
-                    .reCommentList(this.reComments)
+                    .commentList(allCommentResponseDtos)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         }
@@ -296,7 +295,7 @@ public class Post extends Timestamped {
                 .build();
     }
 
-    public MyBookmarkListResponseDto toBuildMyBookmarkPost(String runningDateToString) {
+    public MyBookmarkListResponseDto toBuildMyBookmarkPost(boolean joinCheck, String runningDateToString) {
         return MyBookmarkListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
@@ -316,6 +315,7 @@ public class Post extends Timestamped {
                 .writerName(this.writer.getNickname())
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
+                .joinCheck(joinCheck)
                 .build();
     }
 }

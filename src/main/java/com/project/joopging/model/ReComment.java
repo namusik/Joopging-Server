@@ -1,6 +1,7 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.reCommentDto.AllReCommentResponseDto;
 import com.project.joopging.dto.reCommentDto.ReCommentCreateRequestDto;
 import com.project.joopging.dto.reCommentDto.ReCommentUpdateRequestDto;
 import com.project.joopging.util.Timestamped;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -75,5 +77,18 @@ public class ReComment extends Timestamped {
 
     public boolean isWrittenBy(User user) {
         return this.userReComment.getId().equals(user.getId());
+    }
+
+    public AllReCommentResponseDto toBuildDetailReComment(Long reCommentId, LocalDateTime reModifiedAt, Long reUserId, String reNickname,
+                                                          String reUserImg,
+                                                          String reContent) {
+        return AllReCommentResponseDto.builder()
+                .reCommentId(reCommentId)
+                .modifiedAt(reModifiedAt)
+                .userId(reUserId)
+                .nickname(reNickname)
+                .userImg(reUserImg)
+                .content(reContent)
+                .build();
     }
 }

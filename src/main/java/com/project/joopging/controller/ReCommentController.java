@@ -31,7 +31,7 @@ public class ReCommentController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         reCommentService.createReComment(user,requestDto);
-        return new ResponseDto(200L,"댓글 작성이 완료 되었습니다", "");
+        return new ResponseDto(201L,"댓글 작성이 완료 되었습니다", "");
     }
 
     @ApiOperation(value = "대댓글 수정")

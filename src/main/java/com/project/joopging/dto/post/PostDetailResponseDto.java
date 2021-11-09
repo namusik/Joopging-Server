@@ -2,6 +2,7 @@ package com.project.joopging.dto.post;
 
 
 
+import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.model.Comment;
 
 import com.project.joopging.model.ReComment;
@@ -46,8 +47,7 @@ public class PostDetailResponseDto {
 
 
 
-    private List<Comment> commentList;
-    private List<ReComment> reCommentList;
+    private List<AllCommentResponseDto> commentList;
 
 }
 
