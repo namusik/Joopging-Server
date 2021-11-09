@@ -1,8 +1,10 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.comment.CommentCreateRequestDto;
 import com.project.joopging.dto.comment.CommentUpdateRequestDto;
+import com.project.joopging.dto.reCommentDto.AllReCommentResponseDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,6 +15,7 @@ import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,5 +76,20 @@ public class Comment extends Timestamped {
 
     public void update(CommentUpdateRequestDto requestDto) {
         this.content = requestDto.getContent();
+    }
+
+    public AllCommentResponseDto toBuildDetailComment(Long commentId, LocalDateTime modifiedAt, Long userId, String nickname,
+                                                      String userImg,
+                                                      String content,
+                                                      List<AllReCommentResponseDto> allReCommentResponseDtos) {
+        return AllCommentResponseDto.builder()
+                .commentId(commentId)
+                .modifiedAt(modifiedAt)
+                .userId(userId)
+                .nickname(nickname)
+                .userImg(userImg)
+                .content(content)
+                .reCommentList(allReCommentResponseDtos)
+                .build();
     }
 }

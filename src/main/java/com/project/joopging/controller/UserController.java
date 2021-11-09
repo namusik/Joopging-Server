@@ -150,6 +150,16 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "뱃지 시스템")
+    @GetMapping("/badges")
+    public ResponseDto myBadges(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        User user = userService.userFromUserDetails(userDetails);
+        MyBadgeListResponseDto data = userService.getMyBadgeListByUser(user);
+        return new ResponseDto(200L,"내 뱃지 불러오기 성공","");
+    }
+
     //로그인 상태 확인
     @ApiOperation(value = "로그인 체크")
     private void checkLogin(
