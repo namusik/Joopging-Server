@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @Component
 @RequiredArgsConstructor
 public class signupValidator {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final PasswordEncoder  passwordEncoder;
 
     public User validate(SignupRequestDto requestDto) {
@@ -23,8 +23,8 @@ public class signupValidator {
         String nickname = requestDto.getNickname();
         String password = requestDto.getPassword();
         UserRoleEnum role = UserRoleEnum.USER;
-        Optional<User> emailFound = repository.findByEmail(email);
-        Optional<User> nicknameFound = repository.findByNickname(nickname);
+        Optional<User> emailFound = userRepository.findByEmail(email);
+        Optional<User> nicknameFound = userRepository.findByNickname(nickname);
         String distance = requestDto.getDistance();
         String location = requestDto.getLocation();
         String type = requestDto.getType();

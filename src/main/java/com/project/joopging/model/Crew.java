@@ -45,6 +45,11 @@ public class Crew extends Timestamped {
         this.postJoin = postJoin;
         this.attendation = false;
     }
+
+    public void attend() {
+        this.attendation = true;
+    }
+
     //모임장 게시글 작성시 크루참여
     public static Crew of(User user, Post post) {
         return new Crew(user, post);
