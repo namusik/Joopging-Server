@@ -83,7 +83,7 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "admin")
     @JsonIgnore
-    @ApiModelProperty(value = "게시글 정보")
+    @ApiModelProperty(value = "캠페인 정보")
     private List<Campaign> campaigns;
 
     @OneToMany(mappedBy = "userReview")

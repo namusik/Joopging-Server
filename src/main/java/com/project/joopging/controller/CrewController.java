@@ -46,6 +46,32 @@ public class CrewController {
         return new ResponseDto(204L, "모임 참여를 취소했습니다.", "");
     }
 
+
+    //캠페인 참여하기 api
+    @ApiOperation(value = "캠페인 참여하기")
+    @PostMapping("/campaign/{campaign_id}/crews")
+    public ResponseDto joinCampaign(
+            @ApiParam(value = "게시글 ID") @PathVariable("campaign_id") Long campaign_id,
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        System.out.println("userId = " + userId);
+        System.out.println(campaign_id);
+
+        crewService.joinCampaign(campaign_id, userId);
+        return new ResponseDto(201L, "캠페인에 참여하였습니다.", "");
+    }
+
+    //캠페인 참여 취소하기 api
+    @ApiOperation(value = "캠페인 참여 취소하기")
+    @DeleteMapping("/campaign/{campaign_id}/crews")
+    public ResponseDto cancelJoinCampaign(
+            @ApiParam(value = "캠페인 ID") @PathVariable("campaign_id") Long campaign_id,
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        crewService.cancelJoinCampaign(campaign_id, userId);
+        return new ResponseDto(204L, "캠페인 참여를 취소했습니다.", "");
+    }
+
     //모임 참여 인원 불러오기
 //    @ApiOperation(value = "모임 참여 인원 불러오기")
 //    @GetMapping("/posts/{post_id}/my")

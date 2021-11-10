@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.campaign.CampaignCreateRequestDto;
 import com.project.joopging.dto.campaign.CampaignDetailResponseDto;
 import com.project.joopging.dto.campaign.CampaignUpdateRequestDto;
-import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.security.UserDetailsImpl;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -93,7 +92,7 @@ public class Campaign {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "ADMIN_ID", nullable = false)
-    @ApiModelProperty(value = "관리자 정보")
+    @ApiModelProperty(value = "캠페인 관리자 정보")
     private User admin;
 
     @OneToMany(mappedBy = "campaignJoin", orphanRemoval = true)
@@ -153,11 +152,12 @@ public class Campaign {
     }
 
     public CampaignDetailResponseDto toBuildDetailCampaign(UserDetailsImpl userDetails,
+                                                           boolean joinCheck,
                                                            boolean bookMarkInfo,
                                                            String runningDateToString) {
         if(userDetails == null) {
             return CampaignDetailResponseDto.builder()
-                    .postId(this.id)
+                    .campaignId(this.id)
                     .title(this.title)
                     .crewHeadIntro(this.crewHeadIntro)
                     .content(this.content)
@@ -170,17 +170,18 @@ public class Campaign {
                     .distance(this.distance)
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
-                    .postImg(this.postImg)
+                    .campaignImg(this.postImg)
                     .viewCount(this.viewCount)
                     .totalBookMarkCount(this.totalBookMarkCount)
                     .adminName(this.admin.getNickname())
                     .adminImg(this.admin.getUserImg())
                     .intro(this.admin.getIntro())
                     .bookMarkInfo(bookMarkInfo)
+                    .joinCheck(joinCheck)
                     .build();
         } else {
             return CampaignDetailResponseDto.builder()
-                    .postId(this.id)
+                    .campaignId(this.id)
                     .title(this.title)
                     .crewHeadIntro(this.crewHeadIntro)
                     .content(this.content)
@@ -193,14 +194,23 @@ public class Campaign {
                     .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
-                    .postImg(this.postImg)
+                    .campaignImg(this.postImg)
                     .viewCount(this.viewCount)
                     .totalBookMarkCount(this.totalBookMarkCount)
                     .adminName(this.admin.getNickname())
                     .adminImg(this.admin.getUserImg())
                     .intro(this.admin.getIntro())
                     .bookMarkInfo(bookMarkInfo)
+                    .joinCheck(joinCheck)
                     .build();
         }
+    }
+
+    public void plusNowPeople() {
+        this.nowPeople += 1;
+    }
+
+    public void minusNowPeople() {
+        this.nowPeople -= 1;
     }
 }

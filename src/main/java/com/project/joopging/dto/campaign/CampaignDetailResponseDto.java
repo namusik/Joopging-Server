@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Getter
 @Builder
 public class CampaignDetailResponseDto {
-    //Post 정보
-    private final Long postId;
+    //캠페인 정보
+    private final Long campaignId;
     private final String title;
     private final String content;
     private final String crewHeadIntro;
@@ -23,7 +23,7 @@ public class CampaignDetailResponseDto {
     private final String distance;
     private final int limitPeople;
     private final int nowPeople;
-    private final String postImg;
+    private final String campaignImg;
     private final Integer viewCount;
     private final Integer totalBookMarkCount;
 

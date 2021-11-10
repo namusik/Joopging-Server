@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
     Optional<BookMark> findByUserBookMarkAndPostBookMark(User userId, Post postId);
 
-
     Optional<BookMark> findByUserBookMarkAndCampaignBookMark(User adminId, Campaign campaignId);
 
     List<BookMark> findAllByUserBookMark(User myUser);

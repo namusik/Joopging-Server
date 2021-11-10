@@ -4,6 +4,7 @@ import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.campaign.CampaignCreateRequestDto;
 import com.project.joopging.dto.campaign.CampaignDetailResponseDto;
 import com.project.joopging.dto.campaign.CampaignUpdateRequestDto;
+import com.project.joopging.dto.post.BookMarkOnOffResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.model.Campaign;
 import com.project.joopging.model.User;
@@ -82,5 +83,17 @@ public class CampaignController {
         CampaignDetailResponseDto data = campaignService.toSetCampaignDetailResponseDto(campaign, userDetails);
 
         return new ResponseDto(200L, "캠페인 상세 페이지를 불러왔습니다 .", data);
+    }
+
+    @ApiOperation(value = "캠페인 북마크 추가 및 제거")
+    @PostMapping("/campaign/{campaign_id}/bookmark")
+    public ResponseDto onOffCampaignBookMark(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
+            @ApiParam(value = "캠페인 ID", required = true) @PathVariable("campaign_id") Long campaign_id
+    ) {
+        User user = userService.userFromUserDetails(userDetails);
+
+        BookMarkOnOffResponseDto data = BookMarkOnOffResponseDto.OnOff(campaignService.getBookMarkInfo(user, campaign_id));
+        return new ResponseDto(200L,"북마크 설정이 완료되었습니다", data);
     }
 }
