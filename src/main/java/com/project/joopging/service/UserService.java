@@ -2,6 +2,7 @@ package com.project.joopging.service;
 
 import com.project.joopging.dto.user.*;
 
+import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.UserRepository;
@@ -29,6 +30,12 @@ public class UserService {
             return ((UserDetailsImpl) userDetails).getUser();
         } else {
             throw new CustomErrorException("로그인이 필요합니다.");
+        }
+    }
+
+    public void userCheckEnumRole(User user) {
+        if (user.getRole() == UserRoleEnum.USER) {
+            throw new CustomErrorException("관리자 권한이 없습니다.");
         }
     }
 

@@ -1,9 +1,7 @@
 package com.project.joopging.dto.post;
 
 
-import io.swagger.annotations.ApiModel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 
 

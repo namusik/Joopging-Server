@@ -117,7 +117,7 @@ public class UserController {
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userService.userFromUserDetails(userDetails);
         List<MyApplicationPostListResponseDto> data = postService.getMyApplicationPostListByUser(user);
-        return new ResponseDto(200L,"신청내역 페이지 불러오기 성공",data);
+        return new ResponseDto(200L, "신청내역 페이지 불러오기 성공", data);
     }
 
     @ApiOperation(value = "마이페이지 모임관리")
@@ -127,16 +127,16 @@ public class UserController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         List<MyPostPageListResponseDto> data = postService.getMyPostListByUser(user);
-        return new ResponseDto(200L,"모임관리 페이지 불러오기 성공",data);
+        return new ResponseDto(200L, "모임관리 페이지 불러오기 성공", data);
     }
-    
+
     //내가 쓴 후기 불러오기
     @ApiOperation(value = "마이페이지 후기")
     @GetMapping("/reviews/my")
     public ResponseDto myReviews(
-                @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
-        return new ResponseDto(200L,"모임관리 페이지 불러오기 성공", reviewList);
+        return new ResponseDto(200L, "모임관리 페이지 불러오기 성공", reviewList);
     }
 
     @ApiOperation(value = "마이페이지 북마크")
@@ -167,5 +167,19 @@ public class UserController {
         if (userDetails == null) {
             throw new CustomErrorException("로그인이 필요합니다.");
         }
+    }
+
+    @GetMapping("/nameCheck/{nickname}")
+    public ResponseDto nicknameCheck() {
+
+
+        return new ResponseDto(200L, "사용 가능한 닉네임입니다 !", "");
+    }
+
+    @GetMapping("/nameCheck/{email}")
+    public ResponseDto emailCheck(@PathVariable String email) {
+
+
+        return new ResponseDto(200L, "사용 가능한 닉네임입니다 !", "");
     }
 }

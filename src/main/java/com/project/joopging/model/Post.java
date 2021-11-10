@@ -128,11 +128,6 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postReComment", orphanRemoval = true)
-    @JsonIgnore
-    @BatchSize(size = 50)
-    @ApiModelProperty(value = "대댓글 정보")
-    private List<ReComment> reComments = new ArrayList<>();
 
     //게시글 작성
     public Post(PostCreateRequestDto requestDto,User user) {
@@ -177,8 +172,7 @@ public class Post extends Timestamped {
     public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails,
                                                    boolean joinCheck,
                                                    boolean bookMarkInfo,
-                                                   String runningDateToString,
-                                                   List<AllCommentResponseDto> allCommentResponseDtos) {
+                                                   String runningDateToString) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
@@ -202,7 +196,6 @@ public class Post extends Timestamped {
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
-                    .commentList(allCommentResponseDtos)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         } else {
@@ -227,7 +220,6 @@ public class Post extends Timestamped {
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
-                    .commentList(allCommentResponseDtos)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         }
