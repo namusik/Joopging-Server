@@ -120,10 +120,21 @@ public class PostService {
         List<AllCommentResponseDto> allCommentResponseDtos = new ArrayList<>();
         List<Comment> commentList= post.getComments();
         for (Comment comment : commentList) {
-            AllCommentResponseDto responseDto = comment.toBuildDetailComment();
+            String modifiedAtToString = getModifiedAtToString(comment);
+            AllCommentResponseDto responseDto = comment.toBuildDetailComment(modifiedAtToString);
             allCommentResponseDtos.add(responseDto);
         }
         return allCommentResponseDtos;
+    }
+
+    //댓글 수정날짜 스트링으로 변환
+    private String getModifiedAtToString(Comment comment) {
+        LocalDateTime modifiedAt = comment.getModifiedAt();
+        String day = modifiedAt.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String date = String.valueOf(modifiedAt);
+//        System.out.println("date = " + date);
+        String[] ts = date.split("T");
+        return ts[0] + " ("+day+") " + ts[1];
     }
 
     //날짜 스트링으로 변환
