@@ -96,6 +96,7 @@ public class CrewService {
         return crew;
     }
 
+    @Transactional
     public void cancelJoinCampaign(Long campaign_id, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("찾을 수 없는 사용자 입니다.")
