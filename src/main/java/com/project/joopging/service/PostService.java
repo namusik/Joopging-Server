@@ -91,7 +91,7 @@ public class PostService {
     }
 
 
-    private Post getPostById(Long postId) {
+    public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(
                 () -> new CustomErrorException("게시글을 찾을 수 없습니다.")
         );
@@ -104,37 +104,29 @@ public class PostService {
         boolean joinCheck;
         boolean bookmarkInfo;
         String runningDateToString = getRunningDateToString(post);
-        //댓글 정보 뽑아내서 추가
-        List<AllCommentResponseDto> allCommentResponseDtos = getAllCommentResponseDtos(post);
         if (userDetails == null) {
-            return post.toBuildDetailPost(null, false, false, runningDateToString, allCommentResponseDtos);
+            return post.toBuildDetailPost(null, false, false, runningDateToString);
         } else {
             User user = userDetails.getUser();
             joinCheck = crewRepository.findByUserJoinAndPostJoin(user, post).isPresent();
             bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post).isPresent();
         }
-        return post.toBuildDetailPost(userDetails, joinCheck, bookmarkInfo, runningDateToString, allCommentResponseDtos);
-
+        return post.toBuildDetailPost(userDetails, joinCheck, bookmarkInfo, runningDateToString);
     }
 
     //댓글 정보 수정해서 내보내기
     //아무곳이나 끌어써도 됨
-    private List<AllCommentResponseDto> getAllCommentResponseDtos(Post post) {
+    public List<AllCommentResponseDto> getAllCommentResponseDtos(Post post) {
         List<AllCommentResponseDto> allCommentResponseDtos = new ArrayList<>();
         List<Comment> commentList= post.getComments();
         for (Comment comment : commentList) {
-            List<ReComment> reCommentList= comment.getReComments();
-            List<AllReCommentResponseDto> allReCommentResponseDtos = new ArrayList<>();
-            for (ReComment reComment : reCommentList) {
-                AllReCommentResponseDto responseDto = reComment.toBuildDetailReComment();
-                allReCommentResponseDtos.add(responseDto);
-            }
-            AllCommentResponseDto responseDto = comment.toBuildDetailComment(allReCommentResponseDtos);
+            AllCommentResponseDto responseDto = comment.toBuildDetailComment();
             allCommentResponseDtos.add(responseDto);
         }
         return allCommentResponseDtos;
     }
 
+    //날짜 스트링으로 변환
     private String getRunningDateToString(Post post) {
         LocalDateTime runningDate = post.getRunningDate();
         String day = runningDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);

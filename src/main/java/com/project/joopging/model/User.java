@@ -98,11 +98,6 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userReComment", orphanRemoval = true)
-    @JsonIgnore
-    @BatchSize(size = 50)
-    @ApiModelProperty(value = "대댓글 정보")
-    private List<ReComment> reComments = new ArrayList<>();
 
 
 

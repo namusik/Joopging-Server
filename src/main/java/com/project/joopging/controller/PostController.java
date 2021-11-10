@@ -1,6 +1,7 @@
 package com.project.joopging.controller;
 
 import com.project.joopging.dto.ResponseDto;
+import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.post.BookMarkOnOffResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
@@ -19,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "Post Controller Api V1")
@@ -27,7 +30,7 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
 
-    @ApiOperation(value = "게시글 만들기")
+    @ApiOperation(value = "모임 만들기")
     @PostMapping("/posts")
     public ResponseDto createPost(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
@@ -38,7 +41,7 @@ public class PostController {
         return new ResponseDto(201L,"모임을 만들었습니다.", "");
     }
 
-    @ApiOperation(value = "게시글 수정")
+    @ApiOperation(value = "모임 수정")
     @PutMapping("/posts/{post_id}")
     public ResponseDto updatePost(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
@@ -50,7 +53,7 @@ public class PostController {
        return new ResponseDto(200L, "모임 수정에 성공하였습니다", "");
     }
 
-    @ApiOperation(value = "게시글 삭제")
+    @ApiOperation(value = "모임 삭제")
     @DeleteMapping("/posts/{post_id}")
     public ResponseDto deletePost(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
@@ -61,7 +64,7 @@ public class PostController {
         return new ResponseDto(204L, "모임 삭제에 성공하였습니다.", "");
     }
 
-    @ApiOperation(value = "게시글 상세페이지")
+    @ApiOperation(value = "모임 상세페이지 모임정보")
     @GetMapping("/posts/{post_id}")
     public ResponseDto getDetailPost(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -69,8 +72,19 @@ public class PostController {
     ) {
         Post post = postService.getDetailPostById(postId);
         PostDetailResponseDto data = postService.toSetPostDetailResponseDto(post, userDetails);
-        return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다", data);
+        return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다.", data);
 
+    }
+
+    @ApiOperation(value = "모임 상세페이지 댓글정보")
+    @GetMapping("/posts/{post_id}/comments")
+    public ResponseDto getCommentOfDetailPost(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @ApiParam(value = "게시글 ID", required = true) @PathVariable("post_id") Long postId
+    ) {
+        Post post = postService.getPostById(postId);
+        List<AllCommentResponseDto> data = postService.getAllCommentResponseDtos(post);
+        return new ResponseDto(200L,"모임 상세페이지 댓글 불러오기에 성공하였습니다.",data);
     }
 
     @ApiOperation(value = "북마크 추가 제거")

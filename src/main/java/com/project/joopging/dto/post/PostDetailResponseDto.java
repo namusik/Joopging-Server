@@ -2,18 +2,9 @@ package com.project.joopging.dto.post;
 
 
 
-import com.project.joopging.dto.comment.AllCommentResponseDto;
-import com.project.joopging.model.Comment;
-
-import com.project.joopging.model.ReComment;
-import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.List;
-import java.util.Locale;
 
 
 @Getter
@@ -47,7 +38,6 @@ public class PostDetailResponseDto {
 
 
 
-    private List<AllCommentResponseDto> commentList;
 
 }
 

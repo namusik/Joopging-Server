@@ -65,6 +65,10 @@ public class CommentService {
     public void delete(User user, Long commentId) {
         Comment comment = getCommentById(commentId);
         if (comment.isWrittenBy(user)) {
+            //대댓글들 모두삭제
+            List<Comment> commentList = commentRepository.findAllByReplyTo(commentId);
+            commentRepository.deleteAll(commentList);
+            //대장 댓글 삭제
             commentRepository.delete(comment);
         } else {
             throw new CustomErrorException("댓글 작성자가 아닙니다.");
