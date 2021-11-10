@@ -170,17 +170,22 @@ public class UserController {
         }
     }
 
-    @GetMapping("/nameCheck/{nickname}")
-    public ResponseDto nicknameCheck() {
-
-
+    @GetMapping("/checkName")
+    public ResponseDto nickNameCheck(
+            @ApiParam(value = "닉네임 체크") @RequestParam String nickname
+    ) {
+        userService.nicknameCheck(nickname);
         return new ResponseDto(200L, "사용 가능한 닉네임입니다 !", "");
+
     }
 
-    @GetMapping("/nameCheck/{email}")
-    public ResponseDto emailCheck(@PathVariable String email) {
 
+    @GetMapping("/checkEmail")
+    public ResponseDto emailCheck(
+            @ApiParam(value = "이메일 체크") @RequestParam String email
+    ) {
+        userService.emailCheck(email);
+        return new ResponseDto(200L, "사용 가능한 이메일입니다 !", "");
 
-        return new ResponseDto(200L, "사용 가능한 닉네임입니다 !", "");
     }
 }

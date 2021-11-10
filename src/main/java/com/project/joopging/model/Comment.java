@@ -68,10 +68,11 @@ public class Comment extends Timestamped {
         this.content = requestDto.getContent();
     }
 
-    public AllCommentResponseDto toBuildDetailComment() {
+    public AllCommentResponseDto toBuildDetailComment(String modifiedAtToString)
+    {
         return AllCommentResponseDto.builder()
                 .commentId(this.id)
-                .modifiedAt(this.getModifiedAt())
+                .modifiedAt(modifiedAtToString)
                 .userId(this.getUserComment().getId())
                 .nickname(this.getUserComment().getNickname())
                 .userImg(this.getUserComment().getUserImg())

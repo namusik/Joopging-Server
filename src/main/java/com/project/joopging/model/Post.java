@@ -106,7 +106,7 @@ public class Post extends Timestamped {
 
     @OneToMany(mappedBy = "postJoin", orphanRemoval = true)
     @JsonIgnore
-    @BatchSize(size = 50)
+    @BatchSize(size = 100)
     @ApiModelProperty(value = "참가자 정보")
     private List<Crew> Crew = new ArrayList<>();
 
@@ -118,13 +118,13 @@ public class Post extends Timestamped {
 
     @OneToMany(mappedBy = "postComment", orphanRemoval = true)
     @JsonIgnore
-    @BatchSize(size = 50)
+    @BatchSize(size = 100)
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "postBookMark", orphanRemoval = true)
     @JsonIgnore
-    @BatchSize(size = 50)
+    @BatchSize(size = 100)
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
