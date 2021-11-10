@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User userFromUserDetails(UserDetails userDetails) {
-        if ( userDetails instanceof UserDetailsImpl) {
+        if (userDetails instanceof UserDetailsImpl) {
             return ((UserDetailsImpl) userDetails).getUser();
         } else {
             throw new CustomErrorException("로그인이 필요합니다.");
@@ -39,12 +41,14 @@ public class UserService {
         }
     }
 
+    //회원가입
     public boolean registerUser(SignupRequestDto requestDto) {
         User user = signupValidator.validate(requestDto);
         userRepository.save(user);
         return true;
     }
 
+    //로그인
     public User login(LoginUserDto loginUserDto) {
         User user = userRepository.findByEmail(loginUserDto.getEmail()).orElseThrow(
                 () -> new CustomErrorException("이메일을 찾을 수 없습니다")
@@ -55,6 +59,7 @@ public class UserService {
         return user;
     }
 
+    //회원삭제
     public boolean deleteUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new CustomErrorException("이메일을 찾을 수 없습니다")
@@ -63,6 +68,7 @@ public class UserService {
         return true;
     }
 
+    //회원 정보 수정
     public EditUserResponseDto editUserInfo(EditUserRequestDto editUserInfoDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         String userImg = editUserInfoDto.getUserImg();
@@ -76,13 +82,10 @@ public class UserService {
         }
 
         String distance = editUserInfoDto.getDistance();
-//        Distance distanceName = Distance.getDistanceById(distance);
 
         String location = editUserInfoDto.getLocation();
-//        Location locationName = Location.getLocationById(location);
 
         String type = editUserInfoDto.getType();
-//        Type typeName = Type.getTypeById(type);
 
         user.setUserImg(userImg);
         user.setDistance(distance);
@@ -112,5 +115,23 @@ public class UserService {
     public MyBadgeListResponseDto getMyBadgeListByUser(User user) {
 
         return MyBadgeListResponseDto.builder().build();
+    }
+
+    //닉네임 중복 검사
+    public void nicknameCheck(String nickname) {
+        Optional<User> nicknameFound = userRepository.findByNickname(nickname);
+
+        if (nicknameFound.isPresent()) {
+            throw new CustomErrorException("중복된 닉네임 입니다 ");
+        }
+    }
+
+    //이메일 중복 검사
+    public void emailCheck(String email) {
+        Optional<User> emailFound = userRepository.findByEmail(email);
+
+        if (emailFound.isPresent()) {
+            throw new CustomErrorException("중복된 이메일 입니다 ");
+        }
     }
 }
