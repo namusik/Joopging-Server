@@ -13,6 +13,7 @@ import com.project.joopging.model.*;
 import com.project.joopging.repository.*;
 import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -45,8 +46,6 @@ public class PostService {
         User writer = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("유저 정보를 찾을 수 없습니다.")
         );
-
-
         //유저에 포스트와 크루 추가 , 포스트에 크루 추가
         List<Post> postList = writer.getPost();
         postList.add(post);
@@ -106,30 +105,7 @@ public class PostService {
         boolean bookmarkInfo;
         String runningDateToString = getRunningDateToString(post);
         //댓글 정보 뽑아내서 추가
-        List<AllCommentResponseDto> allCommentResponseDtos = new ArrayList<>();
-        List<Comment> commentList= post.getComments();
-        for (Comment comment : commentList) {
-            LocalDateTime modifiedAt = comment.getModifiedAt();
-            Long commentId = comment.getId();
-            Long userId = comment.getUserComment().getId();
-            String nickname = comment.getUserComment().getNickname();
-            String userImg = comment.getUserComment().getUserImg();
-            String content = comment.getContent();
-            List<ReComment> reCommentList= comment.getReComments();
-            List<AllReCommentResponseDto> allReCommentResponseDtos = new ArrayList<>();
-            for (ReComment reComment : reCommentList) {
-                LocalDateTime reModifiedAt = reComment.getModifiedAt();
-                Long reCommentId = reComment.getId();
-                Long reUserId = reComment.getUserReComment().getId();
-                String reNickname = reComment.getUserReComment().getNickname();
-                String reUserImg = reComment.getUserReComment().getUserImg();
-                String reContent = reComment.getContent();
-                AllReCommentResponseDto responseDto = reComment.toBuildDetailReComment(reCommentId, reModifiedAt, reUserId, reNickname, reUserImg, reContent);
-                allReCommentResponseDtos.add(responseDto);
-            }
-            AllCommentResponseDto responseDto = comment.toBuildDetailComment(commentId, modifiedAt, userId, nickname, userImg, content, allReCommentResponseDtos);
-            allCommentResponseDtos.add(responseDto);
-        }
+        List<AllCommentResponseDto> allCommentResponseDtos = getAllCommentResponseDtos(post);
         if (userDetails == null) {
             return post.toBuildDetailPost(null, false, false, runningDateToString, allCommentResponseDtos);
         } else {
@@ -139,6 +115,24 @@ public class PostService {
         }
         return post.toBuildDetailPost(userDetails, joinCheck, bookmarkInfo, runningDateToString, allCommentResponseDtos);
 
+    }
+
+    //댓글 정보 수정해서 내보내기
+    //아무곳이나 끌어써도 됨
+    private List<AllCommentResponseDto> getAllCommentResponseDtos(Post post) {
+        List<AllCommentResponseDto> allCommentResponseDtos = new ArrayList<>();
+        List<Comment> commentList= post.getComments();
+        for (Comment comment : commentList) {
+            List<ReComment> reCommentList= comment.getReComments();
+            List<AllReCommentResponseDto> allReCommentResponseDtos = new ArrayList<>();
+            for (ReComment reComment : reCommentList) {
+                AllReCommentResponseDto responseDto = reComment.toBuildDetailReComment();
+                allReCommentResponseDtos.add(responseDto);
+            }
+            AllCommentResponseDto responseDto = comment.toBuildDetailComment(allReCommentResponseDtos);
+            allCommentResponseDtos.add(responseDto);
+        }
+        return allCommentResponseDtos;
     }
 
     private String getRunningDateToString(Post post) {
@@ -188,10 +182,9 @@ public class PostService {
             myPostListRes.add(responseDto);
         }
         return myPostListRes;
-
     }
 
-    //북마크
+    //북마크 ON/OFF
     @Transactional
     public boolean getBookMarkInfo(User user, Long postId) {
         Long userId = user.getId();

@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -79,16 +78,14 @@ public class ReComment extends Timestamped {
         return this.userReComment.getId().equals(user.getId());
     }
 
-    public AllReCommentResponseDto toBuildDetailReComment(Long reCommentId, LocalDateTime reModifiedAt, Long reUserId, String reNickname,
-                                                          String reUserImg,
-                                                          String reContent) {
+    public AllReCommentResponseDto toBuildDetailReComment() {
         return AllReCommentResponseDto.builder()
-                .reCommentId(reCommentId)
-                .modifiedAt(reModifiedAt)
-                .userId(reUserId)
-                .nickname(reNickname)
-                .userImg(reUserImg)
-                .content(reContent)
+                .reCommentId(this.id)
+                .modifiedAt(this.getModifiedAt())
+                .userId(this.userReComment.getId())
+                .nickname(this.userReComment.getNickname())
+                .userImg(this.userReComment.getUserImg())
+                .content(this.content)
                 .build();
     }
 }

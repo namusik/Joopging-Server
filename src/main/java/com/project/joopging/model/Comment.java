@@ -15,7 +15,6 @@ import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,17 +77,14 @@ public class Comment extends Timestamped {
         this.content = requestDto.getContent();
     }
 
-    public AllCommentResponseDto toBuildDetailComment(Long commentId, LocalDateTime modifiedAt, Long userId, String nickname,
-                                                      String userImg,
-                                                      String content,
-                                                      List<AllReCommentResponseDto> allReCommentResponseDtos) {
+    public AllCommentResponseDto toBuildDetailComment(List<AllReCommentResponseDto> allReCommentResponseDtos) {
         return AllCommentResponseDto.builder()
-                .commentId(commentId)
-                .modifiedAt(modifiedAt)
-                .userId(userId)
-                .nickname(nickname)
-                .userImg(userImg)
-                .content(content)
+                .commentId(this.id)
+                .modifiedAt(this.getModifiedAt())
+                .userId(this.getUserComment().getId())
+                .nickname(this.getUserComment().getNickname())
+                .userImg(this.getUserComment().getUserImg())
+                .content(this.content)
                 .reCommentList(allReCommentResponseDtos)
                 .build();
     }

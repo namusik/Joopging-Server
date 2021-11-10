@@ -71,7 +71,6 @@ public class PostController {
         PostDetailResponseDto data = postService.toSetPostDetailResponseDto(post, userDetails);
         return new ResponseDto(200L,"모임 상세페이지 불러오기에 성공하였습니다", data);
 
-
     }
 
     @ApiOperation(value = "북마크 추가 제거")
