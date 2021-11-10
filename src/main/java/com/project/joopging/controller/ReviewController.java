@@ -36,9 +36,7 @@ public class ReviewController {
     //후기 작성
     @ApiOperation(value = "후기 작성")
     @PostMapping("/reviews")
-    public ResponseDto createReview(
-            @ApiParam(value = "후기 생성 정보") @RequestBody ReviewRequestDto requestDto,
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto createReview(@ApiParam(value = "후기 생성 정보") @RequestBody ReviewRequestDto requestDto, @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Review review = reviewService.createReview( requestDto, userDetails);
         return new ResponseDto(201L, "후기를 저장했습니다.", "");
     }
@@ -46,10 +44,7 @@ public class ReviewController {
     //후기 수정
     @ApiOperation(value = "후기 수정")
     @PutMapping("/reviews/{review_id}")
-    public ResponseDto editReview(
-            @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
-            @ApiParam(value = "후기 업데이트 정보", required = true) @RequestBody ReviewRequestDto requestDto,
-            @ApiParam @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto editReview(@ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId, @ApiParam(value = "후기 업데이트 정보", required = true) @RequestBody ReviewRequestDto requestDto) {
         Review review = reviewService.editReview(reviewId, requestDto);
         return new ResponseDto(200L, "후기를 수정했습니다.", "");
     }
@@ -57,9 +52,7 @@ public class ReviewController {
     //후기 삭제
     @ApiOperation(value = "후기 삭제")
     @DeleteMapping("/reviews/{review_id}")
-    public ResponseDto deleteReivew(
-            @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto deleteReivew(@ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId, @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         reviewService.deleteReview(reviewId, userDetails);
         return new ResponseDto(204L, "후기를 삭제했습니다.", "");
     }
@@ -75,8 +68,7 @@ public class ReviewController {
     //후기 상세보기
     @ApiOperation(value = "후기 상세보기")
     @GetMapping("/reviews/{review_id}")
-    public ResponseDto showOneReview(
-            @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId) {
+    public ResponseDto showOneReview(@ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId) {
         HashMap<String, Object> result = reviewService.showOneReview(reviewId);
         return new ResponseDto(200L, "후기 상세정보를 불러왔습니다.", result);
     }

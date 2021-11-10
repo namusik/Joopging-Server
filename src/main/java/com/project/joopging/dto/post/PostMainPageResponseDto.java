@@ -54,4 +54,27 @@ public class PostMainPageResponseDto {
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();
     }
+
+    public PostMainPageResponseDto(Post post, User writer) {
+        this.postId = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        LocalDateTime runningDate = post.getRunningDate();
+        String day = runningDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String date = String.valueOf(runningDate);
+//        System.out.println("date = " + date);
+        String[] ts = date.split("T");
+        this.runningDate = ts[0] + " ("+day+") " + ts[1];
+        this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
+        this.location = post.getLocation();
+        this.type = post.getType();
+        this.distance = post.getDistance();
+        this.limitPeople = post.getLimitPeople();
+        this.nowPeople = post.getNowPeople();
+        this.postImg = post.getPostImg();
+        this.viewCount = post.getViewCount();
+        this.userId = writer.getId();
+        this.nickname = writer.getNickname();
+        this.userImg = writer.getUserImg();
+    }
 }
