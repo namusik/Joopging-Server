@@ -1,17 +1,16 @@
-package com.project.joopging.dto.post;
-
-
+package com.project.joopging.dto.campaign;
 
 import lombok.Builder;
 import lombok.Getter;
+
 import java.time.LocalDate;
 
 
 @Getter
 @Builder
-public class PostDetailResponseDto {
-    //Post 정보
-    private final Long postId;
+public class CampaignDetailResponseDto {
+    //캠페인 정보
+    private final Long campaignId;
     private final String title;
     private final String content;
     private final String crewHeadIntro;
@@ -24,21 +23,17 @@ public class PostDetailResponseDto {
     private final String distance;
     private final int limitPeople;
     private final int nowPeople;
-    private final String postImg;
+    private final String campaignImg;
     private final Integer viewCount;
     private final Integer totalBookMarkCount;
 
 
     //작성자 정보
-    private final String writerName;
-    private final String userImg;
+    private final String adminName;
+    private final String adminImg;
     private final String intro;
     private final boolean joinCheck;
     private final boolean bookMarkInfo;
-
-
-
-
 }
 
 

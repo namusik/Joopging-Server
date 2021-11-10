@@ -33,9 +33,15 @@ public class BookMark extends Timestamped {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "POST_ID", nullable = false)
+    @JoinColumn(name = "POST_ID")
     @ApiModelProperty(value = "게시글 정보")
     Post postBookMark;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "CAMPAIGN_ID")
+    @ApiModelProperty(value = "캠페인 정보")
+    Campaign campaignBookMark;
 
     public BookMark(User userBookMark, Post postBookMark) {
         this.userBookMark = userBookMark;
@@ -44,6 +50,15 @@ public class BookMark extends Timestamped {
 
     public static BookMark of(User user, Post post) {
         return new BookMark(user, post);
+    }
+
+    public BookMark(User userBookMark, Campaign campaignBookMark) {
+        this.userBookMark = userBookMark;
+        this.campaignBookMark = campaignBookMark;
+    }
+
+    public static BookMark of(User user, Campaign campaign) {
+        return new BookMark(user, campaign);
     }
 
 }

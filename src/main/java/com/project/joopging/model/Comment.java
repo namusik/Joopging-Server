@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.comment.CommentCreateRequestDto;
 import com.project.joopging.dto.comment.CommentUpdateRequestDto;
-import com.project.joopging.dto.reCommentDto.AllReCommentResponseDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,12 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +31,11 @@ public class Comment extends Timestamped {
     @ApiModelProperty(value = "댓글 내용")
     String content;
 
+    @Column
+    @ApiModelProperty(value = "대댓글 위치정보")
+    Long replyTo;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -49,20 +49,10 @@ public class Comment extends Timestamped {
     @ApiModelProperty(value = "게시글 정보")
     Post postComment;
 
-    @OneToMany(mappedBy = "commentReComment", orphanRemoval = true)
-    @JsonIgnore
-    @BatchSize(size = 50)
-    @ApiModelProperty(value = "대댓글 정보")
-    private List<ReComment> reComments = new ArrayList<>();
-
-    public Comment(String content, User userComment, Post postComment) {
-        this.content = content;
-        this.userComment = userComment;
-        this.postComment = postComment;
-    }
 
     public Comment(CommentCreateRequestDto requestDto, User user, Post post){
         this.content = requestDto.getContent();
+        this.replyTo = requestDto.getReplyTo();
         this.userComment = user;
         this.postComment = post;
     }
@@ -78,18 +68,15 @@ public class Comment extends Timestamped {
         this.content = requestDto.getContent();
     }
 
-    public AllCommentResponseDto toBuildDetailComment(Long commentId, LocalDateTime modifiedAt, Long userId, String nickname,
-                                                      String userImg,
-                                                      String content,
-                                                      List<AllReCommentResponseDto> allReCommentResponseDtos) {
+    public AllCommentResponseDto toBuildDetailComment() {
         return AllCommentResponseDto.builder()
-                .commentId(commentId)
-                .modifiedAt(modifiedAt)
-                .userId(userId)
-                .nickname(nickname)
-                .userImg(userImg)
-                .content(content)
-                .reCommentList(allReCommentResponseDtos)
+                .commentId(this.id)
+                .modifiedAt(this.getModifiedAt())
+                .userId(this.getUserComment().getId())
+                .nickname(this.getUserComment().getNickname())
+                .userImg(this.getUserComment().getUserImg())
+                .content(this.content)
+                .replyTo(this.replyTo)
                 .build();
     }
 }

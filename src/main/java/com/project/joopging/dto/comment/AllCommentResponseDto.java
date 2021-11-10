@@ -20,5 +20,5 @@ public class AllCommentResponseDto {
     private final String nickname;
     private final String userImg;
     private final String content;
-    private final List<AllReCommentResponseDto> reCommentList;
+    private final Long replyTo;
 }
