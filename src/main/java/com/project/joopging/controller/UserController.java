@@ -136,7 +136,8 @@ public class UserController {
     public ResponseDto myReviews(
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
-        return new ResponseDto(200L, "모임관리 페이지 불러오기 성공", reviewList);
+        return new ResponseDto(200L,"내가 쓴 후기 불러오기", reviewList);
+
     }
 
     @ApiOperation(value = "마이페이지 북마크")

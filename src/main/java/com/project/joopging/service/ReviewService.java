@@ -1,5 +1,6 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.post.PostMainPageResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
 import com.project.joopging.dto.review.DetailReviewResponseDto;
 import com.project.joopging.dto.review.ReviewRequestDto;
@@ -92,7 +93,9 @@ public class ReviewService {
         Post post = review.getPostReview();
         User postWriter = post.getWriter();
         DetailReviewResponseDto reviewResponseDto = new DetailReviewResponseDto(review, user);
+        PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, postWriter);
         map.put("review", reviewResponseDto);
+        map.put("post", postMainPageResponseDto);
         return map;
     }
 
