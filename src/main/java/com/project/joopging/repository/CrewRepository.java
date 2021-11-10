@@ -21,4 +21,8 @@ public interface CrewRepository extends JpaRepository<Crew, Long> {
     Optional<Crew> findByUserJoinAndCampaignJoin(User user, Campaign campaign);
 
     List<Crew> findAllByUserJoin(User user);
+
+    List<Crew> findByPostJoin_Id(Long postId);
+
+    List<Crew> findAllByPostJoin_Id(Long postId);
 }

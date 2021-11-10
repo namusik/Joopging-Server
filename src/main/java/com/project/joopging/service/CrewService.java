@@ -1,12 +1,12 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.crew.CrewAttendRequestDto;
 import com.project.joopging.dto.crew.CrewReponseDto;
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.model.Campaign;
 import com.project.joopging.model.Crew;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
-
 import com.project.joopging.repository.CampaignRepository;
 import com.project.joopging.repository.CrewRepository;
 import com.project.joopging.repository.PostRepository;
@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -116,7 +117,32 @@ public class CrewService {
         campaign.minusNowPeople();
     }
 
-//    public List<CrewReponseDto> getCrews(Long postId) {
-//
-//    }
+    public List<CrewReponseDto> getCrews(Long postId) {
+        List<CrewReponseDto> result = new ArrayList<>();
+        List<Crew> crewList = crewRepository.findByPostJoin_Id(postId);
+        for (Crew crew : crewList) {
+            User user = crew.getUserJoin();
+            CrewReponseDto crewReponseDto = new CrewReponseDto(user);
+            result.add(crewReponseDto);
+        }
+        return result;
+    }
+
+    @Transactional
+    public void attend(CrewAttendRequestDto crewAttendRequestDto) {
+        Long postId = crewAttendRequestDto.getPostId();
+//        System.out.println("postId = " + postId);
+        List<Crew> crewList = crewRepository.findAllByPostJoin_Id(postId);
+        List<Long> userId = crewAttendRequestDto.getUserId();
+        for (Long aLong : userId) {
+//            System.out.println("aLong = " + aLong);
+            for (Crew crew : crewList) {
+                if (crew.getUserJoin().getId() == aLong) {
+                    crew.attend();
+                }
+            }
+        }
+
+
+    }
 }
