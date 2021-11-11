@@ -6,6 +6,7 @@ import com.project.joopging.dto.campaign.CampaignCreateRequestDto;
 import com.project.joopging.dto.campaign.CampaignDetailResponseDto;
 import com.project.joopging.dto.campaign.CampaignUpdateRequestDto;
 import com.project.joopging.security.UserDetailsImpl;
+import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "캠페인 정보")
-public class Campaign {
+public class Campaign extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "캠페인 아이디")

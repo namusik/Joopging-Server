@@ -140,7 +140,7 @@ public class PostService {
     //날짜 스트링으로 변환
     private String getRunningDateToString(Post post) {
         LocalDateTime runningDate = post.getRunningDate();
-        String day = runningDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String day = runningDate.plusHours(9).getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
         String date = String.valueOf(runningDate);
 //        System.out.println("date = " + date);
         String[] ts = date.split("T");
