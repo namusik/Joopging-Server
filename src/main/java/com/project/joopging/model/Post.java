@@ -310,4 +310,5 @@ public class Post extends Timestamped {
                 .joinCheck(joinCheck)
                 .build();
     }
+    
 }
