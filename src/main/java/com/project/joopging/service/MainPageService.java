@@ -33,7 +33,7 @@ public class MainPageService {
     
     //조회수 높은거 5개
     public List<PostMainPageResponseDto> getByHotPlace(UserDetailsImpl userDetails) {
-        System.out.println("now = " + now);
+//        System.out.println("now = " + now);
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByViewCountDesc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();

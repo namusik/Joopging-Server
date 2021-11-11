@@ -2,10 +2,12 @@ package com.project.joopging.controller;
 
 import com.project.joopging.exception.CustomErrorException;
 import com.project.joopging.exception.NoTokenException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class TokenExceptionController {
     @GetMapping("/exception/entrypoint")
     public void entryPoint() {
