@@ -1,0 +1,2 @@
+[2021-11-12 01:10:12:8404] [32m[http-nio-8080-exec-1][0;39m [1;31mERROR[0;39m [1;37m[com.project.joopging.service.UserService.userFromUserDetails:[33m35[0;39m][0;39m - 로그인이 필요합니다
+[2021-11-12 01:13:25:7918] [32m[http-nio-8080-exec-1][0;39m [1;31mERROR[0;39m [1;37m[com.project.joopging.service.UserService.userFromUserDetails:[33m35[0;39m][0;39m - 로그인이 필요합니다

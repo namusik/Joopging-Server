@@ -29,11 +29,11 @@ public class MainPageService {
     private final PostRepository postRepository;
     private final ReviewRepository reviewRepository;
     private final BookMarkRepository bookMarkRepository;
-    private final LocalDate now = LocalDate.now().minusDays(1);
+    private final LocalDate now = LocalDate.now();
     
     //조회수 높은거 5개
     public List<PostMainPageResponseDto> getByHotPlace(UserDetailsImpl userDetails) {
-        System.out.println("now = " + now);
+//        System.out.println("now = " + now);
         Pageable pageable = PageRequest.of(0, 10);
         List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByViewCountDesc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
