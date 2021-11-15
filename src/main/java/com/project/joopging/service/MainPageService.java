@@ -29,7 +29,7 @@ public class MainPageService {
     private final PostRepository postRepository;
     private final ReviewRepository reviewRepository;
     private final BookMarkRepository bookMarkRepository;
-    private final LocalDate now = LocalDate.now().minusDays(1);
+    private final LocalDate now = LocalDate.now();
     
     //조회수 높은거 5개
     public List<PostMainPageResponseDto> getByHotPlace(UserDetailsImpl userDetails) {
