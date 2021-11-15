@@ -1,0 +1,11 @@
+<included>
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <!-- Optionally add an encoder -->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--        </encoder>-->
+    </appender>
+</included>
