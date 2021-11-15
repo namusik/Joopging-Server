@@ -32,7 +32,6 @@ public class UserService {
         if (userDetails instanceof UserDetailsImpl) {
             return ((UserDetailsImpl) userDetails).getUser();
         } else {
-            log.error("로그인이 필요합니다");
             throw new CustomErrorException("로그인이 필요합니다.");
         }
     }

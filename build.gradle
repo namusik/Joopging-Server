@@ -45,8 +45,15 @@ dependencies {
     //health check 기능
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    //logback to slack
+    implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 
+    //sentry
+    implementation 'io.sentry:sentry-spring-boot-starter:5.4.0'
+    implementation 'io.sentry:sentry-logback:5.4.0'
 }
+
+
 
 test {
     useJUnitPlatform()
