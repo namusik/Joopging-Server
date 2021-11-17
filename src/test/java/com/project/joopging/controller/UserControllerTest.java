@@ -60,7 +60,8 @@ class UserControllerTest {
                 UserRoleEnum.USER,
                 "강동구",
                 "산에서",
-                "7km"
+                "7km",
+                "010-0000-0000"
         );
         mockUserDetails = new UserDetailsImpl(testUser);
     }

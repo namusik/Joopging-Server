@@ -20,4 +20,6 @@ public class SignupRequestDto {
     private String type;
 
     private String distance;
+
+    private String number;
 }

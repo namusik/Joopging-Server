@@ -26,7 +26,7 @@ public class APIInit {
 
     public static String getHeaders() {
         try {
-            Ini ini = new Ini(new File("C:\\Users\\user\\Desktop\\gits\\joopging\\src\\main\\java\\com\\project\\joopging\\util\\coolsms\\config.ini"));
+            Ini ini = new Ini(new File("C:\\Users\\rlatj\\Desktop\\SpringBoot\\Joopging\\Joopging-Server\\src\\main\\java\\com\\project\\joopging\\util\\coolsms\\config.ini"));
             String apiKey = ini.get("AUTH","api_key");
             String apiSecret =ini.get("AUTH","api_secret");
             String salt = UUID.randomUUID().toString().replaceAll("-","");
@@ -62,7 +62,7 @@ public class APIInit {
         String prefix = "/";
 
         try {
-            Ini ini = new Ini(new File("C:\\Users\\user\\Desktop\\gits\\joopging\\src\\main\\java\\com\\project\\joopging\\util\\coolsms\\config.ini"));
+            Ini ini = new Ini(new File("C:\\Users\\rlatj\\Desktop\\SpringBoot\\Joopging\\Joopging-Server\\src\\main\\java\\com\\project\\joopging\\util\\coolsms\\config.ini"));
             if (ini.get("SERVER", "domain") != null) domain = ini.get("SERVER", "domain");
             if (ini.get("SERVER", "protocol") != null) protocol = ini.get("SERVER", "protocol");
             if (ini.get("SERVER", "prefix") != null) prefix = ini.get("SERVER", "prefix");

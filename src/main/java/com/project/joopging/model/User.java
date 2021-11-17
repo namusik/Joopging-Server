@@ -69,6 +69,11 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "유저 자기소개")
     private String intro;
 
+    @Column
+    @JsonIgnore
+    @ApiModelProperty(value = "유저 핸드폰 번호")
+    private String number;
+
 
     @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
@@ -106,7 +111,7 @@ public class User extends Timestamped {
 
 
 
-    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
+    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance, String number) {
         this.nickname = username;
         this.password = password;
         this.email = email;
@@ -116,6 +121,7 @@ public class User extends Timestamped {
         this.location = enumLocation;
         this.intro = null;
         this.userImg = null;
+        this.number = number;
     }
 
     //소셜로그인용 유저

@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "Sms Controller Api V1")
 public class SmsController {
 
-    private SmsService smsService;
+    private final SmsService smsService;
 
     @ApiOperation(value = "검색")
     @GetMapping("/send")
     public ResponseDto sendSms() {
-        SmsService.sendSms();
+        smsService.sendSms();
         return new ResponseDto(200L,"문자보내기 성공","");
     }
 
