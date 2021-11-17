@@ -15,10 +15,10 @@ public class SmsController {
 
     private final SmsService smsService;
 
-    @ApiOperation(value = "검색")
+    @ApiOperation(value = "문자메세지 테스트")
     @GetMapping("/send")
     public ResponseDto sendSms() {
-        smsService.sendSms();
+        smsService.sendRunningDateAlertToCrew();
         return new ResponseDto(200L,"문자보내기 성공","");
     }
 

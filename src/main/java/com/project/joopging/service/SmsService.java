@@ -2,33 +2,46 @@ package com.project.joopging.service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.project.joopging.model.Crew;
+import com.project.joopging.model.Post;
+import com.project.joopging.model.User;
+import com.project.joopging.repository.PostRepository;
 import com.project.joopging.util.coolsms.APIInit;
 import com.project.joopging.util.coolsms.GroupModel;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
 public class SmsService {
 
-    public void sendSms() {
+    private final PostRepository postRepository;
+
+    public void sendSms(String userNumber, String postTile) {
+
         JsonObject params = new JsonObject();
         JsonArray messages = new JsonArray();
 
         JsonObject msg = new JsonObject();
         JsonArray toList = new JsonArray();
 
-        toList.add("01099403102");
+        toList.add(userNumber);
         msg.add("to", toList);
         msg.addProperty("from", "01099403102");
         msg.addProperty("text",
-                "안녕하세요 줍깅입니다. 오늘 참여하실[같이 줍깅해요!]모임의 모임날짜가 3일 남으셨습니다.");
+                "안녕하세요 줍깅입니다. 신청하신"+ "[ " + postTile + " ]" +"모임의 모임날짜가 하루전입니다.");
         messages.add(msg);
 
         params.add("messages", messages);
@@ -59,6 +72,42 @@ public class SmsService {
             }
         });
     }
+    //스케쥴러 새벽 3시
+    //러닝데이트 1일 전에 알럿문자메세지
+//    @Scheduled(cron = "0 0 3 * * *")
+    @Transactional(readOnly = true)
+    public void sendRunningDateAlertToCrew() {
+        List<Post> postList = postRepository.findAll();
+        for (Post post : postList) {
+            String nowPlusOneDay = getLocalDateTimeNowToString(LocalDateTime.now().plusDays(1));
+            String runningDate = getRunningDateToString(post);
+          if (nowPlusOneDay.equals(runningDate)) {
+              List<Crew> crewList = post.getCrew();
+              String postTitle = post.getTitle();
+              for (Crew crew : crewList) {
+                  User user = crew.getUserJoin();
+                  String userNumber = user.getNumber();
+                  sendSms(userNumber, postTitle);
+              }
+          }
+        }
+    }
 
+    private String getRunningDateToString(Post post) {
+        LocalDateTime runningDate = post.getRunningDate();
+        String day = runningDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String date = String.valueOf(runningDate);
+//        System.out.println("date = " + date);
+        String[] ts = date.split("T");
+        return ts[0] + " ("+day+") ";
+    }
+
+    private String getLocalDateTimeNowToString(LocalDateTime localDateTime) {
+        String day = localDateTime.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String date = String.valueOf(localDateTime);
+//        System.out.println("date = " + date);
+        String[] ts = date.split("T");
+        return ts[0] + " ("+day+") ";
+    }
 }
 
