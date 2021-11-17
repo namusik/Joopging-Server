@@ -8,6 +8,8 @@ import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,17 +27,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class KakaoUserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
-
-    @Autowired
-    public KakaoUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
 
     public boolean kakaoLogin(String code) throws JsonProcessingException {
