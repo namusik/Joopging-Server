@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SmsService {
 
-    public static void sendSms() {
+    public void sendSms() {
         JsonObject params = new JsonObject();
         JsonArray messages = new JsonArray();
 
