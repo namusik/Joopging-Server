@@ -29,15 +29,15 @@ public class SmsService {
 
     private final PostRepository postRepository;
 
-    public void sendSms(String userNumber, String postTile) {
+    public void sendSms(JsonArray toList, String postTile) {
 
         JsonObject params = new JsonObject();
         JsonArray messages = new JsonArray();
 
         JsonObject msg = new JsonObject();
-        JsonArray toList = new JsonArray();
+//        JsonArray toList = new JsonArray();
+//        toList.add(userNumber);
 
-        toList.add(userNumber);
         msg.add("to", toList);
         msg.addProperty("from", "01099403102");
         msg.addProperty("text",
@@ -72,12 +72,13 @@ public class SmsService {
             }
         });
     }
-    //스케쥴러 새벽 3시
+    //스케쥴러 매일 9시
     //러닝데이트 1일 전에 알럿문자메세지
-//    @Scheduled(cron = "0 0 3 * * *")
+//    @Scheduled(cron = "0 0 9 * * *")
     @Transactional(readOnly = true)
     public void sendRunningDateAlertToCrew() {
         List<Post> postList = postRepository.findAll();
+        JsonArray toList = new JsonArray();
         for (Post post : postList) {
             String nowPlusOneDay = getLocalDateTimeNowToString(LocalDateTime.now().plusDays(1));
             String runningDate = getRunningDateToString(post);
@@ -87,8 +88,9 @@ public class SmsService {
               for (Crew crew : crewList) {
                   User user = crew.getUserJoin();
                   String userNumber = user.getNumber();
-                  sendSms(userNumber, postTitle);
+                  toList.add(userNumber);
               }
+              sendSms(toList, postTitle);
           }
         }
     }
