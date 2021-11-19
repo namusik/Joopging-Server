@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -25,16 +26,25 @@ public class BadgeCollectSchedule {
     public void collect() {
         List<User> userList = userRepository.findAll();
 
+
         for (User user : userList) {
             List<Badge> badgeList = user.getBadges();
+            List<Integer> categoryList = new ArrayList<>();
+            List<Integer> levelList = new ArrayList<>();
+
+
+            for (Badge badge : badgeList) {
+                categoryList.add(badge.getCategory());
+                levelList.add(badge.getLevel());
+            }
 
             //신뢰의 시작 뱃지
             if (user.getUserImg() != null) {
                 Badge trustBadge = Badge.of(1, 1, user);
-                if (badgeList.contains(trustBadge)) {
+                if (categoryList.contains(trustBadge.getCategory())) {
                     if (user.getIntro() != null) {
-                        Badge trustBadge2 = Badge.of(1,2, user);
-                        if (badgeList.contains(trustBadge2)) {
+                        Badge trustBadge2 = Badge.of(1,11, user);
+                        if (levelList.contains(trustBadge2.getLevel())) {
 
                         } else {
                             badgeList.add(trustBadge2);
@@ -49,11 +59,11 @@ public class BadgeCollectSchedule {
 
             // 첫 후기의 설렘 뱃지
             if (user.getReview() != null) {
-                Badge firstReviewBadge = Badge.of(2,1, user);
-                if (badgeList.contains(firstReviewBadge)){
+                Badge firstReviewBadge = Badge.of(2,2, user);
+                if (categoryList.contains(firstReviewBadge.getCategory())){
                     if (user.getReview().size() >= 10) {
-                        Badge reviewKingBadge = Badge.of(2,2, user);
-                        if (badgeList.contains(reviewKingBadge)) {
+                        Badge reviewKingBadge = Badge.of(2,22, user);
+                        if (levelList.contains(reviewKingBadge.getLevel())) {
 
                         } else {
                             badgeList.add(reviewKingBadge);
@@ -68,11 +78,11 @@ public class BadgeCollectSchedule {
 
             // 아이줍깅 뱃지
             if (user.getBookMarks().size() >= 5) {
-                Badge bookmarkBadge = Badge.of(3,1, user);
-                if (badgeList.contains(bookmarkBadge)) {
+                Badge bookmarkBadge = Badge.of(3,3, user);
+                if (categoryList.contains(bookmarkBadge.getCategory())) {
                     if (user.getBookMarks().size() >= 20) {
-                        Badge bookmarkKingBadge = Badge.of(3,2, user);
-                        if (badgeList.contains(bookmarkBadge)) {
+                        Badge bookmarkKingBadge = Badge.of(3,33, user);
+                        if (levelList.contains(bookmarkKingBadge.getLevel())) {
 
                         } else {
                             badgeList.add(bookmarkKingBadge);
@@ -87,11 +97,11 @@ public class BadgeCollectSchedule {
 
             //리더쉽 뱃지
             if (user.getPost().size() >= 5) {
-                Badge leadershipBadge = Badge.of(6,1, user);
-                if (badgeList.contains(leadershipBadge)) {
+                Badge leadershipBadge = Badge.of(6,6, user);
+                if (categoryList.contains(leadershipBadge.getCategory())) {
                     if (user.getPost().size() >= 20) {
-                        Badge leaderOfLeaderBadge = Badge.of(6,2, user);
-                        if (badgeList.contains(leaderOfLeaderBadge)) {
+                        Badge leaderOfLeaderBadge = Badge.of(6,66, user);
+                        if (levelList.contains(leaderOfLeaderBadge.getLevel())) {
 
                         } else {
                             badgeList.add(leaderOfLeaderBadge);
@@ -123,12 +133,12 @@ public class BadgeCollectSchedule {
 
 
                 if (countAttendanceTrue >= 1) {
-                    Badge firstJoinBadge = Badge.of(4,1, user);
-                    if (badgeList.contains(firstJoinBadge)) {
+                    Badge firstJoinBadge = Badge.of(4,4, user);
+                    if (categoryList.contains(firstJoinBadge.getCategory())) {
                         if (countAttendanceTrue >= 10) {
-                            Badge joinKingBadge = Badge.of(4,2, user);
+                            Badge joinKingBadge = Badge.of(4,44, user);
                             //줍깅의 시작 업그레이드
-                            if (badgeList.contains(joinKingBadge)) {
+                            if (levelList.contains(joinKingBadge.getLevel())) {
 
                             } else {
                                 badgeList.add(joinKingBadge);
@@ -148,9 +158,9 @@ public class BadgeCollectSchedule {
                     int attendanceRate =
                             countAttendanceTrue / (countAttendanceFalse + countAttendanceFalse) * 100;
                     //출석률 70프로 이하일때 나쁜출석률 뱃지
-                    Badge badAttendanceRateBadge = Badge.of(5, 1, user);
+                    Badge badAttendanceRateBadge = Badge.of(5, 5, user);
                     if (attendanceRate <= 70) {
-                        if (badgeList.contains(badAttendanceRateBadge)) {
+                        if (categoryList.contains(badAttendanceRateBadge.getCategory())) {
 
                         } else {
                             badgeList.add(badAttendanceRateBadge);
@@ -163,7 +173,7 @@ public class BadgeCollectSchedule {
                     }
 
                 } else {
-                    System.out.println("참가 이력이 없습니다");
+//                    System.out.println("참가 이력이 없습니다");
                 }
 
             }
