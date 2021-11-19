@@ -70,6 +70,7 @@ public class PostService {
     }
 
     //게시글 삭제
+    @Transactional
     public void deletePost(Long postId, User user) {
         Post post = getPostById(postId);
         if(post.isWrittenBy(user)) {
