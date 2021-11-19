@@ -98,6 +98,10 @@ public class Post extends Timestamped {
     @Formula("(select count(1) from book_mark bm where bm.post_id = id)")
     private Integer totalBookMarkCount;
 
+    @Column
+    @ApiModelProperty(value = "출석관리 완료여부")
+    private boolean postAttendation;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -143,6 +147,7 @@ public class Post extends Timestamped {
         this.limitPeople = requestDto.getLimitPeople();
         this.postImg = requestDto.getPostImg();
         this.writer = user;
+        this.postAttendation = false;
     }
 
 
@@ -283,6 +288,7 @@ public class Post extends Timestamped {
                 .writerName(this.writer.getNickname())
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
+                .postAttendation(this.postAttendation)
                 .build();
     }
 
@@ -310,4 +316,7 @@ public class Post extends Timestamped {
                 .build();
     }
 
+    public void attend() {
+        this.postAttendation = true;
+    }
 }
