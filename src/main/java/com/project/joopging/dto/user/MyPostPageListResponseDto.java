@@ -27,6 +27,7 @@ public class MyPostPageListResponseDto {
     private final String postImg;
     private final Integer viewCount;
     private final Integer bookMarkCount;
+    private final boolean postAttendation;
 
     //작성자 정보
     private final String writerName;
