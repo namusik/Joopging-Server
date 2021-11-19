@@ -23,8 +23,8 @@ public class BadgeService {
         List<MyBadgeListResponseDto> responseDtoList = new ArrayList<>();
         List<Badge> badgeList = user.getBadges();
         for (Badge badge : badgeList) {
-            String modifiedAtToString = getModifiedAtToString(badge);
-            MyBadgeListResponseDto responseDto = badge.toBuildBadge(modifiedAtToString);
+            String createdAtToString = getCreatedAtToString(badge);
+            MyBadgeListResponseDto responseDto = badge.toBuildBadge(createdAtToString);
             responseDtoList.add(responseDto);
         }
         return responseDtoList;
@@ -34,9 +34,9 @@ public class BadgeService {
 
 
 
-    //
-    private String getModifiedAtToString(Badge badge) {
-        LocalDateTime modifiedAt = badge.getModifiedAt();
+    // 뱃지 생성일 보내주기
+    private String getCreatedAtToString(Badge badge) {
+        LocalDateTime modifiedAt = badge.getCreatedAt();
         String day = modifiedAt.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
         String date = String.valueOf(modifiedAt);
 //        System.out.println("date = " + date);
