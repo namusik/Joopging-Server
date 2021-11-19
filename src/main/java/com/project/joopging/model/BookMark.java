@@ -43,22 +43,5 @@ public class BookMark extends Timestamped {
     @ApiModelProperty(value = "캠페인 정보")
     Campaign campaignBookMark;
 
-    public BookMark(User userBookMark, Post postBookMark) {
-        this.userBookMark = userBookMark;
-        this.postBookMark = postBookMark;
-    }
-
-    public static BookMark of(User user, Post post) {
-        return new BookMark(user, post);
-    }
-
-    public BookMark(User userBookMark, Campaign campaignBookMark) {
-        this.userBookMark = userBookMark;
-        this.campaignBookMark = campaignBookMark;
-    }
-
-    public static BookMark of(User user, Campaign campaign) {
-        return new BookMark(user, campaign);
-    }
 
 }

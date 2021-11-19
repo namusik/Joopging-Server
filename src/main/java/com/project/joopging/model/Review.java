@@ -1,6 +1,5 @@
 package com.project.joopging.model;
 
-import com.project.joopging.dto.review.ReviewRequestDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -58,25 +57,5 @@ public class Review extends Timestamped {
     @ApiModelProperty(value = "유저 정보")
     private User userReview;
 
-    public Review(ReviewRequestDto requestDto, Post post, User user) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-        this.reviewImg = requestDto.getReviewImg();
-        this.star = requestDto.getStar();
-        this.satiRate = requestDto.getSatiRate();
-        this.levelRate = requestDto.getLevelRate();
-        this.trashRate = requestDto.getTrashRate();
-        this.postReview = post;
-        this.userReview = user;
-    }
 
-    public void update(ReviewRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-        this.reviewImg = requestDto.getReviewImg();
-        this.star = requestDto.getStar();
-        this.satiRate = requestDto.getSatiRate();
-        this.levelRate = requestDto.getLevelRate();
-        this.trashRate = requestDto.getTrashRate();
-    }
 }

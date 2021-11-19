@@ -2,10 +2,6 @@ package com.project.joopging.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.joopging.dto.campaign.CampaignCreateRequestDto;
-import com.project.joopging.dto.campaign.CampaignDetailResponseDto;
-import com.project.joopging.dto.campaign.CampaignUpdateRequestDto;
-import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -113,105 +109,4 @@ public class Campaign extends Timestamped {
     private Integer totalBookMarkCount;
 
 
-    //게시글 작성
-    public Campaign(CampaignCreateRequestDto requestDto, User user) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-        this.crewHeadIntro = requestDto.getCrewHeadIntro();
-        this.runningDate = requestDto.getRunningDate();
-        this.startDate = requestDto.getStartDate();
-        this.endDate = requestDto.getEndDate();
-        this.location = requestDto.getLocation();
-        this.type= requestDto.getType();
-        this.distance = requestDto.getDistance();
-        this.limitPeople = requestDto.getLimitPeople();
-        this.postImg = requestDto.getPostImg();
-        this.admin = user;
-    }
-
-
-    public static Campaign of(CampaignCreateRequestDto requestDto, User user) {
-        return new Campaign(requestDto, user);
-    }
-
-    public boolean isWrittenBy(User user) {
-        return this.admin.getId().equals(user.getId());
-    }
-
-    public void update(CampaignUpdateRequestDto updateRequestDto) {
-        this.title = updateRequestDto.getTitle();
-        this.content = updateRequestDto.getContent();
-        this.crewHeadIntro = updateRequestDto.getCrewHeadIntro();
-        this.runningDate = updateRequestDto.getRunningDate();
-        this.startDate = updateRequestDto.getStartDate();
-        this.endDate = updateRequestDto.getEndDate();
-        this.location = updateRequestDto.getLocation();
-        this.type= updateRequestDto.getType();
-        this.distance = updateRequestDto.getDistance();
-        this.limitPeople = updateRequestDto.getLimitPeople();
-        this.postImg = updateRequestDto.getPostImg();
-    }
-
-    public CampaignDetailResponseDto toBuildDetailCampaign(UserDetailsImpl userDetails,
-                                                           boolean joinCheck,
-                                                           boolean bookMarkInfo,
-                                                           String runningDateToString) {
-        if(userDetails == null) {
-            return CampaignDetailResponseDto.builder()
-                    .campaignId(this.id)
-                    .title(this.title)
-                    .crewHeadIntro(this.crewHeadIntro)
-                    .content(this.content)
-                    .runningDate(runningDateToString)
-                    .startDate(this.startDate)
-                    .endDate(this.endDate)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
-                    .location(this.location)
-                    .type(this.type)
-                    .distance(this.distance)
-                    .limitPeople(this.limitPeople)
-                    .nowPeople(this.nowPeople)
-                    .campaignImg(this.postImg)
-                    .viewCount(this.viewCount)
-                    .totalBookMarkCount(this.totalBookMarkCount)
-                    .adminName(this.admin.getNickname())
-                    .adminImg(this.admin.getUserImg())
-                    .intro(this.admin.getIntro())
-                    .bookMarkInfo(bookMarkInfo)
-                    .joinCheck(joinCheck)
-                    .build();
-        } else {
-            return CampaignDetailResponseDto.builder()
-                    .campaignId(this.id)
-                    .title(this.title)
-                    .crewHeadIntro(this.crewHeadIntro)
-                    .content(this.content)
-                    .runningDate(runningDateToString)
-                    .startDate(this.startDate)
-                    .endDate(this.endDate)
-                    .location(this.location)
-                    .type(this.type)
-                    .distance(this.distance)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
-                    .limitPeople(this.limitPeople)
-                    .nowPeople(this.nowPeople)
-                    .campaignImg(this.postImg)
-                    .viewCount(this.viewCount)
-                    .totalBookMarkCount(this.totalBookMarkCount)
-                    .adminName(this.admin.getNickname())
-                    .adminImg(this.admin.getUserImg())
-                    .intro(this.admin.getIntro())
-                    .bookMarkInfo(bookMarkInfo)
-                    .joinCheck(joinCheck)
-                    .build();
-        }
-    }
-
-    public void plusNowPeople() {
-        this.nowPeople += 1;
-    }
-
-    public void minusNowPeople() {
-        this.nowPeople -= 1;
-    }
 }

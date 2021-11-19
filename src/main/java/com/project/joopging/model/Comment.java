@@ -1,9 +1,6 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.joopging.dto.comment.AllCommentResponseDto;
-import com.project.joopging.dto.comment.CommentCreateRequestDto;
-import com.project.joopging.dto.comment.CommentUpdateRequestDto;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -50,34 +47,4 @@ public class Comment extends Timestamped {
     Post postComment;
 
 
-    public Comment(CommentCreateRequestDto requestDto, User user, Post post){
-        this.content = requestDto.getContent();
-        this.replyTo = requestDto.getReplyTo();
-        this.userComment = user;
-        this.postComment = post;
-    }
-
-    public static Comment of(CommentCreateRequestDto requestDto, User user, Post post) {
-        return new Comment(requestDto, user, post);
-    }
-    public boolean isWrittenBy(User user) {
-        return this.userComment.getId().equals(user.getId());
-    }
-
-    public void update(CommentUpdateRequestDto requestDto) {
-        this.content = requestDto.getContent();
-    }
-
-    public AllCommentResponseDto toBuildDetailComment(String modifiedAtToString)
-    {
-        return AllCommentResponseDto.builder()
-                .commentId(this.id)
-                .modifiedAt(modifiedAtToString)
-                .userId(this.getUserComment().getId())
-                .nickname(this.getUserComment().getNickname())
-                .userImg(this.getUserComment().getUserImg())
-                .content(this.content)
-                .replyTo(this.replyTo)
-                .build();
-    }
 }

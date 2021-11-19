@@ -11,8 +11,8 @@ import com.project.joopging.util.coolsms.GroupModel;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +84,8 @@ public class SmsService {
           if (nowPlusOneDay.equals(runningDate)) {
               List<Crew> crewList = post.getCrew();
               String postTitle = post.getTitle();
-              String message = "안녕하세요 줍깅입니다. 신청하신"+ " [" + postTitle + "] " +"모임의 모임날짜가 하루전입니다.";
+              String message = "안녕하세요 줍깅입니다. " +
+                      "신청하신"+ " [" + postTitle + "] " +"모임의 모임날짜가 하루전입니다.";
               for (Crew crew : crewList) {
                   User user = crew.getUserJoin();
                   String userNumber = user.getNumber();
@@ -97,7 +98,7 @@ public class SmsService {
 
     //스케쥴러 1분마다 체크
     //CrewHead 에게 출석체크 url 알럿문자메세지
-//    @Scheduled(cron ="0 0/1 * * *" )
+//    @Scheduled(cron ="0 0/1 * * *")
     public void sendAttendanceCheckAlertToCrewHead() {
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
@@ -106,13 +107,41 @@ public class SmsService {
             String now = getLocalDateTimeNowToStringMinute(LocalDateTime.now());
             if (now.equals(runningDate)) {
                 String number = post.getWriter().getNumber();
-                String message = "안녕하세요 줍깅입니다. 다 모이셨나요? 출석체크를 해주세요!" +
+                String postTitle = post.getTitle();
+                String message = "안녕하세요 줍깅입니다." +" ["+ postTitle +"] "+ "모임의 모임원들은" +
+                        "다 모이셨나요? 출석체크를 해주세요!" +
                         "출석체크는 앞으로 유저간의 신뢰도를 측정하는데 도움이 됩니다!" +
                         "출석체크 url";
                 toList.add(number);
                 sendSms(toList,message);
             }
 
+        }
+    }
+    //스케쥴러 1분마다 체크
+    //Crew 전체에게 후기 쓰고 설문조사 유도 알럿문자메세지
+//    @Scheduled(cron = "0 0/1 * * *")
+    public void sendInduceReviewAlertToCrew() {
+        List<Post> postList = postRepository.findAll();
+        JsonArray toList = new JsonArray();
+        for (Post post : postList) {
+            String runningDate = getRunningDateToStringMinute(post);
+            String now = getLocalDateTimeNowToStringMinute(LocalDateTime.now());
+            if (now.equals(runningDate)) {
+                List<Crew> crewList = post.getCrew();
+                String postTitle = post.getTitle();
+                String message = "안녕하세요 줍깅입니다. 이번" +" ["+ postTitle + "] " + "모임은 어떠셨나요?" +
+                        "후기를 작성하여 다른 사용자에게 플로깅이 얼마나 좋은지 알려주세요!" +
+                        "[이벤트] 이벤트 기간 중 설문조사를 작성하시면 소정의 기프티콘을 드려요! " +
+                        "출석체크 url" +
+                        "설문조사 url";
+                for (Crew crew : crewList) {
+                    User user = crew.getUserJoin();
+                    String userNumber = user.getNumber();
+                    toList.add(userNumber);
+                }
+                sendSms(toList,message);
+            }
         }
     }
 
