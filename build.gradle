@@ -35,7 +35,6 @@ dependencies {
     runtimeOnly(group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2')
     runtimeOnly(group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2')
 
-    
     //Swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
@@ -48,6 +47,9 @@ dependencies {
 
     //logback to slack
     implementation 'com.github.maricn:logback-slack-appender:1.4.0'
+
+    //logback db 쿼리 로그 (jdbc)
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     //sentry
     implementation 'io.sentry:sentry-spring-boot-starter:5.4.0'
