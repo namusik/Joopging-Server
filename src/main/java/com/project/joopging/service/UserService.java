@@ -113,10 +113,6 @@ public class UserService {
         return new MainPageResponseUserDto(user);
     }
 
-    public MyBadgeListResponseDto getMyBadgeListByUser(User user) {
-
-        return MyBadgeListResponseDto.builder().build();
-    }
 
     //닉네임 중복 검사
     public void nicknameCheck(String nickname) {

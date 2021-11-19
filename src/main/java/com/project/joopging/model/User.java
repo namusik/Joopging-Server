@@ -108,6 +108,12 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userBadge", orphanRemoval = true)
+    @JsonIgnore
+    @BatchSize(size = 50)
+    @ApiModelProperty(value = "뱃지 정보")
+    private List<Badge> badges = new ArrayList<>();
+
 
 
 
