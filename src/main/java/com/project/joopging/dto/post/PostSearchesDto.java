@@ -27,11 +27,33 @@ public class PostSearchesDto {
     private  int nowPeople;
     private  String postImg;
     private  Integer viewCount;
+    private boolean bookMarkInfo;
 
     //user 정보
     private Long userId;
     private String nickname;
     private String userImg;
+
+    public PostSearchesDto(Post post, User writer, Boolean bookMarkInfo) {
+        this.postId = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.runningDate = post.getRunningDate();
+        this.startDate = post.getStartDate();
+        this.endDate = post.getEndDate();
+        this.location = post.getLocation();
+        this.type = post.getType();
+        this.distance = post.getDistance();
+        this.limitPeople = post.getLimitPeople();
+        this.nowPeople = post.getNowPeople();
+        this.postImg = post.getPostImg();
+        this.viewCount = post.getViewCount();
+        this.bookMarkInfo = bookMarkInfo;
+
+        this.userId = writer.getId();
+        this.nickname = writer.getNickname();
+        this.userImg = writer.getUserImg();
+    }
 
     public PostSearchesDto(Post post, User writer) {
         this.postId = post.getId();
@@ -47,25 +69,11 @@ public class PostSearchesDto {
         this.nowPeople = post.getNowPeople();
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
+        this.bookMarkInfo = false;
 
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();
     }
 
-    public PostSearchesDto(Post post) {
-        this.postId = post.getId();
-        this.title = post.getTitle();
-        this.content = post.getContent();
-        this.runningDate = post.getRunningDate();
-        this.startDate = post.getStartDate();
-        this.endDate = post.getEndDate();
-        this.location = post.getLocation();
-        this.type = post.getType();
-        this.distance = post.getDistance();
-        this.limitPeople = post.getLimitPeople();
-        this.nowPeople = post.getNowPeople();
-        this.postImg = post.getPostImg();
-        this.viewCount = post.getViewCount();
-    }
 }

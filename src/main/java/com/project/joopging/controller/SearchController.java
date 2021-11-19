@@ -4,6 +4,7 @@ package com.project.joopging.controller;
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.post.PostSearchesDto;
 import com.project.joopging.model.Post;
+import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.SerchService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,10 +42,21 @@ public class SearchController {
 
     @ApiOperation(value = "필터 검색 창에서 모든 post 보여주기")
     @GetMapping("/searches/post")
-    public ResponseDto findUseByFilter() {
-        List<PostSearchesDto> post = serchService.returnAllPost();
+    public ResponseDto findUseByFilter(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        List<PostSearchesDto> post = new ArrayList<>();
+        if (userDetails == null) {
+             post = serchService.returnAllPosNotLogin();
 
-        return new ResponseDto(200L, "성공", post);
+            return new ResponseDto(200L, "비로그인 시 post 전송", post);
+        } else {
+            post = serchService.returnAllPosLogin(userDetails.getUser());
+
+            return new ResponseDto(200L, "로그인 시 post 전송", post);
+        }
+
+
     }
 
 }
