@@ -1,4 +1,4 @@
-package com.project.joopging.service;
+package com.project.joopging.schedule;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -25,7 +25,7 @@ import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
-public class SmsService {
+public class SmsSchedule {
 
     private final PostRepository postRepository;
 
@@ -73,7 +73,7 @@ public class SmsService {
     }
     //스케쥴러 매일 9시
     //러닝데이트 1일 전에 알럿문자메세지
-//    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     @Transactional(readOnly = true)
     public void sendRunningDateAlertToCrew() {
         List<Post> postList = postRepository.findAll();
@@ -98,7 +98,7 @@ public class SmsService {
 
     //스케쥴러 1분마다 체크
     //CrewHead 에게 출석체크 url 알럿문자메세지
-//    @Scheduled(cron ="0 0/1 * * *")
+    @Scheduled(cron ="0 0/1 * * *")
     public void sendAttendanceCheckAlertToCrewHead() {
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
@@ -120,7 +120,7 @@ public class SmsService {
     }
     //스케쥴러 1분마다 체크
     //Crew 전체에게 후기 쓰고 설문조사 유도 알럿문자메세지
-//    @Scheduled(cron = "0 0/1 * * *")
+    @Scheduled(cron = "0 0/1 * * *")
     public void sendInduceReviewAlertToCrew() {
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
@@ -133,7 +133,6 @@ public class SmsService {
                 String message = "안녕하세요 줍깅입니다. 이번" +" ["+ postTitle + "] " + "모임은 어떠셨나요?" +
                         "후기를 작성하여 다른 사용자에게 플로깅이 얼마나 좋은지 알려주세요!" +
                         "[이벤트] 이벤트 기간 중 설문조사를 작성하시면 소정의 기프티콘을 드려요! " +
-                        "출석체크 url" +
                         "설문조사 url";
                 for (Crew crew : crewList) {
                     User user = crew.getUserJoin();
