@@ -172,7 +172,7 @@ public class PostService {
 
     }
 
-    // 내 모집관리
+    // 내 모임관리
     // 북마크 수 추가
     @Transactional(readOnly = true)
     public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
