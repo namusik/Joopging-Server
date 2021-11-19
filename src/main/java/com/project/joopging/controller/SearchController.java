@@ -25,7 +25,7 @@ import java.util.Optional;
 public class SearchController {
     private final SerchService serchService;
 
-    @ApiOperation(value = "검색")
+    @ApiOperation(value = "필터를 통한 검색")
     @GetMapping("/searches")
     public ResponseDto findUseByFilter(
             @ApiParam(value = "거리 카테고리") @RequestParam String distance,
@@ -37,4 +37,13 @@ public class SearchController {
 
         return new ResponseDto(200L, "성공", post);
     }
+
+    @ApiOperation(value = "필터 검색 창에서 모든 post 보여주기")
+    @GetMapping("/searches/post")
+    public ResponseDto findUseByFilter() {
+        List<PostSearchesDto> post = serchService.returnAllPost();
+
+        return new ResponseDto(200L, "성공", post);
+    }
+
 }
