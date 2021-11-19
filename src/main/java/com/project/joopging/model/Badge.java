@@ -39,13 +39,14 @@ public class Badge extends Timestamped {
     User userBadge;
 
 
-    public Badge (int category, int level) {
+    public Badge (int category, int level, User user) {
         this.category = category;
         this.level = level;
+        this.userBadge = user;
     }
 
-    public static Badge of(int category, int level) {
-        return new Badge(category, level);
+    public static Badge of(int category, int level, User user) {
+        return new Badge(category, level, user);
     }
 
 }
