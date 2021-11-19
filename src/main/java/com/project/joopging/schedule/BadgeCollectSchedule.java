@@ -3,6 +3,7 @@ package com.project.joopging.schedule;
 import com.project.joopging.model.Badge;
 import com.project.joopging.model.Crew;
 import com.project.joopging.model.User;
+import com.project.joopging.repository.BadgeRepository;
 import com.project.joopging.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,7 @@ import java.util.List;
 public class BadgeCollectSchedule {
 
     private final UserRepository userRepository;
+    private final BadgeRepository badgeRepository;
 
     @Scheduled(cron = "0 0 3 * * *")
     @Transactional
@@ -36,10 +38,12 @@ public class BadgeCollectSchedule {
 
                         } else {
                             badgeList.add(trustBadge2);
+                            badgeRepository.save(trustBadge2);
                         }
                     }
                 } else {
                     badgeList.add(trustBadge);
+                    badgeRepository.save(trustBadge);
                 }
             }
 
@@ -77,6 +81,24 @@ public class BadgeCollectSchedule {
                 }
             }
 
+            //리더쉽 뱃지
+            if (user.getPost().size() >= 5) {
+                Badge leadershipBadge = Badge.of(6,1);
+                if (badgeList.contains(leadershipBadge)) {
+                    if (user.getPost().size() >= 20) {
+                        Badge leaderOfLeaderBadge = Badge.of(6,2);
+                        if (badgeList.contains(leaderOfLeaderBadge)) {
+
+                        } else {
+                            badgeList.add(leaderOfLeaderBadge);
+                        }
+                    }
+
+                } else {
+                    badgeList.add(leadershipBadge);
+                }
+            }
+
             // 줍깅의 시작 뱃지 , 출석률 뱃지
             if (user.getCrews() != null) {
                 List<Crew> crewList = user.getCrews();
@@ -93,9 +115,6 @@ public class BadgeCollectSchedule {
                     }
                 }
 
-                //출석률 계산
-                int attendanceRate =
-                        countAttendanceTrue / (countAttendanceFalse + countAttendanceFalse) * 100;
 
                 if (countAttendanceTrue >= 1) {
                     Badge firstJoinBadge = Badge.of(4,1);
@@ -115,38 +134,31 @@ public class BadgeCollectSchedule {
                     }
                 }
 
-                //출석률 70프로 이하일때 나쁜출석률 뱃지
-                Badge badAttendanceRateBadge = Badge.of(5,1);
-                if (attendanceRate <= 70) {
-                    if (badgeList.contains(badAttendanceRateBadge)) {
 
-                    } else {
-                        badgeList.add(badAttendanceRateBadge);
-                    }
-
-                } else {
-                    badgeList.remove(badAttendanceRateBadge);
-                }
-
-            }
-
-            //리더쉽 뱃지
-            if (user.getPost().size() >= 5) {
-                Badge leadershipBadge = Badge.of(6,1);
-                if (badgeList.contains(leadershipBadge)) {
-                    if (user.getPost().size() >= 20) {
-                        Badge leaderOfLeaderBadge = Badge.of(6,2);
-                        if (badgeList.contains(leaderOfLeaderBadge)) {
+                //출석률 계산
+                if (countAttendanceTrue >= 1 & countAttendanceFalse >= 1) {
+                    int attendanceRate =
+                            countAttendanceTrue / (countAttendanceFalse + countAttendanceFalse) * 100;
+                    //출석률 70프로 이하일때 나쁜출석률 뱃지
+                    Badge badAttendanceRateBadge = Badge.of(5, 1);
+                    if (attendanceRate <= 70) {
+                        if (badgeList.contains(badAttendanceRateBadge)) {
 
                         } else {
-                            badgeList.add(leaderOfLeaderBadge);
+                            badgeList.add(badAttendanceRateBadge);
                         }
+
+                    } else {
+                        badgeList.remove(badAttendanceRateBadge);
                     }
 
                 } else {
-                    badgeList.add(leadershipBadge);
+                    System.out.println("참가 이력이 없습니다");
                 }
+
             }
+
+
 
 
         }
