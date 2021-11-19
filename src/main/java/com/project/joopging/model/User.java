@@ -80,23 +80,23 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "참가자 정보")
     private List<Crew> crews;
 
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "writer", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
-    @OneToMany(mappedBy = "admin")
+    @OneToMany(mappedBy = "admin", orphanRemoval = true)
     @JsonIgnore
     @ApiModelProperty(value = "캠페인 정보")
     private List<Campaign> campaigns;
 
-    @OneToMany(mappedBy = "userReview")
+    @OneToMany(mappedBy = "userReview", orphanRemoval = true)
     @JsonIgnore
     @ApiModelProperty(value = "후기 정보")
     private List<Review> review;
 
-    @OneToMany(mappedBy = "userComment")
+    @OneToMany(mappedBy = "userComment", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "댓글 정보")
