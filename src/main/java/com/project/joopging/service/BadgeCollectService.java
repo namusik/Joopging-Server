@@ -1,6 +1,5 @@
 package com.project.joopging.service;
 
-import com.project.joopging.dto.badge.AttendanceCheckDao;
 import com.project.joopging.model.Badge;
 import com.project.joopging.model.Crew;
 import com.project.joopging.model.User;
@@ -10,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Component
@@ -29,10 +28,10 @@ public class BadgeCollectService {
 
             //신뢰의 시작 뱃지
             if (user.getUserImg() != null) {
-                Badge trustBadge = new Badge(1, 1);
+                Badge trustBadge =Badge.of(1, 1);
                 if (badgeList.contains(trustBadge)) {
                     if (user.getIntro() != null) {
-                        Badge trustBadge2 = new Badge(1,2);
+                        Badge trustBadge2 = Badge.of(1,2);
                         if (badgeList.contains(trustBadge2)) {
 
                         } else {
@@ -46,10 +45,10 @@ public class BadgeCollectService {
 
             // 첫 후기의 설렘 뱃지
             if (user.getReview() != null) {
-                Badge firstReviewBadge = new Badge(2,1);
+                Badge firstReviewBadge = Badge.of(2,1);
                 if (badgeList.contains(firstReviewBadge)){
                     if (user.getReview().size() >= 10) {
-                        Badge reviewKingBadge = new Badge(2,2);
+                        Badge reviewKingBadge = Badge.of(2,2);
                         if (badgeList.contains(reviewKingBadge)) {
 
                         } else {
@@ -63,10 +62,10 @@ public class BadgeCollectService {
 
             // 아이줍깅 뱃지
             if (user.getBookMarks().size() >= 5) {
-                Badge bookmarkBadge = new Badge(3,1);
+                Badge bookmarkBadge = Badge.of(3,1);
                 if (badgeList.contains(bookmarkBadge)) {
                     if (user.getBookMarks().size() >= 20) {
-                        Badge bookmarkKingBadge = new Badge(3,2);
+                        Badge bookmarkKingBadge = Badge.of(3,2);
                         if (badgeList.contains(bookmarkBadge)) {
 
                         } else {
@@ -81,7 +80,6 @@ public class BadgeCollectService {
             // 줍깅의 시작 뱃지 , 출석률 뱃지
             if (user.getCrews() != null) {
                 List<Crew> crewList = user.getCrews();
-                List<AttendanceCheckDao> attendanceCheckDaoList = new ArrayList<>();
                 int countAttendanceTrue = 0;
                 int countAttendanceFalse = 0;
 
@@ -100,10 +98,10 @@ public class BadgeCollectService {
                         countAttendanceTrue / (countAttendanceFalse + countAttendanceFalse) * 100;
 
                 if (countAttendanceTrue >= 1) {
-                    Badge firstJoinBadge = new Badge(4,1);
+                    Badge firstJoinBadge = Badge.of(4,1);
                     if (badgeList.contains(firstJoinBadge)) {
                         if (countAttendanceTrue >= 10) {
-                            Badge joinKingBadge = new Badge(4,2);
+                            Badge joinKingBadge = Badge.of(4,2);
                             //줍깅의 시작 업그레이드
                             if (badgeList.contains(joinKingBadge)) {
 
@@ -118,7 +116,7 @@ public class BadgeCollectService {
                 }
 
                 //출석률 70프로 이하일때 나쁜출석률 뱃지
-                Badge badAttendanceRateBadge = new Badge(5,1);
+                Badge badAttendanceRateBadge = Badge.of(5,1);
                 if (attendanceRate <= 70) {
                     if (badgeList.contains(badAttendanceRateBadge)) {
 
@@ -134,10 +132,10 @@ public class BadgeCollectService {
 
             //리더쉽 뱃지
             if (user.getPost().size() >= 5) {
-                Badge leadershipBadge = new Badge(6,1);
+                Badge leadershipBadge = Badge.of(6,1);
                 if (badgeList.contains(leadershipBadge)) {
                     if (user.getPost().size() >= 20) {
-                        Badge leaderOfLeaderBadge = new Badge(6,2);
+                        Badge leaderOfLeaderBadge = Badge.of(6,2);
                         if (badgeList.contains(leaderOfLeaderBadge)) {
 
                         } else {

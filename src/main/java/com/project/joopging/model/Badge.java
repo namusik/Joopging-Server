@@ -45,6 +45,10 @@ public class Badge extends Timestamped {
         this.level = level;
     }
 
+    public static Badge of(int category, int level) {
+        return new Badge(category, level);
+    }
+
     public MyBadgeListResponseDto toBuildBadge(String modifiedAtToString) {
         return MyBadgeListResponseDto.builder()
                 .badgeId(this.id)
