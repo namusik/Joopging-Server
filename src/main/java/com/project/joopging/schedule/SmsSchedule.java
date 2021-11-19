@@ -28,6 +28,7 @@ import java.util.Locale;
 public class SmsSchedule {
 
     private final PostRepository postRepository;
+    private final APIInit apiInit;
 
     public void sendSms(JsonArray toList, String message) {
         JsonObject params = new JsonObject();
@@ -42,7 +43,7 @@ public class SmsSchedule {
 
         params.add("messages", messages);
 
-        Call<GroupModel> api = APIInit.getAPI().sendMessages(APIInit.getHeaders(), params);
+        Call<GroupModel> api = apiInit.getAPI().sendMessages(apiInit.getHeaders(), params);
         api.enqueue(new Callback<GroupModel>() {
             @Override
             public void onResponse(Call<GroupModel> call, Response<GroupModel> response) {
