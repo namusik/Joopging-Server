@@ -110,7 +110,7 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "참가자 정보")
     private List<Crew> Crew = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postReview")
+    @OneToMany(mappedBy = "postReview", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "후기 정보")
@@ -158,13 +158,10 @@ public class Post extends Timestamped {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.crewHeadIntro = requestDto.getCrewHeadIntro();
-        this.runningDate = requestDto.getRunningDate();
-        this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
         this.location = requestDto.getLocation();
         this.type= requestDto.getType();
         this.distance = requestDto.getDistance();
-        this.limitPeople = requestDto.getLimitPeople();
         this.postImg = requestDto.getPostImg();
     }
 
@@ -240,7 +237,8 @@ public class Post extends Timestamped {
 
 
     public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo,
-                                                                     String runningDateToString) {
+                                                                     String runningDateToString,
+                                                                     boolean attendation) {
         return MyApplicationPostListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
@@ -261,6 +259,7 @@ public class Post extends Timestamped {
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
                 .bookMarkInfo(bookMarkInfo)
+                .attendation(attendation)
                 .build();
     }
 

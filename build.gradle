@@ -48,6 +48,9 @@ dependencies {
     //logback to slack
     implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 
+    //logback db 쿼리 로그 (jdbc)
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
     //sentry
     implementation 'io.sentry:sentry-spring-boot-starter:5.4.0'
     implementation 'io.sentry:sentry-logback:5.4.0'

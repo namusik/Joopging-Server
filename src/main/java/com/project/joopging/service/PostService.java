@@ -4,7 +4,7 @@ import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
-import com.project.joopging.dto.reCommentDto.AllReCommentResponseDto;
+import org.springframework.transaction.annotation.Transactional;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
 import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
@@ -13,10 +13,8 @@ import com.project.joopging.model.*;
 import com.project.joopging.repository.*;
 import com.project.joopging.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -72,6 +70,7 @@ public class PostService {
     }
 
     //게시글 삭제
+    @Transactional
     public void deletePost(Long postId, User user) {
         Post post = getPostById(postId);
         if(post.isWrittenBy(user)) {
@@ -100,6 +99,7 @@ public class PostService {
     //디테일 페이지 (북마크 추가)
     //북마크 카운트 추가
     //댓글 작성자 닉네임 이미지 추가
+    @Transactional(readOnly = true)
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
         boolean bookmarkInfo;
@@ -116,6 +116,7 @@ public class PostService {
 
     //댓글 정보 수정해서 내보내기
     //아무곳이나 끌어써도 됨
+    @Transactional(readOnly = true)
     public List<AllCommentResponseDto> getAllCommentResponseDtos(Post post) {
         List<AllCommentResponseDto> allCommentResponseDtos = new ArrayList<>();
         List<Comment> commentList= post.getComments();
@@ -149,6 +150,7 @@ public class PostService {
 
     //내 신청내역 (북마크 추가)
     //북마크 카운트 추가
+    @Transactional(readOnly = true)
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
         boolean bookmarkInfo;
         List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
@@ -160,9 +162,10 @@ public class PostService {
         List<Crew> crewList = crewRepository.findAllByUserJoin(myUser);
         for (Crew crew : crewList) {
             Post applicationPost = crew.getPostJoin();
+            boolean attendation = crew.isAttendation();
             String runningDateToString = getRunningDateToString(applicationPost);
             bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost).isPresent();
-            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost(bookmarkInfo,runningDateToString);
+            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost(bookmarkInfo, runningDateToString, attendation);
             applicationPostList.add(responseDto);
         }
 
@@ -172,6 +175,7 @@ public class PostService {
 
     // 내 모집관리
     // 북마크 수 추가
+    @Transactional(readOnly = true)
     public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
         Long userId = user.getId();
         User myUser = userRepository.findById(userId).orElseThrow(
@@ -215,6 +219,7 @@ public class PostService {
 
     }
     //내 북마크 리스트
+    @Transactional(readOnly = true)
     public List<MyBookmarkListResponseDto> getMyBookmarkListByUser(User user) {
         boolean joinCheck;
         List<MyBookmarkListResponseDto> myBookmarkList = new ArrayList<>();

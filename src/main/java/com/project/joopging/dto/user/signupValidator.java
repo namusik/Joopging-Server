@@ -28,6 +28,7 @@ public class signupValidator {
         String distance = requestDto.getDistance();
         String location = requestDto.getLocation();
         String type = requestDto.getType();
+        String number = requestDto.getNumber();
 
 
         if (emailFound.isPresent()) {
@@ -46,7 +47,7 @@ public class signupValidator {
         password = passwordEncoder.encode(password);
         requestDto.setPassword(password);
 
-        return new User(nickname, password, email, role, location, type, distance);
+        return new User(nickname, password, email, role, location, type, distance,number);
     }
 
     public static boolean isValidEmail(String email) {

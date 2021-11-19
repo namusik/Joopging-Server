@@ -69,29 +69,34 @@ public class User extends Timestamped {
     @ApiModelProperty(value = "유저 자기소개")
     private String intro;
 
+    @Column
+    @JsonIgnore
+    @ApiModelProperty(value = "유저 핸드폰 번호")
+    private String number;
+
 
     @OneToMany(mappedBy = "userJoin", orphanRemoval = true)
     @JsonIgnore
     @ApiModelProperty(value = "참가자 정보")
     private List<Crew> crews;
 
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "writer", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "게시글 정보")
     private List<Post> post;
 
-    @OneToMany(mappedBy = "admin")
+    @OneToMany(mappedBy = "admin", orphanRemoval = true)
     @JsonIgnore
     @ApiModelProperty(value = "캠페인 정보")
     private List<Campaign> campaigns;
 
-    @OneToMany(mappedBy = "userReview")
+    @OneToMany(mappedBy = "userReview", orphanRemoval = true)
     @JsonIgnore
     @ApiModelProperty(value = "후기 정보")
     private List<Review> review;
 
-    @OneToMany(mappedBy = "userComment")
+    @OneToMany(mappedBy = "userComment", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "댓글 정보")
@@ -106,7 +111,7 @@ public class User extends Timestamped {
 
 
 
-    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance) {
+    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance, String number) {
         this.nickname = username;
         this.password = password;
         this.email = email;
@@ -116,6 +121,7 @@ public class User extends Timestamped {
         this.location = enumLocation;
         this.intro = null;
         this.userImg = null;
+        this.number = number;
     }
 
     //소셜로그인용 유저
