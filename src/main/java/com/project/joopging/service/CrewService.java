@@ -129,20 +129,27 @@ public class CrewService {
     }
 
     @Transactional
-    public void attend(CrewAttendRequestDto crewAttendRequestDto) {
+    public String attend(CrewAttendRequestDto crewAttendRequestDto) {
         Long postId = crewAttendRequestDto.getPostId();
 //        System.out.println("postId = " + postId);
-        List<Crew> crewList = crewRepository.findAllByPostJoin_Id(postId);
-        List<Long> userId = crewAttendRequestDto.getUserId();
-        for (Long aLong : userId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new CustomErrorException("없는 모임입니다")
+        );
+        if (post.isPostAttendation()) {
+            return "이미 출석처리가 완료된 모임입니다";
+        } else {
+            post.attend();
+            List<Crew> crewList = crewRepository.findAllByPostJoin_Id(postId);
+            List<Long> userId = crewAttendRequestDto.getUserId();
+            for (Long aLong : userId) {
 //            System.out.println("aLong = " + aLong);
-            for (Crew crew : crewList) {
-                if (crew.getUserJoin().getId() == aLong) {
-                    crew.attend();
+                for (Crew crew : crewList) {
+                    if (crew.getUserJoin().getId() == aLong) {
+                        crew.attend();
+                    }
                 }
             }
+            return "출석처리 되었습니다";
         }
-
-
     }
 }

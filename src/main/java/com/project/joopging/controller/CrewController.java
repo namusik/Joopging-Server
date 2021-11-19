@@ -83,7 +83,7 @@ public class CrewController {
     @ApiOperation(value = "출석체크하기")
     @PutMapping("/crews")
     public ResponseDto attend(@RequestBody CrewAttendRequestDto crewAttendRequestDto) {
-        crewService.attend(crewAttendRequestDto);
-        return new ResponseDto(201L, "출석체크 완료", "");
+        String result = crewService.attend(crewAttendRequestDto);
+        return new ResponseDto(201L, result, "");
     }
 }
