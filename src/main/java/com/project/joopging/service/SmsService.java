@@ -71,9 +71,9 @@ public class SmsService {
             }
         });
     }
-    //스케쥴러 매일 9시
+    //스케쥴러 매일 6시
     //러닝데이트 1일 전에 알럿문자메세지
-//    @Scheduled(cron = "0 0 9 * * *")
+//    @Scheduled(cron = "0 0 6 * * *")
     @Transactional(readOnly = true)
     public void sendRunningDateAlertToCrew() {
         List<Post> postList = postRepository.findAll();
@@ -98,6 +98,7 @@ public class SmsService {
     //스케쥴러 1분마다 체크
     //CrewHead 에게 출석체크 url 알럿문자메세지
 //    @Scheduled(cron ="0 0/1 * * *" )
+    @Transactional(readOnly = true)
     public void sendAttendanceCheckAlertToCrewHead() {
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
@@ -112,9 +113,10 @@ public class SmsService {
                 toList.add(number);
                 sendSms(toList,message);
             }
-
         }
     }
+
+    //후기 쓰고 설문조사 유도 알럿문자메세지
 
 
 
