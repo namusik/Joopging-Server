@@ -30,14 +30,11 @@ public class SmsSchedule {
     private final PostRepository postRepository;
 
     public void sendSms(JsonArray toList, String message) {
-
         JsonObject params = new JsonObject();
         JsonArray messages = new JsonArray();
-
         JsonObject msg = new JsonObject();
 //        JsonArray toList = new JsonArray();
 //        toList.add(userNumber);
-
         msg.add("to", toList);
         msg.addProperty("from", "01099403102");
         msg.addProperty("text", message);
@@ -71,6 +68,7 @@ public class SmsSchedule {
             }
         });
     }
+
     //스케쥴러 매일 9시
     //러닝데이트 1일 전에 알럿문자메세지
     @Scheduled(cron = "0 0 9 * * *")
