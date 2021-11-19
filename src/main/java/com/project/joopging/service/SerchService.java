@@ -77,4 +77,16 @@ public class SerchService {
 
         return postSearchesDtos;
     }
+
+    public List<PostSearchesDto> returnAllPost() {
+        List<Post> result = postRepository.findAll();
+        List<PostSearchesDto> postList = new ArrayList<>();
+
+        for (Post post : result) {
+            PostSearchesDto postSearchesDto = new PostSearchesDto(post);
+
+            postList.add(postSearchesDto);
+        }
+        return postList;
+    }
 }
