@@ -154,7 +154,7 @@ public class BadgeCollectSchedule {
 
 
                 //출석률 계산
-                if (countAttendanceTrue >= 1 & countAttendanceFalse >= 1) {
+                if (countAttendanceTrue >= 1 ) {
                     int attendanceRate =
                             countAttendanceTrue / (countAttendanceFalse + countAttendanceFalse) * 100;
                     //출석률 70프로 이하일때 나쁜출석률 뱃지
