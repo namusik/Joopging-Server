@@ -18,10 +18,10 @@ public class SmsTestController {
 //    @GetMapping("/test3")
 //    public ResponseDto send() {
 //        JsonArray toList = new JsonArray();
-//        String number = "01053485792";
+//        String number = "01099403102";
 //        toList.add(number);
 //        String message = "안녕하세요 줍깅입니다. " +
-//                "신청하신"+"모임의 모임날짜가 하루전입니다.";
+//                "https://forms.gle/X3nQmmbHiRwmmWtZ8";
 //        smsSchedule.sendSms(toList,message);
 //        return new ResponseDto(200L,"테스트 성공","");
 //    }

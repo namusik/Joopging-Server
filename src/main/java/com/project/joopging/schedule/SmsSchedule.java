@@ -108,10 +108,11 @@ public class SmsSchedule {
             if (now.equals(runningDate)) {
                 String number = post.getWriter().getNumber();
                 String postTitle = post.getTitle();
+                Long postId = post.getId();
                 String message = "안녕하세요 줍깅입니다." +" ["+ postTitle +"] "+ "모임의 모임원들은" +
                         "다 모이셨나요? 출석체크를 해주세요!" +
                         "출석체크는 앞으로 유저간의 신뢰도를 측정하는데 도움이 됩니다!" +
-                        "출석체크 url";
+                        "/meetingcheck/" + postId;
                 toList.add(number);
                 sendSms(toList,message);
             }
@@ -134,7 +135,7 @@ public class SmsSchedule {
                 String message = "안녕하세요 줍깅입니다. 이번" +" ["+ postTitle + "] " + "모임은 어떠셨나요?" +
                         "후기를 작성하여 다른 사용자에게 플로깅이 얼마나 좋은지 알려주세요!" +
                         "[이벤트] 이벤트 기간 중 설문조사를 작성하시면 소정의 기프티콘을 드려요! " +
-                        "설문조사 url";
+                        "https://forms.gle/X3nQmmbHiRwmmWtZ8";
                 for (Crew crew : crewList) {
                     User user = crew.getUserJoin();
                     String userNumber = user.getNumber();
