@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @NoArgsConstructor
@@ -28,6 +29,7 @@ public class PostSearchesDto {
     private  String postImg;
     private  Integer viewCount;
     private boolean bookMarkInfo;
+    private Long dDay;
 
     //user 정보
     private Long userId;
@@ -49,6 +51,7 @@ public class PostSearchesDto {
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
         this.bookMarkInfo = bookMarkInfo;
+        this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
 
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
@@ -70,6 +73,7 @@ public class PostSearchesDto {
         this.postImg = post.getPostImg();
         this.viewCount = post.getViewCount();
         this.bookMarkInfo = false;
+        this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
 
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
