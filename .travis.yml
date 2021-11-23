@@ -21,7 +21,7 @@ before_install:
 before_deploy:
   - mkdir -p archive
   - cp build/libs/Joopging-0.0.1-SNAPSHOT.jar archive/application.jar
-  - cp -r ./.ebextensions archive/.ebextensions
+  - cp -r .ebextensions archive/.ebextensions
   - cd archive
   - ls -al
   - zip -r archive.zip application.jar .ebextensions
