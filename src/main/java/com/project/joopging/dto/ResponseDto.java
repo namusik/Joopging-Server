@@ -1,4 +1,4 @@
-package com.project.joopging.TestController;
+package com.project.joopging.dto;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;

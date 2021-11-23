@@ -2,6 +2,8 @@ package com.project.joopging.schedule;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.project.joopging.dto.requestDto.PhoneNumberRequestDto;
+import com.project.joopging.dto.responseDto.CertificateNumberResponseDto;
 import com.project.joopging.model.Crew;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
@@ -11,6 +13,7 @@ import com.project.joopging.util.coolsms.GroupModel;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +25,11 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SmsSchedule {
 
     private final PostRepository postRepository;
@@ -186,6 +191,28 @@ public class SmsSchedule {
         String[] ts = date.split("T");
         String[] ms = ts[1].split(":");
         return ts[0] + " (" + day + ") " + ms[0] + ms[1];
+    }
+
+    public CertificateNumberResponseDto certificatePhoneNumber(PhoneNumberRequestDto requestDto) {
+        JsonArray toList = new JsonArray();
+        String phoneNumber = requestDto.getPhoneNumber();
+        toList.add(phoneNumber);
+
+        Random random = new Random();
+        String numStr = "";
+        for(int i = 0; i < 4; i++) {
+            String ran = Integer.toString(random.nextInt(10));
+            numStr+=ran;
+        }
+        log.info("수신자 번호 :" + phoneNumber);
+        log.info("인증번호 :" + numStr);
+        String message = "안녕하세요 줍깅입니다. 인증번호는 [ " + numStr + " ] 입니다";
+        sendSms(toList, message);
+        CertificateNumberResponseDto responseDto = new CertificateNumberResponseDto();
+        responseDto.setCertificationNumber(numStr);
+        return responseDto;
+
+
     }
 }
 

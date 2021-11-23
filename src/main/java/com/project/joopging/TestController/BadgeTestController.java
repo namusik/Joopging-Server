@@ -1,10 +1,10 @@
 package com.project.joopging.TestController;
 
+import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.model.Badge;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.schedule.BadgeCollectSchedule;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

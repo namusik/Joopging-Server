@@ -1,12 +1,13 @@
 package com.project.joopging.TestController;
 
 
-import com.google.gson.JsonArray;
+import com.project.joopging.dto.ResponseDto;
+import com.project.joopging.dto.requestDto.PhoneNumberRequestDto;
+import com.project.joopging.dto.responseDto.CertificateNumberResponseDto;
 import com.project.joopging.schedule.SmsSchedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +26,12 @@ public class SmsTestController {
 //        smsSchedule.sendSms(toList,message);
 //        return new ResponseDto(200L,"테스트 성공","");
 //    }
+
+    @PostMapping("/check/number")
+    public ResponseDto certificatePhoneNumber(
+            @RequestBody PhoneNumberRequestDto requestDto
+    ) {
+        CertificateNumberResponseDto data = smsSchedule.certificatePhoneNumber(requestDto);
+        return new ResponseDto(200L,"문자메세지 전송완료", data);
+    }
 }

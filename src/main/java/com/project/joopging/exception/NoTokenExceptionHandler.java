@@ -1,6 +1,6 @@
 package com.project.joopging.exception;
 
-import com.project.joopging.TestController.ResponseDto;
+import com.project.joopging.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
