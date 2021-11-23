@@ -40,4 +40,4 @@ deploy:
     branch: feature/campaign
 
 after_deploy:
-  - echo "Elastic Beanstalk 배포 진행중입니다."
+  - echo "Elastic Beanstalk 배포 진행중입니다 !"
