@@ -100,7 +100,7 @@ public class SmsSchedule {
         }
     }
 
-    //스케쥴러 1분마다 체크
+    //스케쥴러 5분마다 체크
     //CrewHead 에게 출석체크 url 알럿문자메세지
     @Scheduled(cron ="0 0/5 * * * *")
     public void sendAttendanceCheckAlertToCrewHead() {
