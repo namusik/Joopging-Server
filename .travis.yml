@@ -33,10 +33,10 @@ deploy:
   access_key_id: AKIASOSAJCMIE3VWPX75 # declared in Travis repo settings
   secret_access_key:
     secure: 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
-  region: "ap-northeast-2"
-  app: "Joopgging-2"
-  env: "Joopgging2-env"
-  bucket_name: "elasticbeanstalk-ap-northeast-2-168712278800"  # S3 bucket name
+  region: ap-northeast-2
+  app: Joopgging-2
+  env: Joopgging2-env
+  bucket_name: elasticbeanstalk-ap-northeast-2-168712278800  # S3 bucket name
   on:
     branch: feature/campaign
 
