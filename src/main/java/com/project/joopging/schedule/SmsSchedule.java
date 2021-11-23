@@ -102,7 +102,7 @@ public class SmsSchedule {
 
     //스케쥴러 1분마다 체크
     //CrewHead 에게 출석체크 url 알럿문자메세지
-    @Scheduled(cron ="0 0/1 * * * *")
+    @Scheduled(cron ="0 0/30 * * * *")
     public void sendAttendanceCheckAlertToCrewHead() {
         System.out.println("스케쥴러 시작");
         List<Post> postList = postRepository.findAll();
