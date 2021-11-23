@@ -9,8 +9,11 @@ import com.project.joopging.repository.PostRepository;
 import org.springframework.data.geo.Distance;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 
@@ -76,7 +79,9 @@ public class SerchService {
 
         for (Post result : post) {
             User writer = result.getWriter();
-            PostSearchesDto postSearchesDto = new PostSearchesDto(result, writer);
+            String runningDateToString = runningDateToString = getRunningDateToString(result);
+            PostSearchesDto postSearchesDto = new PostSearchesDto(result, writer,runningDateToString);
+
             postSearchesDtos.add(postSearchesDto);
         }
 
@@ -89,7 +94,8 @@ public class SerchService {
 
         for (Post post : result) {
             User writer = post.getWriter();
-            PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer);
+            String runningDateToString = runningDateToString = getRunningDateToString(post);
+            PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer,runningDateToString);
 
             postList.add(postSearchesDto);
         }
@@ -103,8 +109,8 @@ public class SerchService {
         for (Post post : result) {
             User writer = post.getWriter();
             boolean checkBookMark = checkBookMark(user, post);
-
-            PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer,checkBookMark);
+            String runningDateToString = runningDateToString = getRunningDateToString(post);
+            PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer,checkBookMark,runningDateToString);
 
             postList.add(postSearchesDto);
         }
@@ -118,5 +124,15 @@ public class SerchService {
         } else {
             return false;
         }
+    }
+
+    //날짜 스트링으로 변환
+    private String getRunningDateToString(Post post) {
+        LocalDateTime runningDate = post.getRunningDate();
+        String day = runningDate.getDayOfWeek().getDisplayName(TextStyle.NARROW, Locale.KOREAN);
+        String date = String.valueOf(runningDate);
+//        System.out.println("date = " + date);
+        String[] ts = date.split("T");
+        return ts[0] + " ("+day+") " + ts[1];
     }
 }

@@ -18,7 +18,7 @@ public class PostSearchesDto {
     private  Long postId;
     private  String title;
     private  String content;
-    private  LocalDateTime runningDate;
+    private  String runningDate;
     private  LocalDate startDate;
     private  LocalDate endDate;
     private  String location;
@@ -36,11 +36,11 @@ public class PostSearchesDto {
     private String nickname;
     private String userImg;
 
-    public PostSearchesDto(Post post, User writer, Boolean bookMarkInfo) {
+    public PostSearchesDto(Post post, User writer, Boolean bookMarkInfo,String runningDateToString) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.runningDate = post.getRunningDate();
+        this.runningDate = runningDateToString;
         this.startDate = post.getStartDate();
         this.endDate = post.getEndDate();
         this.location = post.getLocation();
@@ -58,11 +58,11 @@ public class PostSearchesDto {
         this.userImg = writer.getUserImg();
     }
 
-    public PostSearchesDto(Post post, User writer) {
+    public PostSearchesDto(Post post, User writer,String runningDateToString) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.runningDate = post.getRunningDate();
+        this.runningDate =runningDateToString;
         this.startDate = post.getStartDate();
         this.endDate = post.getEndDate();
         this.location = post.getLocation();
