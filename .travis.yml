@@ -35,7 +35,7 @@ deploy:
   region: ap-northeast-2
   app: Joopgging-2
   env: Joopgging2-env
-  bucket_name: elasticbeanstalk-ap-northeast-2-168712278800  # S3 bucket name
+  bucket: elasticbeanstalk-ap-northeast-2-168712278800  # S3 bucket name
   on:
     branch: feature/campaign
 
