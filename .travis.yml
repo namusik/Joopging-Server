@@ -32,9 +32,9 @@ deploy:
   provider: elasticbeanstalk
   zip_file: archive.zip # before_deploy에서 이미 archive로 이동한 상태(cd archive)라 현재 위치에서 archive.zip 전송
   skip_cleanup: true
-  access_key_id: AKIASOSAJCMIE3VWPX75 # declared in Travis repo settings
+  access_key_id: AKIASOSAJCMIJKXXU3PS # declared in Travis repo settings
   secret_access_key:
-    secure: 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
+    secure: 8FZkR6lTw8+Gru9NlP6Toa4MAmTiK2PvXFd4aDss
   region: ap-northeast-2
   app: Joopgging-2
   env: Joopgging2-env
