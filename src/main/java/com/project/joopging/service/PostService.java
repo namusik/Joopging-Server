@@ -150,6 +150,7 @@ public class PostService {
 
     //내 신청내역 (북마크 추가)
     //북마크 카운트 추가
+    //크루 출석여부 추가
     @Transactional(readOnly = true)
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
         boolean bookmarkInfo;
@@ -173,7 +174,7 @@ public class PostService {
 
     }
 
-    // 내 모집관리
+    // 내 모임관리
     // 북마크 수 추가
     @Transactional(readOnly = true)
     public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
@@ -222,6 +223,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<MyBookmarkListResponseDto> getMyBookmarkListByUser(User user) {
         boolean joinCheck;
+        boolean bookmarkInfo;
         List<MyBookmarkListResponseDto> myBookmarkList = new ArrayList<>();
         Long userId = user.getId();
         User myUser = userRepository.findById(userId).orElseThrow(
@@ -231,8 +233,9 @@ public class PostService {
         for (BookMark bookMark : bookMarkList) {
             Post myBookmarkPost = bookMark.getPostBookMark();
             String runningDateToString = getRunningDateToString(myBookmarkPost);
+            bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, myBookmarkPost).isPresent();
             joinCheck = crewRepository.findByUserJoinAndPostJoin(myUser, myBookmarkPost).isPresent();
-            MyBookmarkListResponseDto responseDto = myBookmarkPost.toBuildMyBookmarkPost(joinCheck, runningDateToString);
+            MyBookmarkListResponseDto responseDto = myBookmarkPost.toBuildMyBookmarkPost(joinCheck, runningDateToString, bookmarkInfo);
             myBookmarkList.add(responseDto);
         }
         return myBookmarkList;

@@ -108,14 +108,18 @@ public class SerchService {
 
         for (Post post : result) {
             User writer = post.getWriter();
+
             boolean checkBookMark = checkBookMark(user, post);
             String runningDateToString = runningDateToString = getRunningDateToString(post);
             PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer,checkBookMark,runningDateToString);
+
 
             postList.add(postSearchesDto);
         }
         return postList;
     }
+
+
 
     public boolean checkBookMark(User user, Post post) {
         Optional<BookMark> BookMark = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post);
@@ -125,6 +129,7 @@ public class SerchService {
             return false;
         }
     }
+
 
     //날짜 스트링으로 변환
     private String getRunningDateToString(Post post) {

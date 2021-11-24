@@ -52,7 +52,6 @@ public class PostSearchesDto {
         this.viewCount = post.getViewCount();
         this.bookMarkInfo = bookMarkInfo;
         this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
-
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();
@@ -74,7 +73,6 @@ public class PostSearchesDto {
         this.viewCount = post.getViewCount();
         this.bookMarkInfo = false;
         this.dDay = ChronoUnit.DAYS.between(LocalDate.now(), post.getEndDate());
-
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();
