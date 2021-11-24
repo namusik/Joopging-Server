@@ -151,6 +151,13 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "마이페이지 갯수")
+    @GetMapping("/users/mypage")
+    public ResponseDto myPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserMyPageResponseDto userMyPageResponseDto = userService.getMyPage(userDetails);
+        return new ResponseDto(200L, "마이페이지 갯수 불러오기 성공", userMyPageResponseDto);
+    }
+
 
     //로그인 상태 확인
     @ApiOperation(value = "로그인 체크")
