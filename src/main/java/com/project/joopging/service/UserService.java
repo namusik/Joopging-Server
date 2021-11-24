@@ -4,7 +4,7 @@ import com.project.joopging.dto.user.*;
 
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.exception.CustomErrorException;
-import com.project.joopging.model.User;
+import com.project.joopging.model.*;
 import com.project.joopging.repository.UserRepository;
 import com.project.joopging.security.JwtTokenProvider;
 import com.project.joopging.security.UserDetailsImpl;
@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -114,10 +115,6 @@ public class UserService {
         return new MainPageResponseUserDto(user);
     }
 
-    public MyBadgeListResponseDto getMyBadgeListByUser(User user) {
-
-        return MyBadgeListResponseDto.builder().build();
-    }
 
     //닉네임 중복 검사
     public void nicknameCheck(String nickname) {
@@ -135,5 +132,20 @@ public class UserService {
         if (emailFound.isPresent()) {
             throw new CustomErrorException("중복된 이메일 입니다 ");
         }
+    }
+
+    public UserMyPageResponseDto getMyPage(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomErrorException("없는 회원입니다")
+        );
+        List<Crew> crews = user.getCrews();
+        int myCrew = crews.size();
+        List<Review> review = user.getReview();
+        int myReview = review.size();
+        List<Badge> badges = user.getBadges();
+        int myBadge = badges.size();
+        List<BookMark> bookMarks = user.getBookMarks();
+        int myBookmark = bookMarks.size();
+        return new UserMyPageResponseDto(myBookmark, myBadge, myReview, myCrew);
     }
 }

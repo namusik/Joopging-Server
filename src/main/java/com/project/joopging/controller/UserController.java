@@ -151,15 +151,13 @@ public class UserController {
 
     }
 
-    @ApiOperation(value = "뱃지 시스템")
-    @GetMapping("/badges")
-    public ResponseDto myBadges(
-            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
-    ) {
-        User user = userService.userFromUserDetails(userDetails);
-        MyBadgeListResponseDto data = userService.getMyBadgeListByUser(user);
-        return new ResponseDto(200L,"내 뱃지 불러오기 성공","");
+    @ApiOperation(value = "마이페이지 갯수")
+    @GetMapping("/users/mypage")
+    public ResponseDto myPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserMyPageResponseDto userMyPageResponseDto = userService.getMyPage(userDetails);
+        return new ResponseDto(200L, "마이페이지 갯수 불러오기 성공", userMyPageResponseDto);
     }
+
 
     //로그인 상태 확인
     @ApiOperation(value = "로그인 체크")

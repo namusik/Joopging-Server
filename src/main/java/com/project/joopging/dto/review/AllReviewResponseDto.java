@@ -5,6 +5,7 @@ import com.project.joopging.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Getter
@@ -15,6 +16,7 @@ public class AllReviewResponseDto {
     private String content;
     private String reviewImg;
     private Long writeDateBefore;
+    private LocalDateTime writeDate;
     private int star;
     private int satiRate;
     private int levelRate;
@@ -27,6 +29,7 @@ public class AllReviewResponseDto {
         this.title = review.getTitle();
         this.content = review.getContent();
         this.reviewImg = review.getReviewImg();
+        this.writeDate = review.getCreatedAt();
         this.writeDateBefore = ChronoUnit.DAYS.between(LocalDate.now(), review.getCreatedAt().toLocalDate());
         this.star = review.getStar();
         this.satiRate = review.getSatiRate();

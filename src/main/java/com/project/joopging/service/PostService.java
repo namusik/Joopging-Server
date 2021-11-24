@@ -150,6 +150,7 @@ public class PostService {
 
     //내 신청내역 (북마크 추가)
     //북마크 카운트 추가
+    //크루 출석여부 추가
     @Transactional(readOnly = true)
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
         boolean bookmarkInfo;
@@ -173,7 +174,7 @@ public class PostService {
 
     }
 
-    // 내 모집관리
+    // 내 모임관리
     // 북마크 수 추가
     @Transactional(readOnly = true)
     public List<MyPostPageListResponseDto> getMyPostListByUser(User user) {
