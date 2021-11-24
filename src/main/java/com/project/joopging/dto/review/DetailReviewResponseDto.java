@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public class DetailReviewResponseDto {
     private String title;
     private String content;
     private String reviewImg;
+    private LocalDateTime writeDate;
     private int star;
     private int satiRate;
     private int levelRate;
@@ -30,6 +32,7 @@ public class DetailReviewResponseDto {
         this.title = review.getTitle();
         this.content = review.getContent();
         this.reviewImg = review.getReviewImg();
+        this.writeDate = review.getCreatedAt();
         this.star = review.getStar();
         this.satiRate = review.getSatiRate();
         this.levelRate = review.getLevelRate();
