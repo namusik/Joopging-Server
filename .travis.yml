@@ -22,15 +22,14 @@ cache:
 before_install:
   - chmod +x gradlew
   - ./gradlew clean build
-  - docker build -t tjsrua02/docker-practice -f Dockerfile.dev .
+#  - docker build -t tjsrua02/docker-practice -f Dockerfile.dev .
 
 script:
-#  - ./gradlew clean build
-  #    - docker build --build-arg JAR_FILE=build/libs/Joopging-0.0.1-SNAPSHOT.jar -t tjsrua02/docker-practice .
-  - docker login -u tjsrua02 -p dnflwlq123
-  - docker push tjsrua02/docker-practice
-  - sudo apt-get update
-  - docker run tjsrua02/docker-practice npm run test -- --coverage
+  - docker build --build-arg JAR_FILE=build/libs/Joopging-0.0.1-SNAPSHOT.jar -t tjsrua02/docker-practice .
+  - docker run tjsrua02/docker-practice npm run test -- --coverage.
+  #  - docker login -u tjsrua02 -p dnflwlq123
+  #  - docker push tjsrua02/docker-practice
+  #  - sudo apt-get update
 
 deploy:
   provider: elasticbeanstalk
