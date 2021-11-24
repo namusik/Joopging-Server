@@ -18,6 +18,7 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
+
 before_install:
   - chmod +x gradlew
   - ./gradlew clean build
@@ -28,7 +29,6 @@ script:
   - docker login -u tjsrua02 -p dnflwlq123
   - docker push tjsrua02/docker-practice
 #  - sudo apt-get update
-
 
 deploy:
   provider: elasticbeanstalk
