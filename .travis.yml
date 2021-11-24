@@ -18,7 +18,12 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: "./gradlew clean build"
+script:
+    - ./gradlew clean build
+    - docker build --build-arg JAR_FILE=build/libs/Joopging-0.0.1-SNAPSHOT.jar --tag tjsrua02/docker-practice .
+    - docker login -u tjsrua02 -p dnflwlq123
+    - docker push tjsrua02/docker-practice
+    - sudo apt-get update
 
 before_install:
   - chmod +x gradlew
