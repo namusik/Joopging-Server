@@ -1,6 +1,12 @@
+sudo: required
+
 language: java
+
 jdk:
   - openjdk8
+
+services:
+  - docker
 
 branches:
   only:
@@ -27,15 +33,16 @@ before_deploy:
   - zip -r archive.zip application.jar .ebextensions
 
 deploy:
-  provider: s3
-  zip_file: archive.zip # before_deploy에서 이미 archive로 이동한 상태(cd archive)라 현재 위치에서 archive.zip 전송
+  provider: elasticbeanstalk
+#  zip_file: archive.zip # before_deploy에서 이미 archive로 이동한 상태(cd archive)라 현재 위치에서 archive.zip 전송
   skip_cleanup: true
   access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
   secret_access_key: $AWS_SECRET_KEY
-  region: ap-northeast-2
-  app: Joopgging-2
-  env: Joopgging2-env
-  bucket: elasticbeanstalk-ap-northeast-2-168712278800  # S3 bucket name
+  region: "ap-northeast-2"
+  app: "Joopgging-2"
+  env: "Joopgging2-env"
+  bucket_name: "elasticbeanstalk-ap-northeast-2-168712278800"  # S3 bucket name
+  bucket_path: "Joopgging-2"
   on:
     branch: feature/campaign
 
