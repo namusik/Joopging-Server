@@ -6,3 +6,4 @@ ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 
 FROM nginx
 EXPOSE 80
+EXPOSE 443
