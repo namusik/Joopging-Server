@@ -9,35 +9,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 public class DetailReviewResponseDto {
     private Long reviewId;
+    private String title;
     private String content;
     private String reviewImg;
+    private LocalDateTime writeDate;
     private int star;
+    private int satiRate;
+    private int levelRate;
+    private int trashRate;
     private Long userId;
     private String nickname;
     private String userImg;
-    private Long postId;
-    private String postTitle;
-    private String location;
-    private LocalDate runningDate;
-    private int limitPeople;
 
-    public DetailReviewResponseDto(Review review, User user, Post post) {
+    public DetailReviewResponseDto(Review review, User user) {
         this.reviewId = review.getId();
+        this.title = review.getTitle();
         this.content = review.getContent();
         this.reviewImg = review.getReviewImg();
+        this.writeDate = review.getCreatedAt();
         this.star = review.getStar();
+        this.satiRate = review.getSatiRate();
+        this.levelRate = review.getLevelRate();
+        this.trashRate = review.getTrashRate();
         this.userId = user.getId();
         this.nickname = user.getNickname();
         this.userImg = user.getUserImg();
-        this.postId = post.getId();
-        this.postTitle = post.getTitle();
-        this.location = post.getLocation().getName();
-        this.runningDate = post.getRunningDate().toLocalDate();
-        this.limitPeople = post.getLimitPeople();
     }
 }

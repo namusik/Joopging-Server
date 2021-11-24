@@ -3,6 +3,7 @@ package com.project.joopging.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable()
                 .and()
                 .httpBasic().disable() // rest api 만을 고려하여 기본 설정은 해제하겠습니다.
-                .csrf().disable() // csrf 보안 토큰 disable처리.
+                .csrf().disable() // csrf 보안 토큰 disable처리, rest api이므로 csrf 보안이 필요없으므로 disable처리
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
@@ -58,10 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/main").permitAll()
-                .antMatchers("/reviews").permitAll()
+                .antMatchers(HttpMethod.GET, "/reviews").permitAll()
+                .antMatchers(HttpMethod.GET, "/reviews/{review_id}").permitAll()
                 .antMatchers("/posts/{post_id}").permitAll()
                 .antMatchers("/posts").permitAll()
                 .antMatchers("/exception/**").permitAll()
+                .antMatchers("/enum/**").permitAll()
                 //swagger
                 .antMatchers("/swagger-ui/index.html#").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
@@ -72,16 +75,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configuration/**").permitAll()
                 .antMatchers("/swagger/**").permitAll()
                 .antMatchers("/swagger-ui/index.html").permitAll()
+                //nginx
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/health").permitAll()
                 .antMatchers("/version").permitAll()
-                .antMatchers("/v3/api-docs").permitAll()
-                .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/configuration/**").permitAll()
-                .antMatchers("/swagger/**").permitAll()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

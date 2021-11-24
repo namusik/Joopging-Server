@@ -14,11 +14,11 @@ public class EditUserRequestDto {
 
     private String password;
 
-    private Integer location;
+    private String location;
 
-    private Integer type;
+    private String type;
 
-    private Integer distance;
+    private String distance;
 
     private String intro;
 }

@@ -11,4 +11,5 @@ public class CommentCreateRequestDto {
 
     private final Long postId;
     private final String content;
+    private final Long replyTo;
 }

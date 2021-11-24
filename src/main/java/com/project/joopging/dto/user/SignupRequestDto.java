@@ -1,14 +1,12 @@
 package com.project.joopging.dto.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SignupRequestDto {
 
     private String email;
@@ -17,9 +15,11 @@ public class SignupRequestDto {
 
     private String password;
 
-    private Integer location;
+    private String location;
 
-    private Integer type;
+    private String type;
 
-    private Integer distance;
+    private String distance;
+
+    private String number;
 }

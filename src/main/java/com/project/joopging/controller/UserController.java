@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -116,7 +117,7 @@ public class UserController {
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userService.userFromUserDetails(userDetails);
         List<MyApplicationPostListResponseDto> data = postService.getMyApplicationPostListByUser(user);
-        return new ResponseDto(200L,"신청내역 페이지 불러오기 성공",data);
+        return new ResponseDto(200L, "신청내역 페이지 불러오기 성공", data);
     }
 
     @ApiOperation(value = "마이페이지 모임관리")
@@ -126,17 +127,37 @@ public class UserController {
     ) {
         User user = userService.userFromUserDetails(userDetails);
         List<MyPostPageListResponseDto> data = postService.getMyPostListByUser(user);
-        return new ResponseDto(200L,"모임관리 페이지 불러오기 성공",data);
+        return new ResponseDto(200L, "모임관리 페이지 불러오기 성공", data);
     }
-    
+
     //내가 쓴 후기 불러오기
     @ApiOperation(value = "마이페이지 후기")
     @GetMapping("/reviews/my")
     public ResponseDto myReviews(
-                @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<AllReviewResponseDto> reviewList = reviewService.getMyReviews(userDetails);
-        return new ResponseDto(200L,"모임관리 페이지 불러오기 성공", reviewList);
+        return new ResponseDto(200L,"내가 쓴 후기 불러오기", reviewList);
+
     }
+
+    @ApiOperation(value = "마이페이지 북마크")
+    @GetMapping("/bookmark/my")
+    public ResponseDto myBookmark(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        User user = userService.userFromUserDetails(userDetails);
+        List<MyBookmarkListResponseDto> data = postService.getMyBookmarkListByUser(user);
+        return new ResponseDto(200L,"내 북마크 불러오기 성공", data);
+
+    }
+
+    @ApiOperation(value = "마이페이지 갯수")
+    @GetMapping("/users/mypage")
+    public ResponseDto myPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserMyPageResponseDto userMyPageResponseDto = userService.getMyPage(userDetails);
+        return new ResponseDto(200L, "마이페이지 갯수 불러오기 성공", userMyPageResponseDto);
+    }
+
 
     //로그인 상태 확인
     @ApiOperation(value = "로그인 체크")
@@ -145,5 +166,24 @@ public class UserController {
         if (userDetails == null) {
             throw new CustomErrorException("로그인이 필요합니다.");
         }
+    }
+
+    @GetMapping("/checkName")
+    public ResponseDto nickNameCheck(
+            @ApiParam(value = "닉네임 체크") @RequestParam String nickname
+    ) {
+        userService.nicknameCheck(nickname);
+        return new ResponseDto(200L, "사용 가능한 닉네임입니다 !", "");
+
+    }
+
+
+    @GetMapping("/checkEmail")
+    public ResponseDto emailCheck(
+            @ApiParam(value = "이메일 체크") @RequestParam String email
+    ) {
+        userService.emailCheck(email);
+        return new ResponseDto(200L, "사용 가능한 이메일입니다 !", "");
+
     }
 }

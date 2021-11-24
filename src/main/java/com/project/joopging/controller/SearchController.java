@@ -4,6 +4,7 @@ package com.project.joopging.controller;
 import com.project.joopging.dto.ResponseDto;
 import com.project.joopging.dto.post.PostSearchesDto;
 import com.project.joopging.model.Post;
+import com.project.joopging.model.User;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.service.SerchService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,16 +27,35 @@ import java.util.Optional;
 public class SearchController {
     private final SerchService serchService;
 
-    @ApiOperation(value = "검색")
+    @ApiOperation(value = "필터를 통한 검색")
     @GetMapping("/searches")
     public ResponseDto findUseByFilter(
-            @ApiParam(value = "거리 카테고리") @RequestParam Integer distance,
-            @ApiParam(value = "지형 카테고리") @RequestParam Integer type,
-            @ApiParam(value = "지역 카테고리") @RequestParam Integer[] location,
+            @ApiParam(value = "거리 카테고리") @RequestParam String distance,
+            @ApiParam(value = "지형 카테고리") @RequestParam String type,
+            @ApiParam(value = "지역 카테고리") @RequestParam String[] location,
             @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         List<PostSearchesDto> post = serchService.findUseByFilter(distance, type, location);
 
         return new ResponseDto(200L, "성공", post);
+    }
+
+    @ApiOperation(value = "필터 검색 창에서 모든 post 보여주기")
+    @GetMapping("/searches/post")
+    public ResponseDto findUseByFilter(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        List<PostSearchesDto> post = new ArrayList<>();
+        if (userDetails == null) {
+            post = serchService.returnAllPosNotLogin();
+
+            return new ResponseDto(200L, "비로그인 시 post 전송", post);
+        } else {
+            post = serchService.returnAllPosLogin(userDetails.getUser());
+
+            return new ResponseDto(200L, "로그인 시 post 전송", post);
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.project.joopging.service;
 
+import com.project.joopging.dto.post.PostMainPageResponseDto;
 import com.project.joopging.dto.review.AllReviewResponseDto;
 import com.project.joopging.dto.review.DetailReviewResponseDto;
 import com.project.joopging.dto.review.ReviewRequestDto;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -81,13 +83,20 @@ public class ReviewService {
         return reviewResponseDtoList;
     }
 
-    public DetailReviewResponseDto showOneReview(Long reviewId) {
+    public HashMap<String, Object> showOneReview(Long reviewId) {
+        HashMap<String, Object> map = new HashMap<>();
+
         Review review = reviewRepository.findById(reviewId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 리뷰입니다")
         );
         User user = review.getUserReview();
         Post post = review.getPostReview();
-        return new DetailReviewResponseDto(review, user, post);
+        User postWriter = post.getWriter();
+        DetailReviewResponseDto reviewResponseDto = new DetailReviewResponseDto(review, user);
+        PostMainPageResponseDto postMainPageResponseDto = new PostMainPageResponseDto(post, postWriter);
+        map.put("review", reviewResponseDto);
+        map.put("post", postMainPageResponseDto);
+        return map;
     }
 
     public List<AllReviewResponseDto> getMyReviews(UserDetailsImpl userDetails) {

@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,32 +31,20 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = "Review Controller Api V1")
 public class ReviewController {
 
-    private final UserService userService;
     private final ReviewService reviewService;
-
     
     //후기 작성
     @ApiOperation(value = "후기 작성")
     @PostMapping("/reviews")
-    public ResponseDto createReview(
-            @ApiParam(value = "후기 생성 정보") @RequestBody ReviewRequestDto requestDto,
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        checkLogin(userDetails);
+    public ResponseDto createReview(@ApiParam(value = "후기 생성 정보") @RequestBody ReviewRequestDto requestDto, @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Review review = reviewService.createReview( requestDto, userDetails);
         return new ResponseDto(201L, "후기를 저장했습니다.", "");
     }
 
-
     //후기 수정
     @ApiOperation(value = "후기 수정")
     @PutMapping("/reviews/{review_id}")
-    public ResponseDto editReview(
-            @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
-            @ApiParam(value = "후기 업데이트 정보", required = true) @RequestBody ReviewRequestDto requestDto,
-            @ApiParam @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        checkLogin(userDetails);
-        User user = userService.userFromUserDetails(userDetails);
+    public ResponseDto editReview(@ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId, @ApiParam(value = "후기 업데이트 정보", required = true) @RequestBody ReviewRequestDto requestDto) {
         Review review = reviewService.editReview(reviewId, requestDto);
         return new ResponseDto(200L, "후기를 수정했습니다.", "");
     }
@@ -62,11 +52,7 @@ public class ReviewController {
     //후기 삭제
     @ApiOperation(value = "후기 삭제")
     @DeleteMapping("/reviews/{review_id}")
-    public ResponseDto deleteReivew(
-            @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        checkLogin(userDetails);
-        User user = userService.userFromUserDetails(userDetails);
+    public ResponseDto deleteReivew(@ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId, @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
         reviewService.deleteReview(reviewId, userDetails);
         return new ResponseDto(204L, "후기를 삭제했습니다.", "");
     }
@@ -74,8 +60,7 @@ public class ReviewController {
     //전체 후기 보여주기
     @ApiOperation(value = "전체 후기 페이지")
     @GetMapping("/reviews")
-    public ResponseDto showAllReview(
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto showAllReview() {
         List<AllReviewResponseDto> reviewList = reviewService.showAllReview();
         return new ResponseDto(200L, "전체 후기를 불러왔습니다", reviewList);
     }
@@ -83,18 +68,8 @@ public class ReviewController {
     //후기 상세보기
     @ApiOperation(value = "후기 상세보기")
     @GetMapping("/reviews/{review_id}")
-    public ResponseDto showOneReview(
-            @ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId,
-            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        DetailReviewResponseDto reviewResponseDto = reviewService.showOneReview(reviewId);
-        return new ResponseDto(200L, "후기 상세정보를 불러왔습니다.", reviewResponseDto);
-    }
-
-    //로그인 상태 확인
-    @ApiOperation(value = "로그인 체크")
-    private void checkLogin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            throw new CustomErrorException("로그인이 필요합니다");
-        }
+    public ResponseDto showOneReview(@ApiParam(value = "후기 ID", required = true) @PathVariable("review_id") Long reviewId) {
+        HashMap<String, Object> result = reviewService.showOneReview(reviewId);
+        return new ResponseDto(200L, "후기 상세정보를 불러왔습니다.", result);
     }
 }

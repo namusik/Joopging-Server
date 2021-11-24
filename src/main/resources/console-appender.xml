@@ -1,0 +1,8 @@
+<included>
+    <!--                콘솔에다가 출력하기 때문에 ConsoleAppender 사용-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+</included>

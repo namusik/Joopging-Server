@@ -2,14 +2,13 @@ package com.project.joopging.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.comment.AllCommentResponseDto;
 import com.project.joopging.dto.post.PostCreateRequestDto;
 import com.project.joopging.dto.post.PostDetailResponseDto;
 import com.project.joopging.dto.post.PostUpdateRequestDto;
 import com.project.joopging.dto.user.MyApplicationPostListResponseDto;
+import com.project.joopging.dto.user.MyBookmarkListResponseDto;
 import com.project.joopging.dto.user.MyPostPageListResponseDto;
-import com.project.joopging.enums.Distance;
-import com.project.joopging.enums.Location;
-import com.project.joopging.enums.Type;
 import com.project.joopging.security.UserDetailsImpl;
 import com.project.joopging.util.Timestamped;
 import io.swagger.annotations.ApiModel;
@@ -44,11 +43,11 @@ public class Post extends Timestamped {
     @ApiModelProperty(value = "게시글 제목")
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "게시글 모임장 소개")
     private String crewHeadIntro;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @ApiModelProperty(value = "게시글 내용")
     private String content;
 
@@ -65,22 +64,19 @@ public class Post extends Timestamped {
     private LocalDate endDate;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 지역")
-    private Location location;
+    private String location;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 지형")
-    private Type type;
+    private String type;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @JsonIgnore
     @ApiModelProperty(value = "게시글 거리")
-    private Distance distance;
+    private String distance;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "게시글 최대 인원수")
@@ -102,6 +98,10 @@ public class Post extends Timestamped {
     @Formula("(select count(1) from book_mark bm where bm.post_id = id)")
     private Integer totalBookMarkCount;
 
+    @Column
+    @ApiModelProperty(value = "출석관리 완료여부")
+    private boolean postAttendation;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -110,11 +110,11 @@ public class Post extends Timestamped {
 
     @OneToMany(mappedBy = "postJoin", orphanRemoval = true)
     @JsonIgnore
-    @BatchSize(size = 50)
+    @BatchSize(size = 100)
     @ApiModelProperty(value = "참가자 정보")
     private List<Crew> Crew = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postReview")
+    @OneToMany(mappedBy = "postReview", orphanRemoval = true)
     @JsonIgnore
     @BatchSize(size = 50)
     @ApiModelProperty(value = "후기 정보")
@@ -122,15 +122,16 @@ public class Post extends Timestamped {
 
     @OneToMany(mappedBy = "postComment", orphanRemoval = true)
     @JsonIgnore
-    @BatchSize(size = 50)
+    @BatchSize(size = 100)
     @ApiModelProperty(value = "댓글 정보")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "postBookMark", orphanRemoval = true)
     @JsonIgnore
-    @BatchSize(size = 50)
+    @BatchSize(size = 100)
     @ApiModelProperty(value = "북마크 정보")
     private List<BookMark> bookMarks = new ArrayList<>();
+
 
     //게시글 작성
     public Post(PostCreateRequestDto requestDto,User user) {
@@ -140,12 +141,13 @@ public class Post extends Timestamped {
         this.runningDate = requestDto.getRunningDate();
         this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
-        this.location = Location.getLocationById(requestDto.getLocation());
-        this.type= Type.getTypeById(requestDto.getType());
-        this.distance = Distance.getDistanceById(requestDto.getDistance());
+        this.location = requestDto.getLocation();
+        this.type= requestDto.getType();
+        this.distance = requestDto.getDistance();
         this.limitPeople = requestDto.getLimitPeople();
         this.postImg = requestDto.getPostImg();
         this.writer = user;
+        this.postAttendation = false;
     }
 
 
@@ -161,13 +163,10 @@ public class Post extends Timestamped {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.crewHeadIntro = requestDto.getCrewHeadIntro();
-        this.runningDate = requestDto.getRunningDate();
-        this.startDate = requestDto.getStartDate();
         this.endDate = requestDto.getEndDate();
-        this.location = Location.getLocationById(requestDto.getLocation());
-        this.type= Type.getTypeById(requestDto.getType());
-        this.distance = Distance.getDistanceById(requestDto.getDistance());
-        this.limitPeople = requestDto.getLimitPeople();
+        this.location = requestDto.getLocation();
+        this.type= requestDto.getType();
+        this.distance = requestDto.getDistance();
         this.postImg = requestDto.getPostImg();
     }
 
@@ -186,10 +185,10 @@ public class Post extends Timestamped {
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
-                    .location(location.getName())
-                    .type(type.getName())
-                    .distance(distance.getName())
+                    .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
+                    .location(this.location)
+                    .type(this.type)
+                    .distance(this.distance)
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
@@ -199,7 +198,6 @@ public class Post extends Timestamped {
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
-                    .commentList(this.comments)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         } else {
@@ -211,10 +209,10 @@ public class Post extends Timestamped {
                     .runningDate(runningDateToString)
                     .startDate(this.startDate)
                     .endDate(this.endDate)
-                    .location(location.getName())
-                    .type(type.getName())
-                    .distance(distance.getName())
-                    .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                    .location(this.location)
+                    .type(this.type)
+                    .distance(this.distance)
+                    .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                     .limitPeople(this.limitPeople)
                     .nowPeople(this.nowPeople)
                     .postImg(this.postImg)
@@ -224,7 +222,6 @@ public class Post extends Timestamped {
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
                     .joinCheck(joinCheck)
-                    .commentList(this.comments)
                     .bookMarkInfo(bookMarkInfo)
                     .build();
         }
@@ -245,7 +242,8 @@ public class Post extends Timestamped {
 
 
     public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo,
-                                                                     String runningDateToString) {
+                                                                     String runningDateToString,
+                                                                     boolean attendation) {
         return MyApplicationPostListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
@@ -253,10 +251,10 @@ public class Post extends Timestamped {
                 .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
-                .location(location.getName())
-                .type(type.getName())
-                .distance(distance.getName())
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
@@ -266,6 +264,7 @@ public class Post extends Timestamped {
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
                 .bookMarkInfo(bookMarkInfo)
+                .attendation(attendation)
                 .build();
     }
 
@@ -277,10 +276,10 @@ public class Post extends Timestamped {
                 .runningDate(runningDateToString)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
-                .location(location.getName())
-                .type(type.getName())
-                .distance(distance.getName())
-                .dDay(ChronoUnit.DAYS.between(this.getStartDate(), this.getEndDate()))
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
                 .limitPeople(this.limitPeople)
                 .nowPeople(this.nowPeople)
                 .postImg(this.postImg)
@@ -289,6 +288,35 @@ public class Post extends Timestamped {
                 .writerName(this.writer.getNickname())
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
+                .postAttendation(this.postAttendation)
                 .build();
+    }
+
+    public MyBookmarkListResponseDto toBuildMyBookmarkPost(boolean joinCheck, String runningDateToString) {
+        return MyBookmarkListResponseDto.builder()
+                .postId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .runningDate(runningDateToString)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .location(this.location)
+                .type(this.type)
+                .distance(this.distance)
+                .dDay(ChronoUnit.DAYS.between(LocalDate.now(), this.getEndDate()))
+                .limitPeople(this.limitPeople)
+                .nowPeople(this.nowPeople)
+                .postImg(this.postImg)
+                .viewCount(this.viewCount)
+                .bookMarkCount(this.totalBookMarkCount)
+                .writerName(this.writer.getNickname())
+                .userImg(this.writer.getUserImg())
+                .intro(this.writer.getIntro())
+                .joinCheck(joinCheck)
+                .build();
+    }
+
+    public void attend() {
+        this.postAttendation = true;
     }
 }

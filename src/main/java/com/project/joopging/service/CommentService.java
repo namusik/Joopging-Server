@@ -27,7 +27,7 @@ public class CommentService {
     public void createComment(User user, CommentCreateRequestDto requestDto) {
         Long postId = requestDto.getPostId();
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new CustomErrorException("게시글을 찾을 수 없습니다")
+                () -> new CustomErrorException("게시글을 찾을 수 없습니다.")
         );
 
         Comment comment = Comment.of(requestDto, user, post);
@@ -35,7 +35,7 @@ public class CommentService {
                 // fetch Lazy 유저를 진짜 유저로 변환
         Long userId = user.getId();
         User writer = userRepository.findById(userId).orElseThrow(
-                () -> new CustomErrorException("유저 정보를 찾을 수 없습니다")
+                () -> new CustomErrorException("유저 정보를 찾을 수 없습니다.")
         );
 
         //Post 테이블에도 Comment 추가 (양방향)
@@ -52,22 +52,26 @@ public class CommentService {
     public void update(User user, CommentUpdateRequestDto requestDto, Long commentId) {
         Long postId = requestDto.getPostId();
         Post post = postRepository.findById(postId).orElseThrow(
-                () ->new CustomErrorException("게시글을 찾을 수 없습니다")
+                () ->new CustomErrorException("게시글을 찾을 수 없습니다.")
         );
         Comment comment = getCommentById(commentId);
         if (comment.isWrittenBy(user)) {
             comment.update(requestDto);
         } else {
-            throw new CustomErrorException("댓글 작성자가 아닙니다");
+            throw new CustomErrorException("댓글 작성자가 아닙니다.");
         }
     }
 
     public void delete(User user, Long commentId) {
         Comment comment = getCommentById(commentId);
         if (comment.isWrittenBy(user)) {
+            //대댓글들 모두삭제
+            List<Comment> commentList = commentRepository.findAllByReplyTo(commentId);
+            commentRepository.deleteAll(commentList);
+            //대장 댓글 삭제
             commentRepository.delete(comment);
         } else {
-            throw new CustomErrorException("댓글 작성자가 아닙니다");
+            throw new CustomErrorException("댓글 작성자가 아닙니다.");
         }
     }
 
