@@ -21,6 +21,7 @@ cache:
 
 before_install:
   - chmod +x gradlew
+  - ./gradlew clean build
   - docker build -t tjsrua02/docker-practice -f Dockerfile.dev .
 
 script:
