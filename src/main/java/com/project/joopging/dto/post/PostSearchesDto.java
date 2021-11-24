@@ -35,6 +35,7 @@ public class PostSearchesDto {
     private Long userId;
     private String nickname;
     private String userImg;
+
     public PostSearchesDto(Post post, User writer, Boolean bookMarkInfo,String runningDateToString) {
         this.postId = post.getId();
         this.title = post.getTitle();
@@ -54,6 +55,7 @@ public class PostSearchesDto {
         this.userId = writer.getId();
         this.nickname = writer.getNickname();
         this.userImg = writer.getUserImg();
+    }
 
     public PostSearchesDto(Post post, User writer,String runningDateToString) {
         this.postId = post.getId();

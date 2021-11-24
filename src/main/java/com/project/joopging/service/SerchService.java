@@ -109,8 +109,6 @@ public class SerchService {
         for (Post post : result) {
             User writer = post.getWriter();
 
-            PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer);
-
             boolean checkBookMark = checkBookMark(user, post);
             String runningDateToString = runningDateToString = getRunningDateToString(post);
             PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer,checkBookMark,runningDateToString);
@@ -121,21 +119,6 @@ public class SerchService {
         return postList;
     }
 
-
-    public List<PostSearchesDto> returnAllPosLogin(User user) {
-        List<Post> result = postRepository.findAll();
-        List<PostSearchesDto> postList = new ArrayList<>();
-
-        for (Post post : result) {
-            User writer = post.getWriter();
-            boolean checkBookMark = checkBookMark(user, post);
-
-            PostSearchesDto postSearchesDto = new PostSearchesDto(post,writer,checkBookMark);
-
-            postList.add(postSearchesDto);
-        }
-        return postList;
-    }
 
 
     public boolean checkBookMark(User user, Post post) {
