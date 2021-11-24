@@ -27,6 +27,8 @@ before_install:
 script:
   - docker build --build-arg JAR_FILE=build/libs/Joopging-0.0.1-SNAPSHOT.jar -t tjsrua02/docker-practice .
   - sudo apt-get update
+
+
 #  - docker run tjsrua02/docker-practice npm run test -- --coverage.
 #  - docker login -u tjsrua02 -p dnflwlq123
 #  - docker push tjsrua02/docker-practice
