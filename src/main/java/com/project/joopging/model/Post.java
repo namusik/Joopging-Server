@@ -292,7 +292,9 @@ public class Post extends Timestamped {
                 .build();
     }
 
-    public MyBookmarkListResponseDto toBuildMyBookmarkPost(boolean joinCheck, String runningDateToString) {
+    public MyBookmarkListResponseDto toBuildMyBookmarkPost(boolean joinCheck,
+                                                           String runningDateToString,
+                                                           boolean bookmarkInfo) {
         return MyBookmarkListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
@@ -313,6 +315,7 @@ public class Post extends Timestamped {
                 .userImg(this.writer.getUserImg())
                 .intro(this.writer.getIntro())
                 .joinCheck(joinCheck)
+                .bookmarkInfo(bookmarkInfo)
                 .build();
     }
 

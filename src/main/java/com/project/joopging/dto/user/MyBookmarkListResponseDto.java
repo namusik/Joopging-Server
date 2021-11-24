@@ -34,4 +34,5 @@ public class MyBookmarkListResponseDto {
     private final String userImg;
     private final String intro;
     private final boolean joinCheck;
+    private final boolean bookmarkInfo;
 }
