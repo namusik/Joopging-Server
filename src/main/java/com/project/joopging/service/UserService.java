@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,6 +133,16 @@ public class UserService {
         if (emailFound.isPresent()) {
             throw new CustomErrorException("중복된 이메일 입니다 ");
         }
+    }
+
+
+    public List<UserInfoDetailsDto> detailsUserInfo(UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        List<UserInfoDetailsDto> userInfoDetailsDtoList = new ArrayList<>();
+        UserInfoDetailsDto userInfoDetailsDto = new UserInfoDetailsDto(user);
+
+        userInfoDetailsDtoList.add(userInfoDetailsDto);
+        return userInfoDetailsDtoList;
     }
 
     public UserMyPageResponseDto getMyPage(UserDetailsImpl userDetails) {
