@@ -20,7 +20,7 @@ cache:
 
 script:
     - ./gradlew clean build
-    - docker build --build-arg JAR_FILE=build/libs/Joopging-0.0.1-SNAPSHOT.jar --tag tjsrua02/docker-practice .
+    - docker build --build-arg JAR_FILE=build/libs/Joopging-0.0.1-SNAPSHOT.jar -t tjsrua02/docker-practice .
     - docker login -u tjsrua02 -p dnflwlq123
     - docker push tjsrua02/docker-practice
     - sudo apt-get update
@@ -44,10 +44,10 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
   secret_access_key: $AWS_SECRET_KEY
   region: "ap-northeast-2"
-  app: "Joopgging-2"
-  env: "Joopgging2-env"
+  app: "Joopgging-1"
+  env: "Joopgging1-env"
   bucket_name: "elasticbeanstalk-ap-northeast-2-168712278800"  # S3 bucket name
-  bucket_path: "Joopgging-2"
+  bucket_path: "Joopgging-1"
   on:
     branch: feature/campaign
 
