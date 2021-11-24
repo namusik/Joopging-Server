@@ -102,6 +102,18 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "유저 정보 전송")
+    @GetMapping("/users")
+    @ResponseBody
+    public ResponseDto userInfoDetails(
+            @ApiIgnore @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        checkLogin(userDetails);
+        List<UserInfoDetailsDto> userInfoDetailsDto = userService.detailsUserInfo(userDetails);
+
+        return new ResponseDto(200L, "회원 정보를 전송했습니다", userInfoDetailsDto);
+
+    }
+
     @ApiOperation(value = "카카오 로그인")
     @PostMapping("/users/kakao")
     public ResponseDto kakaoLogin(
