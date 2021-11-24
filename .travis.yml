@@ -41,10 +41,10 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
   secret_access_key: $AWS_SECRET_KEY
   region: "ap-northeast-2"
-  app: "Joopgging-1"
-  env: "Joopgging1-env"
+  app: "Joopgging-final"
+  env: "Joopggingfinal-env"
   bucket_name: "elasticbeanstalk-ap-northeast-2-168712278800"  # S3 bucket name
-  bucket_path: "Joopgging-1"
+  bucket_path: "Joopgging-final"
   on:
     branch: feature/campaign
 
