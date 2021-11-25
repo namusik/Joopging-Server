@@ -117,7 +117,7 @@ public class SmsSchedule {
                 String message = "안녕하세요 줍깅입니다." +" ["+ postTitle +"] "+ "모임의 모임원들은" +
                         "다 모이셨나요? 출석체크를 해주세요!" +
                         "출석체크는 앞으로 유저간의 신뢰도를 측정하는데 도움이 됩니다!" +
-                        "http://joopgging.com/meetingcheck/" + postId;
+                        "http://joopgging.link/meetingcheck/" + postId;
                 toList.add(number);
                 sendSms(toList,message);
             }
