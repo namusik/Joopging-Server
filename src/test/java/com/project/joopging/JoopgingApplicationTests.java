@@ -8,9 +8,4 @@ import java.time.LocalDate;
 @SpringBootTest
 class JoopgingApplicationTests {
 
-    @Test
-    void contextLoads() {
-
-    }
-
 }
