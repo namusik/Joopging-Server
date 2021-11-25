@@ -11,10 +11,10 @@ pipeline {
 
     stage('Upload') {
       steps {
-        sh '''awsAccessKey: "AKIASOSAJCMIHLSK34UX",
-awsSecretKey: "$PtFwdZFiyQZVU1u4J0FHSQYVnqV0pmiRv5EimWZf",
-credentials: \'awsAccessKey\'
-aws s3 cp build/libs/Joopging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/Joopging-0.0.1-SNAPSHOT.jar'''
+        sh '''aws s3 cp build/libs/Joopging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/Joopging-0.0.1-SNAPSHOT.jar
+awsAccessKey: "AKIASOSAJCMIHLSK34UX"
+awsSecretKey: "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"
+credentials: \'awsAccessKey\''''
       }
     }
 
