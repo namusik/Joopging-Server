@@ -18,7 +18,9 @@ pipeline {
     stage('Deploy') {
       steps {
         sh 'aws elasticbeanstlak create-application-version --region ap-northeast-2 -- application-name joopging-nodoker --version-label ${BUILD_TAG} --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="Joopging-0.0.1-SNAPSHOT.jar"'
-        sh 'aws elasticbeanstalk update-environment --region ap-northeast-2 --environment-name Joopgingnodoker-env --version-label ${BUILD_TAG}'
+        sh '''aws elasticbeanstalk update-environment --region ap-northeast-2 --environment-name Joopgingnodoker-env --version-label ${BUILD_TAG}
+access_key_id: AKIASOSAJCMIHLSK34UX
+secret_access_key: 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'''
       }
     }
 
