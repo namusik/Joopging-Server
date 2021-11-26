@@ -20,7 +20,7 @@ pipeline {
         stage('Upload S3') {
             steps {
                 echo 'Uploading'
-                sh 'aws s3 cp /var/lib/jenkins/workspace/joopging/target/Joopging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
+                sh 'aws s3 cp /var/lib/jenkins/workspace/JoopgingServer/build/libs/Joopging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
                     --acl public-read-write \
                     --region ap-northeast-2' //서울리전
             }
@@ -61,4 +61,4 @@ pipeline {
             echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
-} 
+}
