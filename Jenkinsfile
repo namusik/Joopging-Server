@@ -37,6 +37,7 @@ pipeline {
 //                     --version-label ${JOB_NAME}-${BUILD_NUMBER}'
 //         }
 //     }
+}
     post {
         always {
             echo '결과는...'
