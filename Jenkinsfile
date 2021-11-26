@@ -20,7 +20,7 @@ pipeline {
         stage('Upload S3') {
             steps {
                 echo 'Uploading'
-                sh 'aws s3 cp /var/lib/jenkins/workspace/joopgging/target/joopgging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
+                sh 'aws s3 cp /var/lib/jenkins/workspace/joopgging/target/Joopgging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
                     --acl public-read-write \
                     --region ap-northeast-2' //서울리전
             }
@@ -48,7 +48,7 @@ pipeline {
         // 성공 시 슬랙 #tickets 채널에 성공 메세지 보내기
         success {
             echo 'This will run only if successful'
-        } 
+        }
         // 실패 시 슬랙 #tickets 채널에 성공 메세지 보내기
         failure {
             echo 'This will run only if failed'
