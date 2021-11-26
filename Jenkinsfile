@@ -30,7 +30,7 @@ pipeline {
                     --application-name joopging-nodoker \
                     --version-label ${JOB_NAME}-${BUILD_NUMBER} \
                     --description ${BUILD_TAG} \
-                    --source-bundle S3Bucket="S3버킷이름",S3Key="${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar"'
+                    --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar"'
                 sh 'aws elasticbeanstalk update-environment \
                     --region ap-northeast-2 \
                     --environment-name 	Joopgingnodoker-env \
