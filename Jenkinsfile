@@ -48,7 +48,7 @@ pipeline {
         // 성공 시 슬랙 #tickets 채널에 성공 메세지 보내기
         success {
             echo 'This will run only if successful'
-        }
+        } 
         // 실패 시 슬랙 #tickets 채널에 성공 메세지 보내기
         failure {
             echo 'This will run only if failed'
