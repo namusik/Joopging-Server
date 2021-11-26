@@ -22,6 +22,6 @@ public class ProfileController {
     //version 확인용
     @GetMapping("/version")
         public String checkVersion() {
-            return "ver3";
+            return "ver4";
         }
 }
