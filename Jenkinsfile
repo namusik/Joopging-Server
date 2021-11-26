@@ -2,10 +2,10 @@ pipeline {
     agent any
     environment {
             AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-            AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+            AWS_SECRET_KEY = credentials('jenkins-aws-secret-access-key')
         }
     stages {
-        // WAR 파일로 빌드 (테스트 부분 스킵..)
+        // Jar 파일로 빌드 (테스트 부분 스킵..)
         stage('Build Jar') {
             steps {
                 echo 'build'
@@ -40,15 +40,15 @@ pipeline {
     }
     post {
         always {
-            echo 'This will always run'
+            echo '결과는...'
         }
         // 성공 시 슬랙 #tickets 채널에 성공 메세지 보내기
         success {
-            echo 'This will run only if successful'
+            echo '성공!'
         }
         // 실패 시 슬랙 #tickets 채널에 성공 메세지 보내기
         failure {
-            echo 'This will run only if failed'
+            echo '실패..'
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
@@ -58,4 +58,4 @@ pipeline {
             echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
-} 
+}
