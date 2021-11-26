@@ -36,7 +36,7 @@ pipeline {
 //                     --environment-name 	Joopgingnodoker-env \
 //                     --version-label ${JOB_NAME}-${BUILD_NUMBER}'
 //         }
-//     }
+//     } 
 }
     post {
         always {
