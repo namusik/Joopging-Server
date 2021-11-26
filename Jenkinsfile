@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-            AWS_ACCESS_KEY_ID     = 'AKIASOSAJCMIHLSK34UX'
-            AWS_SECRET_ACCESS_KEY = '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'
+            AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+            AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         }
     stages {
         // Jar 파일로 빌드 (테스트 부분 스킵..)
@@ -22,22 +22,21 @@ pipeline {
                     --region ap-northeast-2' //서울리전
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying'
-                sh 'aws elasticbeanstalk create-application-version \
-                    --region ap-northeast-2 \
-                    --application-name joopging-nodoker \
-                    --version-label ${JOB_NAME}-${BUILD_NUMBER} \
-                    --description ${BUILD_TAG} \
-                    --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar"'
-                sh 'aws elasticbeanstalk update-environment \
-                    --region ap-northeast-2 \
-                    --environment-name 	Joopgingnodoker-env \
-                    --version-label ${JOB_NAME}-${BUILD_NUMBER}'
-            }
-        }
-    }
+//         stage('Deploy') {
+//             steps {
+//                 echo 'Deploying'
+//                 sh 'aws elasticbeanstalk create-application-version \
+//                     --region ap-northeast-2 \
+//                     --application-name joopging-nodoker \
+//                     --version-label ${JOB_NAME}-${BUILD_NUMBER} \
+//                     --description ${BUILD_TAG} \
+//                     --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar"'
+//                 sh 'aws elasticbeanstalk update-environment \
+//                     --region ap-northeast-2 \
+//                     --environment-name 	Joopgingnodoker-env \
+//                     --version-label ${JOB_NAME}-${BUILD_NUMBER}'
+//         }
+//     }
     post {
         always {
             echo '결과는...'
