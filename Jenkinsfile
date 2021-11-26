@@ -20,7 +20,7 @@ pipeline {
         stage('Upload S3') {
             steps {
                 echo 'Uploading'
-                sh 'aws s3 cp /var/lib/jenkins/workspace/joopgging/target/joopgging-0.0.1.SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
+                sh 'aws s3 cp /var/lib/jenkins/workspace/joopgging/target/joopgging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
                     --acl public-read-write \
                     --region ap-northeast-2' //서울리전
             }
@@ -48,19 +48,10 @@ pipeline {
         // 성공 시 슬랙 #tickets 채널에 성공 메세지 보내기
         success {
             echo 'This will run only if successful'
-            echo 'Pushing EBS'
-            slackSend (color: "${env.SLACK_COLOR_GOOD}",
-                channel: "#tickets",
-                message: "*SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
-
         }
         // 실패 시 슬랙 #tickets 채널에 성공 메세지 보내기
         failure {
             echo 'This will run only if failed'
-            //슬랙 #tickets 채널에 실패 메세지 보내기
-            slackSend (color: "${env.SLACK_COLOR_DANGER}",
-                channel: "#tickets",
-                message: "*FAILED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${env.USER_ID}\n More info at: ${env.BUILD_URL}")
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
@@ -70,4 +61,4 @@ pipeline {
             echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
-}  
+}
