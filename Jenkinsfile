@@ -1,12 +1,9 @@
 pipeline {
     agent any
     environment {
-        // Slack configuration
-        SLACK_COLOR_DANGER  = '#E01563'
-        SLACK_COLOR_INFO    = '#6ECADC'
-        SLACK_COLOR_WARNING = '#FFC300'
-        SLACK_COLOR_GOOD    = '#3EB991'
-    } // environment
+            AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+            AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+        }
     stages {
         // WAR 파일로 빌드 (테스트 부분 스킵..)
         stage('Build Jar') {
@@ -61,4 +58,4 @@ pipeline {
             echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
-}
+} 
