@@ -58,7 +58,7 @@ public class BadgeCollectSchedule {
             }
 
             // 첫 후기의 설렘 뱃지
-            if (user.getReview() != null) {
+            if (user.getReview().size() >= 1) {
                 Badge firstReviewBadge = Badge.of(2,2, user);
                 if (categoryList.contains(firstReviewBadge.getCategory())){
                     if (user.getReview().size() >= 10) {
@@ -116,7 +116,7 @@ public class BadgeCollectSchedule {
             }
 
             // 줍깅의 시작 뱃지 , 출석률 뱃지
-            if (user.getCrews() != null) {
+            if (user.getCrews().size() >= 1) {
                 List<Crew> crewList = user.getCrews();
                 int countAttendanceTrue = 0;
                 int countAttendanceFalse = 0;
