@@ -8,6 +8,7 @@ import com.project.joopging.model.Crew;
 import com.project.joopging.model.Post;
 import com.project.joopging.model.User;
 import com.project.joopging.repository.PostRepository;
+import com.project.joopging.repository.UserRepository;
 import com.project.joopging.util.coolsms.APIInit;
 import com.project.joopging.util.coolsms.GroupModel;
 
@@ -34,6 +35,7 @@ public class SmsSchedule {
 
     private final PostRepository postRepository;
     private final APIInit apiInit;
+    private final UserRepository userRepository;
 
     public void sendSms(JsonArray toList, String message) {
         JsonObject params = new JsonObject();
@@ -82,8 +84,8 @@ public class SmsSchedule {
     public void sendRunningDateAlertToCrew() {
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
+        String nowPlusOneDay = getLocalDateTimeNowToStringDay(LocalDateTime.now().plusDays(1));
         for (Post post : postList) {
-            String nowPlusOneDay = getLocalDateTimeNowToStringDay(LocalDateTime.now().plusDays(1));
             String runningDate = getRunningDateToStringDay(post);
           if (nowPlusOneDay.equals(runningDate)) {
               List<Crew> crewList = post.getCrew();
@@ -92,7 +94,11 @@ public class SmsSchedule {
                       "신청하신"+ " [" + postTitle + "] " +"모임의 모임날짜가 하루전입니다.";
               for (Crew crew : crewList) {
                   User user = crew.getUserJoin();
-                  String userNumber = user.getNumber();
+                  Long userId = user.getId();
+                  User myUser = userRepository.findById(userId).orElseThrow(
+                          NullPointerException::new
+                  );
+                  String userNumber = myUser.getNumber();
                   toList.add(userNumber);
               }
               sendSms(toList, message);
@@ -107,11 +113,16 @@ public class SmsSchedule {
         System.out.println("스케쥴러 시작");
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
+        String now = getLocalDateTimeNowToStringMinute(LocalDateTime.now());
         for (Post post : postList) {
-            String runningDate = getRunningDateToStringDay(post);
-            String now = getLocalDateTimeNowToStringMinute(LocalDateTime.now());
+            String runningDate = getRunningDateToStringMinute(post);
             if (now.equals(runningDate)) {
-                String number = post.getWriter().getNumber();
+                User user = post.getWriter();
+                Long userId = user.getId();
+                User myUser = userRepository.findById(userId).orElseThrow(
+                        NullPointerException::new
+                );
+                String number = myUser.getNumber();
                 String postTitle = post.getTitle();
                 Long postId = post.getId();
                 String message = "안녕하세요 줍깅입니다." +" ["+ postTitle +"] "+ "모임의 모임원들은" +
@@ -131,9 +142,9 @@ public class SmsSchedule {
         System.out.println("스케쥴러 시작");
         List<Post> postList = postRepository.findAll();
         JsonArray toList = new JsonArray();
+        String now = getLocalDateTimeNowToStringMinute(LocalDateTime.now());
         for (Post post : postList) {
             String runningDate = getRunningDateToStringMinute(post);
-            String now = getLocalDateTimeNowToStringMinute(LocalDateTime.now());
             if (now.equals(runningDate)) {
                 List<Crew> crewList = post.getCrew();
                 String postTitle = post.getTitle();
@@ -143,7 +154,11 @@ public class SmsSchedule {
                         "https://forms.gle/X3nQmmbHiRwmmWtZ8";
                 for (Crew crew : crewList) {
                     User user = crew.getUserJoin();
-                    String userNumber = user.getNumber();
+                    Long userId = user.getId();
+                    User myUser = userRepository.findById(userId).orElseThrow(
+                            NullPointerException::new
+                    );
+                    String userNumber = myUser.getNumber();
                     toList.add(userNumber);
                 }
                 sendSms(toList,message);

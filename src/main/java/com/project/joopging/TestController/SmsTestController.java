@@ -34,4 +34,10 @@ public class SmsTestController {
         CertificateNumberResponseDto data = smsSchedule.certificatePhoneNumber(requestDto);
         return new ResponseDto(200L,"문자메세지 전송완료", data);
     }
+
+    @GetMapping("/test3")
+    public ResponseDto test3() {
+        smsSchedule.sendAttendanceCheckAlertToCrewHead();
+        return new ResponseDto(200L,"문자메세지 전송완료","");
+    }
 }
