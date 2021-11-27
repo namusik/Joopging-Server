@@ -8,7 +8,6 @@ import com.project.joopging.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -157,6 +156,7 @@ public class BadgeCollectSchedule {
                 if (countAttendanceTrue >= 1 ) {
                     int attendanceRate =
                             countAttendanceTrue / (countAttendanceTrue + countAttendanceFalse) * 100;
+                    System.out.println(attendanceRate);
                     //출석률 70프로 이하일때 나쁜출석률 뱃지
                     Badge badAttendanceRateBadge = Badge.of(5, 5, user);
                     if (attendanceRate <= 70) {
@@ -168,8 +168,9 @@ public class BadgeCollectSchedule {
                         }
 
                     } else {
-                        badgeList.remove(badAttendanceRateBadge);
-                        badgeRepository.delete(badAttendanceRateBadge);
+                        Badge DubBadge = badgeRepository.findByUserBadgeAndCategoryAndLevel(user,5,5);
+                        badgeList.remove(DubBadge);
+                        badgeRepository.delete(DubBadge);
                     }
 
                 } else {
