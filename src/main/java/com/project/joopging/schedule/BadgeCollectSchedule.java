@@ -152,7 +152,10 @@ public class BadgeCollectSchedule {
                 }
 
                 //출석률 계산
-                if (countAttendanceTrue >= 1 ) {
+                //출석체크 default 값이 false 라서 2번째 모임신청을 누르는 순간 출석률이 50%가 되서 바로 지각생 뱃지를 받게됨으로
+                //출석 5번이상 경우의 수 (ex. 출석 5 + default 1 = 83.3% (안받음), 출석5 결석1 + default 1 = 71.4% (최저 안받음))
+                //결석을 2회이상 경우의 수(ex. 출석1 결석1 + default 1 = 33% (받야야함) , 출석2 + default 1 = 66%(안받음))
+                if (countAttendanceTrue > 5 || countAttendanceFalse > 2) {
                     Double attendanceRate =
                             (double) (countAttendanceTrue / (countAttendanceTrue + countAttendanceFalse) * 100);
                     System.out.println(attendanceRate);
