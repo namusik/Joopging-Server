@@ -151,11 +151,10 @@ public class BadgeCollectSchedule {
                     }
                 }
 
-
                 //출석률 계산
                 if (countAttendanceTrue >= 1 ) {
-                    int attendanceRate =
-                            countAttendanceTrue / (countAttendanceTrue + countAttendanceFalse) * 100;
+                    Double attendanceRate =
+                            (double) (countAttendanceTrue / (countAttendanceTrue + countAttendanceFalse) * 100);
                     System.out.println(attendanceRate);
                     //출석률 70프로 이하일때 나쁜출석률 뱃지
                     Badge badAttendanceRateBadge = Badge.of(5, 5, user);
