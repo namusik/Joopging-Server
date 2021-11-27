@@ -109,6 +109,7 @@ public class SmsSchedule {
     //스케쥴러 5분마다 체크
     //CrewHead 에게 출석체크 url 알럿문자메세지
     @Scheduled(cron ="0 0/5 * * * *")
+    @Transactional(readOnly = true)
     public void sendAttendanceCheckAlertToCrewHead() {
         System.out.println("스케쥴러 시작");
         List<Post> postList = postRepository.findAll();
@@ -138,6 +139,7 @@ public class SmsSchedule {
     //스케쥴러 5분마다 체크
     //Crew 전체에게 후기 쓰고 설문조사 유도 알럿문자메세지
     @Scheduled(cron = "0 0/5 * * * *")
+    @Transactional(readOnly = true)
     public void sendInduceReviewAlertToCrew() {
         System.out.println("스케쥴러 시작");
         List<Post> postList = postRepository.findAll();
@@ -205,9 +207,10 @@ public class SmsSchedule {
 //        System.out.println("date = " + date);
         String[] ts = date.split("T");
         String[] ms = ts[1].split(":");
-        return ts[0] + " (" + day + ") " + ms[0] + ms[1];
+        return ts[0] + " ("+ day +") " + ms[0] + ms[1];
     }
 
+    //휴대폰 번호 인증
     public CertificateNumberResponseDto certificatePhoneNumber(PhoneNumberRequestDto requestDto) {
         JsonArray toList = new JsonArray();
         String phoneNumber = requestDto.getPhoneNumber();

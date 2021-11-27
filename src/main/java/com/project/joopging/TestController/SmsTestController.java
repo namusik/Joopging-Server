@@ -37,7 +37,7 @@ public class SmsTestController {
 
     @GetMapping("/test3")
     public ResponseDto test3() {
-        smsSchedule.sendAttendanceCheckAlertToCrewHead();
+        smsSchedule.sendInduceReviewAlertToCrew();
         return new ResponseDto(200L,"문자메세지 전송완료","");
     }
 }
