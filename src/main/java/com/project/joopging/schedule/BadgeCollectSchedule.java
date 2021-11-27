@@ -20,7 +20,7 @@ public class BadgeCollectSchedule {
     private final UserRepository userRepository;
     private final BadgeRepository badgeRepository;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 5000)
     @Transactional
     public void collect() {
         List<User> userList = userRepository.findAll();
