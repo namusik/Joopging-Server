@@ -44,7 +44,7 @@ pipeline {
                 sh 'aws elasticbeanstalk update-environment \
                     --region ap-northeast-2 \
                     --environment-name 	Joopgingnodoker-env \
-                    --version-label ${PROJECT_NAME}-${BUILD_NUMBER}'
+                    --version-label ${JOB_NAME}-${BUILD_NUMBER}'
         }
     }
 }
