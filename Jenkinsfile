@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo 'build'
                 sh 'chmod +x gradlew'
-                sh './gradlew :${JOB_NAME}:clean build'
+                sh './gradlew clean build'
             }
         }
         // zip 파일 구성
