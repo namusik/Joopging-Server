@@ -10,33 +10,42 @@ pipeline {
             steps {
                 echo 'build'
                 sh 'chmod +x gradlew'
-                sh './gradlew clean build'
+                sh './gradlew :${PROJECT_NAME}:clean build'
+            }
+        }
+        // zip 파일 구성
+        stage('zip') {
+            steps{
+                echo 'zip'
+                sh 'cp -r ../../.ebextensions .ebextensions'
+                sh 'mv *.jar application.jar'
+                sh 'zip -r ${PROJECT_NAME}.zip application.jar .ebextensions'
             }
         }
         // S3에 먼저 업로드 후 Deploy 진행
         stage('Upload S3') {
             steps {
                 echo 'Uploading'
-                sh 'aws s3 cp /var/lib/jenkins/workspace/JoopgingServer/build/libs/Joopging-0.0.1-SNAPSHOT.jar s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar \
+                sh 'aws s3 cp ${PROJECT_NAME}.zip s3://elasticbeanstalk-ap-northeast-2-168712278800/${PROJECT_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.zip \
                     --acl public-read-write \
                     --region ap-northeast-2' //서울리전
             }
         }
-//         stage('Deploy') {
-//             steps {
-//                 echo 'Deploying'
-//                 sh 'aws elasticbeanstalk create-application-version \
-//                     --region ap-northeast-2 \
-//                     --application-name joopging-nodoker \
-//                     --version-label ${JOB_NAME}-${BUILD_NUMBER} \
-//                     --description ${BUILD_TAG} \
-//                     --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.jar"'
-//                 sh 'aws elasticbeanstalk update-environment \
-//                     --region ap-northeast-2 \
-//                     --environment-name 	Joopgingnodoker-env \
-//                     --version-label ${JOB_NAME}-${BUILD_NUMBER}'
-//         }
-//     } 
+        stage('Deploy') {
+            steps {
+                echo 'Deploying'
+                sh 'aws elasticbeanstalk create-application-version \
+                    --region ap-northeast-2 \
+                    --application-name joopging-nodoker \
+                    --version-label ${PROJECT_NAME}-${BUILD_NUMBER} \
+                    --description ${BUILD_TAG} \
+                    --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${PROJECT_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.zip"'
+                sh 'aws elasticbeanstalk update-environment \
+                    --region ap-northeast-2 \
+                    --environment-name 	Joopgingnodoker-env \
+                    --version-label ${PROJECT_NAME}-${BUILD_NUMBER}'
+        }
+    }
 }
     post {
         always {
