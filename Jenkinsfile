@@ -17,8 +17,8 @@ pipeline {
         stage('zip') {
             steps{
                 echo 'zip'
-                sh 'cd ${JOB_NAME}/build/libs'
-                sh 'cp -r ../../.ebextensions .ebextensions'
+                sh 'cp -r /var/lib/jenkins/workspace/JoopgingServer/.ebextensions'
+                sh 'cd /var/lib/jenkins/workspace/JoopgingServer/build/libs'
                 sh 'mv *.jar application.jar'
                 sh 'zip -r ${JOB_NAME}.zip application.jar .ebextensions'
             }
