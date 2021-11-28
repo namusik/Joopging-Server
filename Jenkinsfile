@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-            AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-            AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+            AWS_ACCESS_KEY_ID     = 'AKIASOSAJCMIHLSK34UX'
+            AWS_SECRET_ACCESS_KEY = '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'
         }
     stages {
         // Jar 파일로 빌드 (테스트 부분 스킵..)
@@ -17,6 +17,7 @@ pipeline {
         stage('zip') {
             steps{
                 echo 'zip'
+                sh 'cd ${PROJECT_NAME}/build/libs'
                 sh 'cp -r ../../.ebextensions .ebextensions'
                 sh 'mv *.jar application.jar'
                 sh 'zip -r ${PROJECT_NAME}.zip application.jar .ebextensions'
