@@ -54,7 +54,7 @@ pipeline {
         }
         // 성공 시 슬랙 #tickets 채널에 성공 메세지 보내기
         success {
-            echo '성공!'
+            echo '성공!!'
         }
         // 실패 시 슬랙 #tickets 채널에 성공 메세지 보내기
         failure {
