@@ -20,7 +20,6 @@ pipeline {
                 sh 'cd /var/lib/jenkins/workspace/JoopgingServer/build/libs'
                 sh 'cp -r /var/lib/jenkins/workspace/JoopgingServer/.ebextensions /var/lib/jenkins/workspace/JoopgingServer/build/libs/.ebextensions'
                 sh 'cd /var/lib/jenkins/workspace/JoopgingServer/build/libs'
-//                 sh 'mv Joopging-0.0.1-SNAPSHOT.jar application.jar'
                 sh 'zip -r ${JOB_NAME}.zip Joopging-0.0.1-SNAPSHOT.jar .ebextensions'
             }
         }
