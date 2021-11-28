@@ -29,12 +29,12 @@ public class MainPageService {
     private final PostRepository postRepository;
     private final ReviewRepository reviewRepository;
     private final BookMarkRepository bookMarkRepository;
-    private final LocalDate now = LocalDate.now();
     
     //조회수 높은거 5개
     public List<PostMainPageResponseDto> getByHotPlace(UserDetailsImpl userDetails) {
 //        System.out.println("now = " + now);
         Pageable pageable = PageRequest.of(0, 10);
+        LocalDate now = LocalDate.now().minusDays(1);
         List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByViewCountDesc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
@@ -65,6 +65,7 @@ public class MainPageService {
     //최근 작성 순
     public List<PostMainPageResponseDto> getByRecentPost(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
+        LocalDate now = LocalDate.now().minusDays(1);
         List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByCreatedAtDesc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
@@ -81,6 +82,7 @@ public class MainPageService {
     //Dday 기준
     public List<PostMainPageResponseDto> getByCloseSoon(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
+        LocalDate now = LocalDate.now().minusDays(1);
         List<Post> result  = postRepository.findAllByEndDateGreaterThanOrderByEndDateAsc(pageable, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : result) {
@@ -99,6 +101,7 @@ public class MainPageService {
     public List<PostMainPageResponseDto> getByUserLocation(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         String location = userDetails.getUser().getLocation();
+        LocalDate now = LocalDate.now().minusDays(1);
         List<Post> content  = postRepository.findAllByLocationAndEndDateGreaterThanOrderByRunningDateAsc(pageable,location,now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
@@ -113,6 +116,7 @@ public class MainPageService {
     public List<PostMainPageResponseDto> getByUserDistance(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         String distance = userDetails.getUser().getDistance();
+        LocalDate now = LocalDate.now().minusDays(1);
         List<Post> content  = postRepository.findAllByDistanceAndEndDateGreaterThanOrderByRunningDateAsc(pageable,distance, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
@@ -127,6 +131,7 @@ public class MainPageService {
     public List<PostMainPageResponseDto> getByUserType(UserDetailsImpl userDetails) {
         Pageable pageable = PageRequest.of(0, 10);
         String type = userDetails.getUser().getType();
+        LocalDate now = LocalDate.now().minusDays(1);
         List<Post> content  = postRepository.findAllByTypeAndEndDateGreaterThanOrderByRunningDateAsc(pageable,type, now).getContent();
         List<PostMainPageResponseDto> postList = new ArrayList<>();
         for (Post post : content) {
