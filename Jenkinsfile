@@ -10,24 +10,24 @@ pipeline {
             steps {
                 echo 'build'
                 sh 'chmod +x gradlew'
-                sh './gradlew :${PROJECT_NAME}:clean build'
+                sh './gradlew :${JOB_NAME}:clean build'
             }
         }
         // zip 파일 구성
         stage('zip') {
             steps{
                 echo 'zip'
-                sh 'cd ${PROJECT_NAME}/build/libs'
+                sh 'cd ${JOB_NAME}/build/libs'
                 sh 'cp -r ../../.ebextensions .ebextensions'
                 sh 'mv *.jar application.jar'
-                sh 'zip -r ${PROJECT_NAME}.zip application.jar .ebextensions'
+                sh 'zip -r ${JOB_NAME}.zip application.jar .ebextensions'
             }
         }
         // S3에 먼저 업로드 후 Deploy 진행
         stage('Upload S3') {
             steps {
                 echo 'Uploading'
-                sh 'aws s3 cp ${PROJECT_NAME}.zip s3://elasticbeanstalk-ap-northeast-2-168712278800/${PROJECT_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.zip \
+                sh 'aws s3 cp ${JOB_NAME}.zip s3://elasticbeanstalk-ap-northeast-2-168712278800/${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.zip \
                     --acl public-read-write \
                     --region ap-northeast-2' //서울리전
             }
@@ -38,9 +38,9 @@ pipeline {
                 sh 'aws elasticbeanstalk create-application-version \
                     --region ap-northeast-2 \
                     --application-name joopging-nodoker \
-                    --version-label ${PROJECT_NAME}-${BUILD_NUMBER} \
+                    --version-label ${JOB_NAME}-${BUILD_NUMBER} \
                     --description ${BUILD_TAG} \
-                    --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${PROJECT_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.zip"'
+                    --source-bundle S3Bucket="elasticbeanstalk-ap-northeast-2-168712278800",S3Key="${JOB_NAME}-${GIT_BRANCH}-${BUILD_NUMBER}.zip"'
                 sh 'aws elasticbeanstalk update-environment \
                     --region ap-northeast-2 \
                     --environment-name 	Joopgingnodoker-env \
