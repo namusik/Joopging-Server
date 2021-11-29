@@ -61,11 +61,11 @@ pipeline {
             echo '실패..'
         }
         unstable {
-            echo 'This will run only if the run was marked as unstable'
+            echo '실행이 불안정합니다!'
         }
         changed {
-            echo 'This will run only if the state of the Pipeline has changed'
-            echo 'For example, if the Pipeline was previously failing but is now successful'
+            echo '파이프 라인이 변경되었습니다!'
+            echo '예를들어 이전에는 실패했지만 지금은 성공한 경우'
         }
     }
 }
