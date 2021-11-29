@@ -68,7 +68,7 @@ public class SmsSchedule {
                         e.printStackTrace();
                     }
                 }
-            } 
+            }
 
             @Override
             public void onFailure(Call<GroupModel> call, Throwable throwable) {
