@@ -78,6 +78,7 @@ public class SmsSchedule {
     }
 
     
+
     //스케쥴러 매일 9시
     //러닝데이트 1일 전에 알럿문자메세지
     @Scheduled(cron = "0 0 9 * * *")
