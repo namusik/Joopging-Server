@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-            AWS_ACCESS_KEY_ID     = 'AKIASOSAJCMIHLSK34UX'
-            AWS_SECRET_ACCESS_KEY = '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'
+            AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+            AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         }
     stages {
         // Jar 파일로 빌드 (테스트 부분 스킵..)
