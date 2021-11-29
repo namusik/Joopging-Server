@@ -50,7 +50,7 @@ pipeline {
 }
     post {
         always {
-            echo '결과는......'
+            echo '결과는.........'
         }
         // 성공 시 슬랙 #tickets 채널에 성공 메세지 보내기
         success {
