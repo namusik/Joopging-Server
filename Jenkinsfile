@@ -12,7 +12,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying'
-                sh 'cd /home/ubuntu'
                 sh 'ls'
                 sh './deploy.sh'
         }
