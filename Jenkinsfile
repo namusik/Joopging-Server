@@ -13,7 +13,6 @@ pipeline {
             steps {
                 echo 'Deploying'
                 sh 'cd /home/ubuntu'
-                sh 'chmod +x deploy.sh'
                 sh './deploy.sh'
         }
     }
