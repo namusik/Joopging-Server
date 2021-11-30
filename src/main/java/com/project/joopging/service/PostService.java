@@ -30,6 +30,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final CrewRepository crewRepository;
     private final BookMarkRepository bookMarkRepository;
+    private final ReviewRepository reviewRepository;
 
 
 
@@ -154,19 +155,23 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<MyApplicationPostListResponseDto> getMyApplicationPostListByUser(User user) {
         boolean bookmarkInfo;
+        boolean attendation;
+        boolean reviewInfo;
         List<MyApplicationPostListResponseDto> applicationPostList = new ArrayList<>();
         Long userId = user.getId();
         //Optional 유저를 쓰거나 .orElseThrow 를 쓰거나
         User myUser = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 유저입니다.")
         );
+
         List<Crew> crewList = crewRepository.findAllByUserJoin(myUser);
         for (Crew crew : crewList) {
             Post applicationPost = crew.getPostJoin();
-            boolean attendation = crew.isAttendation();
+            reviewInfo = reviewRepository.findByPostReviewAndUserReview(applicationPost, myUser);
+            attendation = crew.isAttendation();
             String runningDateToString = getRunningDateToString(applicationPost);
             bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost).isPresent();
-            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost(bookmarkInfo, runningDateToString, attendation);
+            MyApplicationPostListResponseDto responseDto = applicationPost.toBuildMyApplicationPost(bookmarkInfo, runningDateToString, attendation, reviewInfo);
             applicationPostList.add(responseDto);
         }
 

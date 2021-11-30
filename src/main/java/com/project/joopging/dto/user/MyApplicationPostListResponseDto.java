@@ -34,6 +34,7 @@ public class MyApplicationPostListResponseDto {
     private final Integer viewCount;
     private final Integer bookMarkCount;
     private final boolean attendation;
+    private final boolean reviewInfo;
 
 
     //작성자 정보
