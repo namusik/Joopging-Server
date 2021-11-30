@@ -167,7 +167,7 @@ public class PostService {
         List<Crew> crewList = crewRepository.findAllByUserJoin(myUser);
         for (Crew crew : crewList) {
             Post applicationPost = crew.getPostJoin();
-            reviewInfo = reviewRepository.findByPostReviewAndUserReview(applicationPost, myUser);
+            reviewInfo = reviewRepository.existsByPostReviewAndUserReview(applicationPost, myUser);
             attendation = crew.isAttendation();
             String runningDateToString = getRunningDateToString(applicationPost);
             bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(myUser, applicationPost).isPresent();
