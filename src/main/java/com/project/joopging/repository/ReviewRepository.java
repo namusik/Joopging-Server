@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByOrderByModifiedAtDesc(Pageable pageable);
 
-    boolean findByPostReviewAndUserReview(Post post, User user);
+    boolean existsByPostReviewAndUserReview(Post post, User user);
 }
