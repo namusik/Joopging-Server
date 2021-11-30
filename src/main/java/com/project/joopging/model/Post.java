@@ -243,7 +243,8 @@ public class Post extends Timestamped {
 
     public MyApplicationPostListResponseDto toBuildMyApplicationPost(boolean bookMarkInfo,
                                                                      String runningDateToString,
-                                                                     boolean attendation) {
+                                                                     boolean attendation,
+                                                                     boolean reviewInfo) {
         return MyApplicationPostListResponseDto.builder()
                 .postId(this.id)
                 .title(this.title)
@@ -265,6 +266,7 @@ public class Post extends Timestamped {
                 .intro(this.writer.getIntro())
                 .bookMarkInfo(bookMarkInfo)
                 .attendation(attendation)
+                .reviewInfo(reviewInfo)
                 .build();
     }
 
