@@ -39,11 +39,13 @@ public class SmsTestController {
 //    @GetMapping("/test4")
 //    public ResponseDto test4() {
 //        JsonArray toList = new JsonArray();
-//        String number = "01099403102";
+//        String number = "01095591070";
 //        String message = "안녕하세요 줍깅입니다." +" ["+ "우쥬같이줍깅!" +"] "+ "모임의 모임원들은" +
 //                "다 모이셨나요? 출석체크를 해주세요!" +
+//                "                                                                      " +
 //                "출석체크는 앞으로 유저간의 신뢰도를 측정하는데 도움이 됩니다!" +
-//                "https://joopgging.link/meetingcheck/" + 71;
+//                "                                                                      " +
+//                "☞ https://joopgging.link/meetingcheck/" + 71;
 //        toList.add(number);
 //        smsSchedule.sendSms(toList,message);
 //
@@ -52,11 +54,14 @@ public class SmsTestController {
 //    @GetMapping("/test5")
 //    public ResponseDto test5() {
 //        JsonArray toList = new JsonArray();
-//        String number = "01099403102";
-//        String message = "안녕하세요 줍깅입니다. 이번" +" ["+ "우쥬같이줍깅!" + "] " + "모임은 어떠셨나요?" +
-//                "후기를 작성하여 다른 사용자에게 플로깅이 얼마나 좋은지 알려주세요!" +
-//                "[이벤트] 이벤트 기간 중 설문조사를 작성하시면 소정의 기프티콘을 드려요! " +
-//                "https://forms.gle/X3nQmmbHiRwmmWtZ8";
+//        String number = "01095591070";
+//        String message = "안녕하세요 줍깅입니다. 이번" +" ["+ "우쥬같이줍깅" + "] " + "모임은 어떠셨나요?" +
+//                "                                                                      " +
+//                "후기를 작성하여 다른 사용자에게 플로깅이 얼마나 좋은지 알려주세요! " +
+//                "                                                                      " +
+//                "★Event★ 이벤트 기간 중 설문조사를 작성하시면 소정의 기프티콘을 드려요! " +
+//                "                                                                      " +
+//                "☞ https://forms.gle/X3nQmmbHiRwmmWtZ8";
 //        toList.add(number);
 //        smsSchedule.sendSms(toList,message);
 //
