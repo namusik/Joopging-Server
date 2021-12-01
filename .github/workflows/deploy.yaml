@@ -3,9 +3,6 @@ name: Deploy to EB
 on:
   push:
     branches: [ feature/sms ]
-  pull_request:
-    branches: [ feature/sms ]
-
 
 jobs:
   build:

@@ -23,7 +23,7 @@ public class BadgeTestController {
 
     @GetMapping("/test")
     public ResponseDto badgeTest() {
-        badgeCollectSchedule.collect(); 
+        badgeCollectSchedule.collect();
         return new ResponseDto(200L,"뱃지 스케쥴러가 실행되었습니다", "");
     }
 
