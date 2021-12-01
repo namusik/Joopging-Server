@@ -198,4 +198,14 @@ public class UserController {
         return new ResponseDto(200L, "사용 가능한 이메일입니다 !", "");
 
     }
+
+    @ApiOperation(value = "다른 유저정보")
+    @PostMapping("/users/info")
+    public ResponseDto userDetail(
+            @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
+            @ApiParam(value = "유저정보") @RequestBody UserNumberRequestDto requestDto
+    ) {
+        AnotherUserInfoResponseDto data = userService.getAnotherUserInfo(requestDto);
+        return new ResponseDto(200L,"불러오기 성공",data);
+    }
 }

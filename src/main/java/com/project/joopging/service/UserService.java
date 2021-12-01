@@ -14,8 +14,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -158,5 +158,14 @@ public class UserService {
         List<BookMark> bookMarks = user.getBookMarks();
         int myBookmark = bookMarks.size();
         return new UserMyPageResponseDto(myBookmark, myBadge, myReview, myCrew);
+    }
+
+    @Transactional(readOnly = true)
+    public AnotherUserInfoResponseDto getAnotherUserInfo(UserNumberRequestDto requestDto) {
+        Long userId = requestDto.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 회원입니다.")
+        );
+        return user.toBuildAnotherUserInfo();
     }
 }
