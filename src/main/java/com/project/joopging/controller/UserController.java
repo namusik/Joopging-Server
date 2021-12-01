@@ -201,7 +201,7 @@ public class UserController {
 
     @ApiOperation(value = "다른 유저정보")
     @PostMapping("/users/info")
-    public ResponseDto userDetail(
+    public ResponseDto anotherUserDetail(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "유저정보", required = true) @RequestBody UserIdRequestDto requestDto
     ) {
