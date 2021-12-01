@@ -161,7 +161,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public AnotherUserInfoResponseDto getAnotherUserInfo(UserNumberRequestDto requestDto) {
+    public AnotherUserInfoResponseDto getAnotherUserInfo(UserIdRequestDto requestDto) {
         Long userId = requestDto.getUserId();
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomErrorException("존재하지 않는 회원입니다.")

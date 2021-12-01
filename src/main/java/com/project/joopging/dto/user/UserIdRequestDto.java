@@ -1,15 +1,13 @@
 package com.project.joopging.dto.user;
 
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @RequiredArgsConstructor
-public class UserNumberRequestDto {
+public class UserIdRequestDto {
 
-    private final Long userId;
+    private Long userId;
+
 }

@@ -203,7 +203,7 @@ public class UserController {
     @PostMapping("/users/info")
     public ResponseDto userDetail(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
-            @ApiParam(value = "유저정보") @RequestBody UserNumberRequestDto requestDto
+            @ApiParam(value = "유저정보", required = true) @RequestBody UserIdRequestDto requestDto
     ) {
         AnotherUserInfoResponseDto data = userService.getAnotherUserInfo(requestDto);
         return new ResponseDto(200L,"불러오기 성공",data);
