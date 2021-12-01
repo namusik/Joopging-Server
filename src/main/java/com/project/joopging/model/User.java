@@ -173,6 +173,7 @@ public class User extends Timestamped {
                 .distance(this.distance)
                 .location(this.location)
                 .type(this.type)
+                .badgeList(this.badges)
                 .build();
     }
 }
