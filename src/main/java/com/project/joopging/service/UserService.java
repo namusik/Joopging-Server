@@ -19,6 +19,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -28,7 +30,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final signupValidator signupValidator;
     private final PasswordEncoder passwordEncoder;
 
     public User userFromUserDetails(UserDetails userDetails) {
@@ -46,10 +47,40 @@ public class UserService {
     }
 
     //회원가입
-    public boolean registerUser(SignupRequestDto requestDto) {
-        User user = signupValidator.validate(requestDto);
+    public User registerUser(SignupRequestDto requestDto) {
+        String email = requestDto.getEmail();
+        String nickname = requestDto.getNickname();
+        String password = requestDto.getPassword();
+        UserRoleEnum role = UserRoleEnum.USER;
+        Optional<User> emailFound = userRepository.findByEmail(email);
+        Optional<User> nicknameFound = userRepository.findByNickname(nickname);
+        String distance = requestDto.getDistance();
+        String location = requestDto.getLocation();
+        String type = requestDto.getType();
+        String number = requestDto.getNumber();
+        String image = requestDto.getImage();
+
+
+        if (emailFound.isPresent()) {
+            throw new CustomErrorException("중복된 이메일 입니다 ");
+        } else if (nicknameFound.isPresent()) {
+            throw new CustomErrorException("중복된 닉네임 입니다 ");
+        } else if (!isValidEmail(email)) {
+            throw new CustomErrorException("이메일 형식이 올바르지 않습니다");
+        } else if (password.length() < 4 || password.length() > 12) {
+            throw new CustomErrorException("비밀번호를 6자 이상  12자 이하로 입력하세요");
+        } else if (password.contains(email)) {
+            throw new CustomErrorException("패스워드는 아이디를 포함할 수 없습니다.");
+        }
+
+        // 패스워드 인코딩
+        password = passwordEncoder.encode(password);
+        requestDto.setPassword(password);
+
+        User user = new User(nickname, password, email, role, location, type, distance,number,image);
+
         userRepository.save(user);
-        return true;
+        return user;
     }
 
     //로그인
@@ -159,4 +190,12 @@ public class UserService {
         int myBookmark = bookMarks.size();
         return new UserMyPageResponseDto(myBookmark, myBadge, myReview, myCrew);
     }
+
+    //이메일 유효성 검사
+    public static boolean isValidEmail(String email) {
+        boolean err = false;
+        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(email);
+        if(m.matches()) { err = true; } return err; }
 }
