@@ -90,6 +90,8 @@ public class SmsSchedule {
               List<Crew> crewList = post.getCrew();
               String postTitle = post.getTitle();
               String message = "안녕하세요 줍깅입니다. " +
+                      "\r\n" +
+                      "\r\n" +
                       "신청하신"+ " [" + postTitle + "] " +"모임의 모임날짜가 하루전입니다.";
               for (Crew crew : crewList) {
                   User user = crew.getUserJoin();
@@ -125,8 +127,10 @@ public class SmsSchedule {
                 String number = myUser.getNumber();
                 String postTitle = post.getTitle();
                 Long postId = post.getId();
-                String message = "안녕하세요 줍깅입니다." +" ["+ postTitle +"] "+ "모임의 모임원들은" +
-                        "다 모이셨나요? 출석체크를 해주세요!" +
+                String message = "안녕하세요 줍깅입니다." +
+                        "\r\n" +
+                        "\r\n" +
+                        " ["+ postTitle +"] "+ "모임의 모임원들은" + "다 모이셨나요? 출석체크를 해주세요!" +
                         "\r\n" +
                         "\r\n" +
                         "출석체크는 앞으로 유저간의 신뢰도를 측정하는데 도움이 됩니다!" +
@@ -153,7 +157,10 @@ public class SmsSchedule {
             if (now.equals(runningDate)) {
                 List<Crew> crewList = post.getCrew();
                 String postTitle = post.getTitle();
-                String message = "안녕하세요 줍깅입니다. 이번" +" ["+ postTitle + "] " + "모임은 어떠셨나요?" +
+                String message = "안녕하세요 줍깅입니다. " +
+                        "\r\n" +
+                        "\r\n" +
+                        "이번" +" ["+ postTitle + "] " + "모임은 어떠셨나요?" +
                         "\r\n" +
                         "\r\n" +
                         "후기를 작성하여 다른 사용자에게 플로깅이 얼마나 좋은지 알려주세요!" +
@@ -161,7 +168,7 @@ public class SmsSchedule {
                         "\r\n" +
                         "★Event★ 이벤트 기간 중 설문조사를 작성하시면 소정의 기프티콘을 드려요! " +
                         "\r\n" +
-                        "\r\n" + 
+                        "\r\n" +
                         "☞ https://forms.gle/X3nQmmbHiRwmmWtZ8";
                 for (Crew crew : crewList) {
                     User user = crew.getUserJoin();
@@ -233,7 +240,10 @@ public class SmsSchedule {
         }
         log.info("수신자 번호 :" + phoneNumber);
         log.info("인증번호 :" + numStr);
-        String message = "안녕하세요 줍깅입니다. 인증번호는 [ " + numStr + " ] 입니다";
+        String message = "안녕하세요 줍깅입니다. " +
+                "\r\n" +
+                "\r\n" +
+                "인증번호는 [ " + numStr + " ] 입니다";
         sendSms(toList, message);
         CertificateNumberResponseDto responseDto = new CertificateNumberResponseDto();
         responseDto.setCertificationNumber(numStr);
