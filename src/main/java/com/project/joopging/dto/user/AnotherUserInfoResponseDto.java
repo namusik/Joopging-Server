@@ -19,7 +19,7 @@ public class AnotherUserInfoResponseDto {
     private final int crewCount;
 
     //유저 정보
-    private final Long id;
+    private final Long userId;
     private final String userImg;
     private final String nickname;
     private final String intro;

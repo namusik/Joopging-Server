@@ -206,6 +206,6 @@ public class UserController {
             @ApiParam(value = "유저정보", required = true) @RequestBody UserIdRequestDto requestDto
     ) {
         AnotherUserInfoResponseDto data = userService.getAnotherUserInfo(requestDto);
-        return new ResponseDto(200L,"불러오기 성공",data);
+        return new ResponseDto(200L,"유저 정보 불러오기 성공",data);
     }
 }
