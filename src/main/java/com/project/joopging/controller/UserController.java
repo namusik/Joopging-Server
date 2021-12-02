@@ -42,7 +42,7 @@ public class UserController {
     @ResponseBody
     public ResponseDto createUser(
             @ApiParam(value = "유저 생성정보", required = true) @RequestBody SignupRequestDto signupRequestDto) {
-        if (userService.registerUser(signupRequestDto)) {
+        if (userService.registerUser(signupRequestDto) != null) {
             String username = signupRequestDto.getNickname();
             log.info(username + "님 환영합니다 !");
             return new ResponseDto(201L, "회원가입에 성공하였습니다 !", "");

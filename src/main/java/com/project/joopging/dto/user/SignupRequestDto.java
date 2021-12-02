@@ -22,4 +22,6 @@ public class SignupRequestDto {
     private String distance;
 
     private String number;
+
+    private String image;
 }
