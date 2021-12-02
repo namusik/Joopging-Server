@@ -168,6 +168,7 @@ public class User extends Timestamped {
                 .reviewCount(this.review.size())
                 .crewCount(this.crews.size())
                 .userId(this.id)
+                .nickname(this.nickname)
                 .userImg(this.userImg)
                 .intro(this.intro)
                 .distance(this.distance)
