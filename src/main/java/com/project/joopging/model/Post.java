@@ -174,7 +174,8 @@ public class Post extends Timestamped {
     public PostDetailResponseDto toBuildDetailPost(UserDetailsImpl userDetails,
                                                    boolean joinCheck,
                                                    boolean bookMarkInfo,
-                                                   String runningDateToString) {
+                                                   String runningDateToString,
+                                                   Long userId) {
 
         if(userDetails == null) {
             return PostDetailResponseDto.builder()
@@ -194,7 +195,7 @@ public class Post extends Timestamped {
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
                     .totalBookMarkCount(this.totalBookMarkCount)
-                    .userId(this.id)
+                    .userId(userId)
                     .writerName(this.writer.getNickname())
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
@@ -219,7 +220,7 @@ public class Post extends Timestamped {
                     .postImg(this.postImg)
                     .viewCount(this.viewCount)
                     .totalBookMarkCount(this.totalBookMarkCount)
-                    .userId(this.id)
+                    .userId(userId)
                     .writerName(this.writer.getNickname())
                     .userImg(this.writer.getUserImg())
                     .intro(this.writer.getIntro())
