@@ -1,6 +1,7 @@
 package com.project.joopging.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.joopging.dto.user.AnotherUserInfoResponseDto;
 import com.project.joopging.dto.user.LoginDetailReponseDto;
 import com.project.joopging.enums.UserRoleEnum;
 import com.project.joopging.util.Timestamped;
@@ -160,4 +161,19 @@ public class User extends Timestamped {
     }
 
 
+    public AnotherUserInfoResponseDto toBuildAnotherUserInfo() {
+        return AnotherUserInfoResponseDto.builder()
+                .badgeCount(this.badges.size())
+                .bookmarkCount(this.bookMarks.size())
+                .reviewCount(this.review.size())
+                .crewCount(this.crews.size())
+                .id(this.id)
+                .userImg(this.userImg)
+                .intro(this.intro)
+                .distance(this.distance)
+                .location(this.location)
+                .type(this.type)
+                .badgeList(this.badges)
+                .build();
+    }
 }
