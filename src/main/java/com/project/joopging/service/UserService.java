@@ -144,7 +144,7 @@ public class UserService {
         userInfoDetailsDtoList.add(userInfoDetailsDto);
         return userInfoDetailsDtoList;
     }
-
+    @Transactional(readOnly = true)
     public UserMyPageResponseDto getMyPage(UserDetailsImpl userDetails) {
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
                 () -> new CustomErrorException("없는 회원입니다")
