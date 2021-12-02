@@ -30,6 +30,7 @@ public class PostDetailResponseDto {
 
 
     //작성자 정보
+    private final Long userId;
     private final String writerName;
     private final String userImg;
     private final String intro;
