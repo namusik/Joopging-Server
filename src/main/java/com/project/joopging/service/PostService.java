@@ -104,15 +104,18 @@ public class PostService {
     public PostDetailResponseDto toSetPostDetailResponseDto(Post post, UserDetailsImpl userDetails) {
         boolean joinCheck;
         boolean bookmarkInfo;
+        Long userId;
         String runningDateToString = getRunningDateToString(post);
-        if (userDetails == null) {
-            return post.toBuildDetailPost(null, false, false, runningDateToString);
+        User user = userDetails.getUser();
+        if (user == null) {
+            return post.toBuildDetailPost(null, false, false, runningDateToString, null);
         } else {
-            User user = userDetails.getUser();
             joinCheck = crewRepository.findByUserJoinAndPostJoin(user, post).isPresent();
             bookmarkInfo = bookMarkRepository.findByUserBookMarkAndPostBookMark(user, post).isPresent();
+            userId = user.getId();
         }
-        return post.toBuildDetailPost(userDetails, joinCheck, bookmarkInfo, runningDateToString);
+
+        return post.toBuildDetailPost(userDetails, joinCheck, bookmarkInfo, runningDateToString, userId);
     }
 
     //댓글 정보 수정해서 내보내기
