@@ -14,8 +14,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -176,6 +176,7 @@ public class UserService {
         return userInfoDetailsDtoList;
     }
 
+    @Transactional(readOnly = true)
     public UserMyPageResponseDto getMyPage(UserDetailsImpl userDetails) {
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
                 () -> new CustomErrorException("없는 회원입니다")
@@ -191,11 +192,21 @@ public class UserService {
         return new UserMyPageResponseDto(myBookmark, myBadge, myReview, myCrew);
     }
 
+
     //이메일 유효성 검사
     public static boolean isValidEmail(String email) {
         boolean err = false;
         String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(email);
-        if(m.matches()) { err = true; } return err; }
+        if(m.matches()) { err = true; } return err;
+    }
+    @Transactional(readOnly = true)
+    public AnotherUserInfoResponseDto getAnotherUserInfo(UserIdRequestDto requestDto) {
+        Long userId = requestDto.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new CustomErrorException("존재하지 않는 회원입니다.")
+        );
+        return user.toBuildAnotherUserInfo();
+    }
 }
