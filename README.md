@@ -103,7 +103,7 @@ Project Joopggng Notion : <a href="https://available-parent-09c.notion.site/12-a
 
 #### 🎥**발표 영상**
 
-<a href="https://www.youtube.com/watch?v=3pamegVi4_w"><img src="https://img.shields.io/badge/Youtube-#FF0000?style=flat&logo=Youtube&logoColor=white&link=https://www.youtube.com/watch?v=3pamegVi4_w"/></a>
+<a href="https://www.youtube.com/watch?v=3pamegVi4_w"><img src="https://img.shields.io/badge/Youtube-FF0000?style=flat&logo=Youtube&logoColor=white&link=https://www.youtube.com/watch?v=3pamegVi4_w"/></a>
 
 
 
