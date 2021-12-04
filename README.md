@@ -97,7 +97,7 @@ Project Joopggng Notion : <a href="https://available-parent-09c.notion.site/12-a
 
 #### 📅**진행 기간**
 
-- 21.10.23 ~ 21.12.05
+- 21.10.23 ~ 21.12.04
 
 
 
