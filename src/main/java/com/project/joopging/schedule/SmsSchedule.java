@@ -249,7 +249,7 @@ public class SmsSchedule {
         responseDto.setCertificationNumber(numStr);
         return responseDto;
 
-
+        
     }
 }
 
