@@ -118,7 +118,7 @@ public class User extends Timestamped {
 
 
 
-    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance, String number) {
+    public User(String username, String password, String email, UserRoleEnum role, String enumLocation, String enumType, String enumDistance, String number, String image) {
         this.nickname = username;
         this.password = password;
         this.email = email;
@@ -127,7 +127,7 @@ public class User extends Timestamped {
         this.distance = enumDistance;
         this.location = enumLocation;
         this.intro = null;
-        this.userImg = null;
+        this.userImg = image;
         this.number = number;
     }
 
