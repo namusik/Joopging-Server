@@ -19,16 +19,16 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        log.info("payload : " + payload);
+        log.info("payload : {}" + payload);
 
 //        채팅방 입장했을 떄 Clinet에 환영 메세지 보내기
         TextMessage initialGreeting = new TextMessage("채팅방 입장을 환영합니다");
         session.sendMessage(initialGreeting);
 
         // 클라에서 보낸 메세지 다시 출력
-        for(WebSocketSession sess: list) {
-            sess.sendMessage(message);
-        }
+//        for(WebSocketSession sess: list) {
+//            sess.sendMessage(message);
+//        }
     }
 
     /* Client가 접속 시 호출되는 메서드 */

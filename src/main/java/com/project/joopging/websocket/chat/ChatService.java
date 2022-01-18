@@ -19,7 +19,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ChatService {
     private final ObjectMapper objectMapper;
-    private Map<String, ChatRoomDto> chatRooms;
+    //생성된 모든 채팅방의 정보를 모아둔 map
+    //DB로 옮기는 작업 필요
+    private Map<String, ChatRoom> chatRooms;
 
     @PostConstruct
     private void init() {
@@ -27,9 +29,9 @@ public class ChatService {
     }
 
     //채팅방 생성
-    public ChatRoomDto createRoom(String name) {
+    public ChatRoom createRoom(String name) {
         String roomId = name;
-        return new ChatRoomDto(roomId);
+        return new ChatRoom(roomId);
     }
 
     //채팅보내기

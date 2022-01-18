@@ -20,6 +20,6 @@ public class ChatConfig implements WebSocketConfigurer {
         //CORS 열어주기
         //클라이언트가 ws://localhost:8070/ws/chat으로 커넥션 연결하면 됨
         //sockJS 허용 추가
-        registry.addHandler(chatHandler, "ws/chat").setAllowedOrigins("*").withSockJS();
+        registry.addHandler(chatHandler, "ws/chat").setAllowedOrigins("*");
     }
 }
