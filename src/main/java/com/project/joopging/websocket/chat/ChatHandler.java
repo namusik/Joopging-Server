@@ -1,29 +1,34 @@
 package com.project.joopging.websocket.chat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class ChatHandler extends TextWebSocketHandler {
 
-    private static List<WebSocketSession> list = new ArrayList<>();
+    private final ChatService chatService;
+    private final ObjectMapper objectMapper;
+    private static List<WebSocketSession> sessionList = new ArrayList<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         log.info("payload : {}" + payload);
 
-//        채팅방 입장했을 떄 Clinet에 환영 메세지 보내기
-        TextMessage initialGreeting = new TextMessage("채팅방 입장을 환영합니다");
-        session.sendMessage(initialGreeting);
+        ChatMessage chatMessage = objectMapper.readValue(payload, ChatMessage.class);
+        ChatRoom room = chatService.findById(chatMessage.getRoomId());
+//        room.handleActions(session, chatMessage, chatService);
+
 
         // 클라에서 보낸 메세지 다시 출력
 //        for(WebSocketSession sess: list) {
@@ -35,7 +40,7 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 
-        list.add(session);
+        sessionList.add(session);
 
         log.info(session + " 클라이언트 접속");
     }
@@ -46,6 +51,6 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
         log.info(session + " 클라이언트 접속 해제");
-        list.remove(session);
+        sessionList.remove(session);
     }
 }
