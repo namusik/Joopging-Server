@@ -65,18 +65,20 @@ dependencies {
 
 jib {
     from {
-        image = 'openjdk:11'
-        platforms {
-            platform {
-                architecture = "arm64"
-                os = "linux"
-            }
-        }
+        image = 'adoptopenjdk/openjdk11:alpine-jre'
+        //mac에서 돌릴때
+//        image = 'openjdk:11'
+//        platforms {
+//            platform {
+//                architecture = "arm64"
+//                os = "linux"
+//            }
+//        }
     }
-    to {
-        image = 'namusik/joopging'
-        tags = ['1.0']
-    }
+//    to { //pipiline 스크립트에서 -Djib.to.image로
+//        image = 'namusik/joopging'
+//        tags = ['1.0']
+//    }
     container {
 //        entrypoint = ['java', '-Dspring.profiles.active=test', '-jar', 'Joopging-0.0.1-SNAPSHOT.jar']
         jvmFlags = ['-Xms512m', '-Xmx512m', '-Xdebug', '-XshowSettings:vm', '-XX:+UnlockExperimentalVMOptions', '-XX:+UseContainerSupport']
