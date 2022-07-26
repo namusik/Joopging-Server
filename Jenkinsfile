@@ -5,6 +5,7 @@ def region="ap-northeast-2"                                             //Aws �
 def ecrUrl="382240023058.dkr.ecr.ap-northeast-2.amazonaws.com"          //ECR 경로
 def repository="test"                                                   //ECR repository 이름
 def deployHost="3.39.21.179"                                            //배포 서버 ipv4. 젠킨스서버와 배포서버가 같은 vpc안에 있으면 private IPv4 쓰면 되는데 지금은 달라서 public씀
+def containerName="jenkinsTest"
 
 pipeline { //pipleling stage별로 명시
    agent any
@@ -47,12 +48,12 @@ pipeline { //pipleling stage별로 명시
         stage('Deploy to AWS EC2 VM'){ //CD 작업 시작. 베포서버에 이미지 배포후 컨테이너 run
             steps{
                 sshagent(credentials : ["jenkins-deploy"]) { //jenkins에서 ec2에 접속을 해야하기 때문에 등록해준 deploy-key 사용. ec2 pem key
-                    sh "docker ps -a -q -f name=jenkinsTest | xargs --no-run-if-empty docker rm -f " //docker ps -a -q의 결과가 비었을 때, 다음 커맨드 실행 안됨.
+                    sh "docker ps -a -q -f name=${containerName} | xargs --no-run-if-empty docker rm -f " //docker ps -a -q의 결과가 비었을 때, 다음 커맨드 실행 안됨.
                     sh "docker images ${ecrUrl}/${repository} -q | xargs --no-run-if-empty docker rmi" //
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@${deployHost} \
                      'aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${ecrUrl}/${repository}; \
                       sleep 3; \
-                      docker run -d --name jenkinsTest -p 80:8080 -t ${ecrUrl}/${repository}:${currentBuild.number} ;'"
+                      docker run -d --name ${containerName} -p 80:8080 -t ${ecrUrl}/${repository}:${currentBuild.number} ;'"
                       //ssh로 deployhost에 젠킨스서버에서 접속
                       //aws ecr get-login-password : ecr에 로그인
                       //sleep 3 : 3초 쉬어줌.
