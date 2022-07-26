@@ -20,7 +20,6 @@ pipeline { //pipleling stage별로 명시
         stage('Build Codes by Gradle') { //코드를 가져와서, web Application을 Build해서 jar 파일 만들어줌.
             steps {
                 sh """
-                cd ${mainDir}
                 ./gradlew clean build
                 """
                 //gradle wrapper 파일 이용. 기존꺼 지우기 위해 clean 사용. 그 후 build.
@@ -34,7 +33,6 @@ pipeline { //pipleling stage별로 명시
                         curl -O https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.4.0/linux-amd64/${ecrLoginHelper}
                         chmod +x ${ecrLoginHelper}
                         mv ${ecrLoginHelper} /usr/local/bin/
-                        cd ${mainDir}
                         ./gradlew jib -Djib.to.image=${ecrUrl}/${repository}:${currentBuild.number} -Djib.console='plain'
                     """
                     //curl : ecr-credential 다운로드
