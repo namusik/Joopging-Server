@@ -1,32 +1,25 @@
 package com.project.joopging.websocket.chat;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.socket.WebSocketSession;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class ChatRoom {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
     private String roomId;
-    //채팅방에 속해있는 클라이언트의 sessiong 정보를 담은 Set
-//    private Set<WebSocketSession> sessions = new HashSet<>();
+    private String roomName;
 
-    public ChatRoom(String roomId) {
-        this.roomId = roomId;
+
+    public static ChatRoom create(String name) {
+        ChatRoom room = new ChatRoom();
+        room.roomId = UUID.randomUUID().toString();
+        room.roomName = name;
+        return room;
     }
     
     //입장 통신기능 분기처리
