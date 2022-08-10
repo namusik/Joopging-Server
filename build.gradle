@@ -3,11 +3,16 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'com.google.cloud.tools.jib' version '3.1.4'
+    id "org.sonarqube" version "3.4.0.2513"
+    //https://docs.sonarqube.org/latest/analysis/scan/sonarscanner-for-gradle/
+    //https://github.com/SonarSource/sonar-scanning-examples/blob/master/sonarqube-scanner-gradle/gradle-basic/build.gradle
+    id 'jacoco'
+    //https://docs.gradle.org/current/userguide/jacoco_plugin.html#header
 }
 
 group = 'com.project'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 configurations {
     compileOnly {
@@ -17,6 +22,10 @@ configurations {
 
 repositories {
     mavenCentral()
+//    maven {
+//        url("http://ec2-43-200-171-36.ap-northeast-2.compute.amazonaws.com:8081/repository/test/")
+//        allowInsecureProtocol(true)
+//    }
 }
 
 dependencies {
@@ -64,6 +73,7 @@ dependencies {
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.webjars.bower:bootstrap:4.3.1'
@@ -84,12 +94,14 @@ jib {
 //            }
 //        }
     }
-//    to { //pipiline 스크립트에서 -Djib.to.image로
-//        image = 'namusik/joopging'
-//        tags = ['1.0']
+//    to { //jenkins pipiline 스크립트에서 -Djib.to.image로 대체해줌.
+//        image = '962689718920.dkr.ecr.ap-northeast-2.amazonaws.com/test'
+//        tags = ['3.0']
 //    }
+    //HTTP 통신 허용 - Nexus registry 통신할 때 사용
+    allowInsecureRegistries=true
     container {
-//        entrypoint = ['java', '-Dspring.profiles.active=test', '-jar', 'Joopging-0.0.1-SNAPSHOT.jar']
+        entrypoint = ['java', '-jar', 'Joopging-0.0.1-SNAPSHOT.jar']
         jvmFlags = ['-Xms512m', '-Xmx512m', '-Xdebug', '-XshowSettings:vm', '-XX:+UnlockExperimentalVMOptions', '-XX:+UseContainerSupport']
         ports = ['8080']
 
@@ -108,18 +120,42 @@ jib {
     }
 }
 
+//configuring the jacoco plugin
+//jacoco jar 버전 설정
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+//정적코드 분석 결과를 어떤 형태의 파일로 export할지
+jacocoTestReport {
+    reports{
+        html.enabled=true
+        xml.enabled=true
+        csv.enabled=true
+    }
+}
+//자바 Compile시 문자들을 인코딩하기 위해
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+//jacoco - sonarqube 연동
+sonarqube {
+    properties {
+        property "sonar.projectName","SpringBoot Code Coverage Demo" //프로젝트 이름
+        property "sonar.exclusions", "**/generated-*/**/*"
+        property "sonar.projectKey", "org.sonarqubeJacocoCodeCoverage"
+        property "sonar.reportPath" , "${project.buildDir}/jacoco/test.exec"
+        property "sonar.host.url", "http://ec2-43-200-8-76.ap-northeast-2.compute.amazonaws.com:9000" //sonarqube ec2 서버 주소
+        property "sonar.sources", "src/main/java" //소스코드 위치
+        property "sonar.tests", "src/test/java"   // 테스트코드 위치
+        property "sonar.login", "admin"            //계정정보
+        property "sonar.password", "admin1234"
+    }
+}
+
+tasks['sonarqube'].dependsOn test
 
 test {
     useJUnitPlatform()
 }
-
-
-//Jenkins bootJar, bootRun 설정
-//bootJar {
-//    mainClassName = 'com.project.joopging.JoopgingApplication'
-//}
-//
-//bootRun {
-//    String activeProfile = System.properties['spring.profiles.active']
-//    systemProperty "spring.profiles.active", activeProfile
-//}
