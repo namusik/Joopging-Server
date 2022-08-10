@@ -98,7 +98,7 @@ pipeline { //pipleling stage별로 명시
 //         }
         stage('Deploy container to AWS EC2 VM'){
             steps{
-                sshagent(credentials : ["deploy-key"]) {
+                sshagent(credentials : ["jenkins-test"]) {
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@${deployHost} \
                      'docker login -u test -p 'test' ${nexusUrl}; \
                       docker run -d -p 80:8080 -t ${nexusUrl}/${repository}:${tagName};'"
