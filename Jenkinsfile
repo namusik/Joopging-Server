@@ -3,10 +3,10 @@ def mainDir="Joopging-Server"                                           //Jenkin
 def ecrLoginHelper="docker-credential-ecr-login"                        //jib으로 만든 도커이미지를 ECR에 push하기전에 인증문제없도록 도와주는 helper
 def region="ap-northeast-2"                                             //Aws 지역
 def ecrUrl="382240023058.dkr.ecr.ap-northeast-2.amazonaws.com"          //ECR 경로
-def nexusUrl="ec2-13-125-68-59.ap-northeast-2.compute.amazonaws.com:5000" //Nexus 경로
+def nexusUrl="ec2-3-35-22-214.ap-northeast-2.compute.amazonaws.com:5000" //Nexus 경로
 def repository="nexus-registry"                                                   //ECR repository 이름
-def jenkinsHost="3.35.16.246"                                           //Jenkins 서버 ipv4
-def deployHost="13.125.153.84"                                            //배포 서버 ipv4. 젠킨스서버와 배포서버가 같은 vpc안에 있으면 private IPv4 쓰면 되는데 지금은 달라서 public씀
+def jenkinsHost="13.209.89.121"                                           //Jenkins 서버 ipv4
+def deployHost="13.125.150.144"                                            //배포 서버 ipv4. 젠킨스서버와 배포서버가 같은 vpc안에 있으면 private IPv4 쓰면 되는데 지금은 달라서 public씀
 def containerName="jenkinsTest"
 def tagName="nexus"
 
@@ -98,7 +98,7 @@ pipeline { //pipleling stage별로 명시
 //         }
         stage('Deploy container to AWS EC2 VM'){
             steps{
-                sshagent(credentials : ["jenkins-test"]) {
+                sshagent(credentials : ["cicd-test"]) {
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@${deployHost} \
                      'docker login -u test -p 'test' ${nexusUrl}; \
                       docker run -d -p 80:8080 -t ${nexusUrl}/${repository}:${tagName};'"
