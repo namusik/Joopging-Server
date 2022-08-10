@@ -47,7 +47,6 @@ pipeline { //pipleling stage별로 명시
 //                     //build.gradle을 보면 그래서 jib 코드에 to{} 부분이 빠져있다.
 //                 }
                 sh """
-                    cd ${mainDir}
                     docker login -u test -p 'test' ${nexusUrl}
                     ./gradlew jib -Djib.to.image=${nexusUrl}/${repository}:${tagName} -DsendCredentialsOverHttp=true -Djib.console='plain'
                 """
