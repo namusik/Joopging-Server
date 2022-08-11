@@ -21,11 +21,11 @@ configurations {
 }
 
 repositories {
-    mavenCentral()
-//    maven {
-//        url("http://ec2-3-35-22-214.ap-northeast-2.compute.amazonaws.com:8081/repository/proxy/")
-//        allowInsecureProtocol(true)
-//    }
+//    mavenCentral()
+    maven {
+        url("http://ec2-54-180-150-60.ap-northeast-2.compute.amazonaws.com:8081/repository/proxy-repository/")
+        allowInsecureProtocol(true)
+    }
 }
 
 dependencies {
