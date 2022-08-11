@@ -84,7 +84,7 @@ pipeline { //pipleling stage별로 명시
 //         }
         stage('Deploy to AWS EC2 VM'){ //CD 작업 시작. 베포서버에 이미지 배포후 컨테이너 run
             steps{
-                sshagent(credentials : ["jenkins-deploy"]) { //jenkins에서 ec2에 접속을 해야하기 때문에 등록해준 deploy-key 사용. ec2 pem key
+                sshagent(credentials : ["cicd-test"]) { //jenkins에서 ec2에 접속을 해야하기 때문에 등록해준 deploy-key 사용. ec2 pem key
                     //| xargs --no-run-if-empty : docker ps -a -q의 결과가 비었을 때, 다음 커맨드 실행 안됨.
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@${deployHost} \
                      'docker ps -a -q -f name=${containerName} | xargs --no-run-if-empty docker rm -f; \

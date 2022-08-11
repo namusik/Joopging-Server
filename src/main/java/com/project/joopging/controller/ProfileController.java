@@ -27,6 +27,6 @@ public class ProfileController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "jenkins build nexus";
+        return "ecr build";
     }
 }
