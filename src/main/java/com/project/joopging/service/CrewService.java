@@ -144,7 +144,7 @@ public class CrewService {
             for (Long aLong : userId) {
 //            System.out.println("aLong = " + aLong);
                 for (Crew crew : crewList) {
-                    if (crew.getUserJoin().getId() == aLong) {
+                    if (crew.getUserJoin().getId().equals(aLong) ) {
                         crew.attend();
                     }
                 }
