@@ -21,11 +21,11 @@ configurations {
 }
 
 repositories {
-//    mavenCentral()
-    maven {
-        url("http://ec2-3-35-22-214.ap-northeast-2.compute.amazonaws.com:8081/repository/proxy/")
-        allowInsecureProtocol(true)
-    }
+    mavenCentral()
+//    maven {
+//        url("http://ec2-3-35-22-214.ap-northeast-2.compute.amazonaws.com:8081/repository/proxy/")
+//        allowInsecureProtocol(true)
+//    }
 }
 
 dependencies {
@@ -99,7 +99,7 @@ jib {
 //        tags = ['3.0']
 //    }
     //HTTP 통신 허용 - Nexus registry 통신할 때 사용
-    allowInsecureRegistries=true
+//    allowInsecureRegistries=true
     container {
         entrypoint = ['java', '-jar', 'Joopging-0.0.1-SNAPSHOT.jar']
         jvmFlags = ['-Xms512m', '-Xmx512m', '-Xdebug', '-XshowSettings:vm', '-XX:+UnlockExperimentalVMOptions', '-XX:+UseContainerSupport']
@@ -146,11 +146,11 @@ sonarqube {
         property "sonar.exclusions", "**/generated-*/**/*"
         property "sonar.projectKey", "org.sonarqubeJacocoCodeCoverage"
         property "sonar.reportPath" , "${project.buildDir}/jacoco/test.exec"
-        property "sonar.host.url", "http://ec2-43-200-8-76.ap-northeast-2.compute.amazonaws.com:9000" //sonarqube ec2 서버 주소
+        property "sonar.host.url", "http://ec2-3-35-21-211.ap-northeast-2.compute.amazonaws.com:9000" //sonarqube ec2 서버 주소
         property "sonar.sources", "src/main/java" //소스코드 위치
         property "sonar.tests", "src/test/java"   // 테스트코드 위치
-        property "sonar.login", "admin"            //계정정보
-        property "sonar.password", "admin1234"
+        property "sonar.login", "test"            //계정정보
+        property "sonar.password", "test"
     }
 }
 
