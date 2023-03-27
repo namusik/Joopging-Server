@@ -109,6 +109,7 @@ jib {
         //-XshowSettings:vm 모든 VM 관련 설정을 표시한 후 계속합니다.
         //-Xdebug           역 호환성을 위해 제공되었습니다.
         //useContainerSupport: java 10에 추가되어 Java 8에 backport 된 옵션입니다. JVM은 startup시 현재 시스템의 CPU core 개수나 사용 가능한 memory 등을 기반으로 GC thread의 개수나 기본적인 memory heap size를 결정합니다. 이 option을 추가하면 시스템 전체가 아닌 container에 할당된 CPU 및 memory를 인식하여 적용하게 됩니다
+        //https://www.eclipse.org/openj9/docs/xxusecontainersupport/
         ports = ['8080']
 
         environment = [SPRING_OUTPUT_ANSI_ENABLED: "ALWAYS"]
